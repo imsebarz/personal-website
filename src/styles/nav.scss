@@ -1,0 +1,13 @@
+.Nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1em 3em 0 3em;
+  position: relative;
+  ul {
+    width: 50%;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+  }
+}
