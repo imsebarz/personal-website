@@ -1,0 +1,12 @@
+.featuredProjects {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  gap: 4em;
+}
+
+.featuredProjects-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+}

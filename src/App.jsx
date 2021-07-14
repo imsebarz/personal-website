@@ -1,17 +1,27 @@
 import React from "react";
 import Nav from "./Nav";
-import FloatRight from "./FloatRight";
-import FloatLeft from "./FloatLeft";
+import FloatSocial from "./FloatSocial";
 import Hero from "./Hero";
-import "./styles/global.scss";
+import "./assets/styles/global.scss";
+import AboutMe from "./AboutMe";
+import MyWork from "./MyWork";
+import FeaturedProjects from "./FeaturedProjects";
+import Footer from "./Footer";
+import Contact from "./Contact";
 
 const App = () => {
   return (
     <>
       <Nav></Nav>
-      <FloatRight></FloatRight>
-      <FloatLeft></FloatLeft>
-      <Hero />
+      <main>
+        <FloatSocial />
+        <Hero />
+        <AboutMe />
+        <FeaturedProjects />
+        <MyWork />
+        <Contact />
+      </main>
+      <Footer />
     </>
   );
 };

@@ -1,0 +1,94 @@
+@use './colors.scss';
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  color: colors.$mint;
+  height: auto;
+  margin-top: 3em;
+  gap: 2em;
+  .hero-bg {
+    position: absolute;
+    height: 110vh;
+    width: 100vw;
+    min-height: 100vh;
+    clip-path: polygon(40% 0, 100% 0, 100% 100%, 71% 100%);
+    background-color: colors.$green;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+  }
+  .hero-info {
+    display: flex;
+    flex-direction: column;
+    margin-right: 3em;
+    width: 30%;
+    min-width: 250px;
+    flex-grow: 1;
+    gap: 10px;
+
+    button {
+      width: 10em;
+      margin-top: 2em;
+      height: 4em;
+      color: colors.$green;
+      background-color: colors.$mint;
+      border: 1.5px solid colors.$green;
+      border-radius: 4px;
+      font-weight: 500;
+      font-family: "Roboto";
+    }
+
+    button:hover {
+      background-color: colors.$green;
+      border-color: colors.$mint;
+      color: colors.$mint;
+      transition: background 0.3s ease;
+    }
+
+    h1 {
+      font-size: 54px;
+      color: colors.$black;
+      font-weight: 900;
+    }
+    h2 {
+      font-size: 30px;
+      color: colors.$pepper;
+    }
+    p {
+      color: colors.$pepper;
+    }
+
+    span {
+      font-weight: 900;
+    }
+  }
+  img {
+    mask-image: linear-gradient(0deg, transparent, #000 40%);
+    width: 40%;
+    min-width: 240px;
+    margin: auto;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 905px) {
+  .hero {
+    flex-direction: column-reverse;
+    .hero-info {
+      width: 50%;
+      place-items: center;
+      text-align: center;
+      margin: auto;
+    }
+    .hero-bg {
+      clip-path: polygon(19% 0, 100% 0, 100% 100%, 71% 100%);
+    }
+    img {
+      width: 50%;
+    }
+  }
+}

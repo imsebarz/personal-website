@@ -1,0 +1,33 @@
+@use './colors.scss';
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  width: 60%;
+  margin: auto;
+  place-items: center;
+  justify-content: space-around;
+  background-color: colors.$mint;
+  border-radius: 15px;
+  button {
+    // background: colors.$mint;
+    color: colors.$green;
+    background: colors.$mint;
+    height: 4em;
+    border: dotted 1.5px colors.$green;
+    width: 9em;
+    padding: 1em;
+    font-weight: 700;
+  }
+  button:hover {
+    color: colors.$mint;
+    background: colors.$green;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .contact {
+    width: 100%;
+  }
+}

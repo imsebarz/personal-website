@@ -1,0 +1,75 @@
+@use './colors.scss';
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  // border: 1px solid red;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: colors.$mint;
+}
+
+::-webkit-scrollbar-thumb {
+  background: colors.$green;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: colors.$black;
+}
+
+main {
+  margin: 0 11vw;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: colors.$mint;
+  font-family: "Roboto";
+  font-weight: 300;
+}
+
+section {
+  margin: 3em 0;
+}
+
+.title {
+  border-bottom: colors.$green 2px dotted;
+  font-size: 2rem;
+}
+
+h1,
+h3,
+p {
+  color: colors.$black;
+}
+
+li::before {
+  content: "▹";
+  line-height: 12px;
+}
+
+svg {
+  path {
+    fill: colors.$black;
+  }
+}
+
+@media screen and (max-width: 905px) {
+  .floating-social {
+    display: none;
+  }
+  .floating-mail {
+    display: none;
+  }
+}

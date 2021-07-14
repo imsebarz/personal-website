@@ -1,0 +1,31 @@
+{
+  "projects": [
+    {
+      "name": "Petit Store",
+      "description": "Desc",
+      "tags": ["tag", "tag", "tag", "tag"],
+      "img": "imageURL",
+      "githubRepo": "githubRepo URL",
+      "demo": "demo URL",
+      "featured": true
+    },
+    {
+      "name": "Health Bazar",
+      "description": "",
+      "tags": ["tag", "tag", "tag", "tag"],
+      "img": "imageURL",
+      "githubRepo": "githubRepo URL",
+      "demo": "demo URL",
+      "featured": true
+    },
+    {
+      "name": "Photolalaphy Portfolio",
+      "description": "Desc",
+      "tags": ["tag", "tag", "tag", "tag"],
+      "img": "imageURL",
+      "githubRepo": "githubRepo URL",
+      "demo": "demo URL",
+      "featured": true
+    }
+  ]
+}

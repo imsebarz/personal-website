@@ -1,3 +1,5 @@
+@use './colors.scss';
+
 .floating-mail {
   position: fixed;
   display: flex;
@@ -11,5 +13,10 @@
     width: 6em;
     height: 2px;
     background-color: black;
+  }
+  .mail {
+    color: colors.$green;
+    font-weight: 300;
+    text-decoration: none;
   }
 }

@@ -1,0 +1,125 @@
+@use './colors.scss';
+
+.ftProject {
+  display: grid;
+  height: 20em;
+  gap: 5px;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.ftProject-image {
+  grid-column: 1 / 8;
+  grid-row: 1 / 2;
+  height: 100%;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  a {
+    overflow: hidden;
+    display: block;
+    height: 100%;
+  }
+  img {
+    height: 100%;
+    width: 100%;
+    filter: brightness(0.8) saturate(0.8);
+    object-fit: cover;
+  }
+}
+.ftProject:hover .ftProject-image {
+  transform: translate(10px, -5px);
+}
+
+.ftProject-content {
+  grid-column: 7 / -1;
+  grid-row: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  justify-content: space-around;
+  .desc {
+    background-color: colors.$green;
+    padding: 2em;
+    border-radius: 5px;
+    margin-right: 1em;
+    opacity: 0.8;
+    p {
+      color: colors.$mint;
+      opacity: 1;
+    }
+  }
+  .ftProject-links {
+    display: flex;
+    width: 20%;
+    justify-content: space-evenly;
+  }
+  ul {
+    display: flex;
+    gap: 1em;
+    li {
+      color: colors.$pepper;
+    }
+  }
+}
+
+.left {
+  .ftProject-image {
+    grid-column: 6 / -1;
+    grid-row: 1 / 2;
+  }
+
+  .ftProject-content {
+    grid-column: 1 / 7;
+    grid-row: 1 / 2;
+    align-items: flex-start;
+    text-align: left;
+    .desc {
+      margin-left: 1em;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .ftProject {
+    border-radius: 5px;
+    .ftProject-image {
+      grid-column: 1 / -1;
+      position: relative;
+      img {
+        filter: brightness(0.5) saturate(0.5) contrast(1.2);
+      }
+    }
+    .ftProject-image::after {
+      height: 100%;
+      content: "";
+      top: 0;
+      width: 100%;
+      background: #027555bb;
+      position: absolute;
+    }
+    .ftProject-content {
+      align-items: flex-start;
+      text-align: left;
+      padding: 3em;
+      color: white;
+      grid-column: 1 / -1;
+      z-index: 5;
+      h1 {
+        color: colors.$mint;
+      }
+      .desc {
+        background: transparent;
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        color: colors.$mint;
+      }
+      .ftProject-links {
+        width: 15%;
+        justify-content: space-between;
+      }
+    }
+  }
+}

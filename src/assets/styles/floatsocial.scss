@@ -1,0 +1,33 @@
+.floating-social {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  bottom: 0;
+  right: 3em;
+  ul {
+    list-style: none;
+    li {
+      margin: 1.2em 0;
+      transition: all 0.2s ease;
+    }
+    li::before {
+      display: none;
+    }
+    img {
+      filter: brightness(1.01);
+      height: 21px;
+      width: auto;
+    }
+
+    li:hover {
+      transform: translateY(-3px);
+    }
+  }
+  .floating-line {
+    margin: 1em 0 0 0;
+    width: 2px;
+    height: 6em;
+    background-color: black;
+  }
+}

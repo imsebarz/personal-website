@@ -31,6 +31,14 @@ module.exports = {
         test: /\.scss$/,
         use: ["style-loader", "css-loader", "sass-loader"],
       },
+      {
+        test: /\.png/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.svg$/,
+        use: [{ loader: "url-loader" }],
+      },
     ],
   },
   plugins: [
@@ -45,6 +53,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
-    port: 3005,
+    host: "0.0.0.0",
+    port: 6969,
   },
 };
