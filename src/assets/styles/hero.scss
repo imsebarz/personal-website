@@ -67,7 +67,6 @@
     }
   }
   img {
-    mask-image: linear-gradient(0deg, transparent, #000 40%);
     width: 40%;
     min-width: 240px;
     margin: auto;
@@ -89,6 +88,7 @@
     }
     img {
       width: 50%;
+      height: auto;
     }
   }
 }

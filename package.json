@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --config webpack.config.dev.js"
+    "start": "webpack serve --config webpack.config.dev.js",
+    "build": "webpack --config webpack.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,7 +15,10 @@
     "@babel/preset-react": "^7.14.5",
     "babel": "^6.23.0",
     "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^5.2.6",
+    "css-minimizer-webpack-plugin": "^3.0.2",
     "file-loader": "^6.2.0",
     "framer-motion": "^4.1.17",
     "html-loader": "^2.1.2",
@@ -26,6 +30,7 @@
     "sass": "^1.35.1",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.0.0",
+    "terser-webpack-plugin": "^5.1.4",
     "url-loader": "^4.1.1",
     "webpack": "^5.41.1",
     "webpack-cli": "^4.7.2",
