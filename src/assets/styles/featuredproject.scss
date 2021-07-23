@@ -2,7 +2,7 @@
 
 .ftProject {
   display: grid;
-  height: 20em;
+  height: max-content;
   gap: 5px;
   grid-template-columns: repeat(12, 1fr);
 }
@@ -37,7 +37,7 @@
   flex-direction: column;
   align-items: flex-end;
   text-align: right;
-  justify-content: space-around;
+  justify-content: space-evenly;
   .desc {
     background-color: colors.$green;
     padding: 2em;
@@ -51,14 +51,17 @@
   }
   .ftProject-links {
     display: flex;
-    width: 20%;
+    width: 70px;
     justify-content: space-evenly;
   }
   ul {
     display: flex;
-    gap: 1em;
+    width: 80%;
+    flex-wrap: wrap;
+    gap: 1vw;
     li {
       color: colors.$pepper;
+      width: max-content;
     }
   }
 }
@@ -117,9 +120,21 @@
         color: colors.$mint;
       }
       .ftProject-links {
-        width: 15%;
         justify-content: space-between;
+        svg {
+          path {
+            fill: colors.$mint !important;
+          }
+        }
       }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .ftProject {
+    .ftProject-content {
+      gap: 35px;
     }
   }
 }

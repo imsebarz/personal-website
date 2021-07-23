@@ -3,6 +3,7 @@ import { useInView } from "react-intersection-observer";
 import "./assets/styles/aboutme.scss";
 import { motion, useAnimation } from "framer-motion";
 import { ContainerVariants } from "./animation";
+import SebasAbout from "./assets/images/sebas.webp";
 
 const AboutMe = () => {
   const [ref, inView] = useInView();
@@ -32,40 +33,41 @@ const AboutMe = () => {
         variants={ContainerVariants}
         initial="hidden"
       >
-        <motion.img
-          src="https://avatars.githubusercontent.com/u/21131739?v=4"
-          alt=""
-          variants={ContainerVariants}
-        />
+        <motion.img src={SebasAbout} alt="" variants={ContainerVariants} />
         <div className="aboutme-text">
           <motion.p variants={ContainerVariants}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-            ducimus delectus eveniet nihil aperiam sint, voluptatibus aut at
-            eligendi aspernatur ut itaque necessitatibus deserunt labore
-            laudantium, nobis praesentium vero similique harum ab nisi. Saepe
-            aperiam unde nesciunt fugit eum possimus quibusdam consequuntur,
-            quia quam hic. Nam consequuntur a repellendus aut.
+            I'm Sebastian Ruiz. A web developer, an eternal learner, a creative.
+            <strong>I have internet and technology in my veins.</strong>
           </motion.p>
           <motion.p variants={ContainerVariants}>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptates
-            atque necessitatibus rem sequi quam earum pariatur accusamus sint
-            officia, officiis aut autem veniam? Suscipit maiores laboriosam
-            illum assumenda blanditiis corrupti facilis, repudiandae debitis
-            fuga aspernatur totam, nemo ab similique aut nostrum at iure
-            eligendi autem tempore iste tenetur dicta, necessitatibus labore.
-            Facere hic in ut minima qui magni accusamus optio.
+            I've been curious since I was little and I love to discover and
+            learn new things. I am currently on my way to be a Systems Engineer
+            at the University of Antioquia. Loving the way internet works made
+            me focus on <strong>web development</strong> from now on.
           </motion.p>
+          <motion.p variants={ContainerVariants}>
+            Earlier in my life I learned about Design, Photography and
+            Multimedia. Skills that have been very helpful in my career. The
+            guiding principle of everything I do is:{" "}
+            <strong>
+              {" "}
+              I learn and then teach, and teaching is the way I learn.
+            </strong>
+          </motion.p>
+          <br />
           <motion.h3 variants={ContainerVariants}>
-            Tecnologies I have used
+            Some technologies I've used
           </motion.h3>
-          <motion.ul variants={ContainerVariants}>
-            <motion.li>React</motion.li>
+          <motion.ul variants={ContainerVariants} className="tags">
+            <motion.li>ReactJS</motion.li>
             <motion.li>Javascript</motion.li>
             <motion.li>CSS</motion.li>
+            <motion.li>Sass</motion.li>
             <motion.li>HTML</motion.li>
             <motion.li>NodeJS</motion.li>
             <motion.li>MongoDB</motion.li>
             <motion.li>Webpack</motion.li>
+            <motion.li>Parcel</motion.li>
           </motion.ul>
         </div>
       </motion.div>

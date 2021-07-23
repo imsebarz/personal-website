@@ -1,6 +1,7 @@
 import React from "react";
 import Nav from "./Nav";
 import FloatSocial from "./FloatSocial";
+import FloatMail from "./FloatMail";
 import Hero from "./Hero";
 import "./assets/styles/global.scss";
 import AboutMe from "./AboutMe";
@@ -15,6 +16,7 @@ const App = () => {
       <Nav></Nav>
       <main>
         <FloatSocial />
+        <FloatMail />
         <Hero />
         <AboutMe />
         <FeaturedProjects />

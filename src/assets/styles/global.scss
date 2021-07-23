@@ -53,10 +53,21 @@ h3,
 p {
   color: colors.$black;
 }
+.tags {
+  li {
+    border-bottom: colors.$green 2px dotted;
+  }
+}
 
-li::before {
-  content: "▹";
-  line-height: 12px;
+.project-links,
+.ftProject-links {
+  a {
+    svg:hover {
+      path {
+        fill: colors.$green;
+      }
+    }
+  }
 }
 
 svg {
@@ -65,7 +76,7 @@ svg {
   }
 }
 
-@media screen and (max-width: 905px) {
+@media screen and (max-width: 900px) {
   .floating-social {
     display: none;
   }

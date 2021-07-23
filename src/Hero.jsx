@@ -35,12 +35,6 @@ const Hero = () => {
         <motion.h2 variants={ContainerVariants}>
           I build things for the web
         </motion.h2>
-        <motion.p variants={ContainerVariants}>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-          voluptate <span> ipsam nemo officiis</span> earum corporis id
-          accusantium neque aut, voluptates repudiandae non quasi sapiente enim
-          porro, error vero dolores eligendi.
-        </motion.p>
         <motion.a href="#featuredProjects">
           <motion.button variants={ContainerVariants}>
             Go to Projects

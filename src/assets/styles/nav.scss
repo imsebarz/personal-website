@@ -136,14 +136,25 @@
       button {
         font-size: 22px;
       }
+      .aside-social {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        gap: 10%;
+        svg {
+          width: 25px;
+          height: auto;
+          path {
+            fill: colors.$mint;
+          }
+        }
+      }
     }
   }
 }
 
 @media screen and (min-width: 900px) {
-  .nav {
-    .sidebar {
-      display: none !important;
-    }
+  .sidebar {
+    display: none !important;
   }
 }

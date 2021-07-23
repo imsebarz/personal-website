@@ -5,12 +5,14 @@
   display: flex;
   flex-direction: column;
   width: auto;
-  min-height: 300px;
-  min-width: 250px;
+  min-height: 400px;
+  min-width: 300px;
+  max-width: 300px;
   border: 1.8px dotted colors.$green;
   background-color: colors.$mint;
   padding: 2em;
-  justify-content: space-around;
+  gap: 2em;
+  justify-content: baseline;
   transition: all 0.33s ease;
   border-radius: 5px;
   .project-header {
@@ -31,11 +33,14 @@
     }
   }
 
-  .project-tags {
+  .tags {
     display: flex;
+    flex-wrap: wrap;
     gap: 1em;
     li {
       color: colors.$pepper;
+      width: max-content;
+      font-weight: 400;
       font-size: 14px;
     }
   }
