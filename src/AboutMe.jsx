@@ -46,9 +46,12 @@ const AboutMe = () => {
             me focus on <strong>web development</strong> from now on.
           </motion.p>
           <motion.p variants={ContainerVariants}>
-            Earlier in my life I learned about Design, Photography and
-            Multimedia. Skills that have been very helpful in my career. The
-            guiding principle of everything I do is:{" "}
+            Earlier in my life I learned about{" "}
+            <a href="https://www.behance.net/imsebarz" target="_blank">
+              Design
+            </a>
+            , photography and Filmmaking. Skills that have been very helpful in
+            my career. The guiding principle of everything I do is:{" "}
             <strong>
               {" "}
               I learn and then teach, and teaching is the way I learn.
@@ -59,6 +62,7 @@ const AboutMe = () => {
             Some technologies I've used
           </motion.h3>
           <motion.ul variants={ContainerVariants} className="tags">
+            <motion.li>Git/Github</motion.li>
             <motion.li>ReactJS</motion.li>
             <motion.li>Javascript</motion.li>
             <motion.li>CSS</motion.li>

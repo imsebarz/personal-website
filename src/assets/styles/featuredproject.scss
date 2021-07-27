@@ -12,7 +12,6 @@
   grid-row: 1 / 2;
   height: 100%;
   overflow: hidden;
-  transition: all 0.3s ease;
 
   a {
     overflow: hidden;
@@ -24,10 +23,12 @@
     width: 100%;
     filter: brightness(0.8) saturate(0.8);
     object-fit: cover;
+    transition: all 0.3s ease;
   }
 }
-.ftProject:hover .ftProject-image {
-  transform: translate(10px, -5px);
+.ftProject-image:hover img {
+  transform: scale(1.05);
+  filter: brightness(0.9);
 }
 
 .ftProject-content {

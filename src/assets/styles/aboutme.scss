@@ -17,7 +17,7 @@
     width: 100%;
     height: auto;
     gap: 70px;
-    place-items: flex-start;
+    place-items: center;
     place-content: center;
     .aboutme-text {
       flex-grow: 1;
@@ -27,7 +27,13 @@
       flex-direction: column;
       gap: 2em;
       place-items: center;
+      text-align: justify;
       place-content: center;
+      a {
+        text-decoration: none;
+        color: colors.$green;
+        border-bottom: 1px dotted;
+      }
       ul {
         display: flex;
         flex-wrap: wrap;

@@ -32,7 +32,7 @@ const Contact = () => {
         from, in any challenge that involves web development, systems
         engineering or any creative process
       </p>
-      <a href="mailto:imsebarz@gmail.com">
+      <a href="mailto:hello@imsebarz.com">
         <button>Say hello</button>
       </a>
     </motion.section>

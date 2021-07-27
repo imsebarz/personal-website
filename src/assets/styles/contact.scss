@@ -9,6 +9,7 @@
   place-items: center;
   justify-content: space-around;
   background-color: colors.$mint;
+  text-align: center;
   border-radius: 15px;
   button {
     // background: colors.$mint;
@@ -19,6 +20,7 @@
     width: 9em;
     padding: 1em;
     font-weight: 700;
+    border-radius: 5px;
   }
   button:hover {
     color: colors.$mint;

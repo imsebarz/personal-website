@@ -37,7 +37,12 @@ const Nav = () => {
           {" "}
           <a href="#contact"> Contact</a>
         </li>
-        <button>Resume</button>
+        <a
+          href="https://drive.google.com/file/d/19yMIzcPPwK8I1tPdUZAYsdX8Oc3vmQaQ/view?usp=sharing"
+          target="_blank"
+        >
+          <button>Resume</button>
+        </a>
       </ul>
       <div className={`hamburger ${isOpen}`} onClick={toggleSidebar}>
         <svg
@@ -82,9 +87,14 @@ const Nav = () => {
           </li>
           <li>
             {" "}
-            <a href=""> Contact</a>
+            <a href="#contact"> Contact</a>
           </li>
-          <button>Resume</button>
+          <a
+            href="https://drive.google.com/file/d/19yMIzcPPwK8I1tPdUZAYsdX8Oc3vmQaQ/view?usp=sharing"
+            target="_blank"
+          >
+            <button>Resume</button>
+          </a>
           <ul className="aside-social">
             <li>
               {" "}
