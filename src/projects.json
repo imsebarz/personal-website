@@ -5,7 +5,7 @@
       "name": "🛒 Petit Store",
       "description": "A full responsive e-commerce for small business,  made on ReactJS, Using React Router, Sass, and the React Context API ",
       "tags": ["ReactJS", "Javascript", "Sass", "React Router", "Responsive"],
-      "img": "petit.png",
+      "img": "petit.webp",
       "githubRepo": "https://github.com/imsebarz/petit-website",
       "demo": "https://petit-website.web.app/",
       "featured": true
@@ -15,7 +15,7 @@
       "name": "🏥 Health Bazar",
       "description": "Web Bazar about self-care and health, made for the UPB University in Medellín. Is a SPA using only Vanilla Javascript",
       "tags": ["Javascript", "Async JS", "Sass", "SPA"],
-      "img": "bazar.png",
+      "img": "bazar.webp",
       "githubRepo": "https://github.com/imsebarz/bazar-salud",
       "demo": "http://bit.ly/BazarSaludUPB",
       "featured": true
@@ -25,7 +25,7 @@
       "name": "📷 Photolalaphy Portfolio",
       "description": "A responsive creative photography portfolio built on Javascript Using GSAP for animations and transitions",
       "tags": ["Javascript", "Sass", "GSAP", "Responsive"],
-      "img": "lala.png",
+      "img": "lala.webp",
       "githubRepo": "https://github.com/imsebarz/lalaphoto",
       "demo": "https://imsebarz.github.io/lalaphoto/",
       "featured": true

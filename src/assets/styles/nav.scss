@@ -46,6 +46,10 @@
     font-family: "Roboto";
   }
 
+  button:hover {
+    cursor: pointer;
+  }
+
   .hamburger {
     display: none;
   }

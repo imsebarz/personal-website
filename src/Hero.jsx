@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "./assets/styles/hero.scss";
-import Sebas from "./assets/images/hero.png";
+import Sebas from "./assets/images/hero.webp";
 import { ContainerVariants } from "./animation";
 
 const Hero = () => {
