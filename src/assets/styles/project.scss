@@ -6,7 +6,7 @@
   flex-direction: column;
   width: auto;
   min-height: 400px;
-  min-width: 300px;
+  min-width: 250px;
   max-width: 300px;
   border: 1.8px dotted colors.$green;
   background-color: colors.$mint;
@@ -28,7 +28,7 @@
     }
     .project-links {
       display: flex;
-      width: 20%;
+      width: 22%;
       justify-content: space-between;
     }
   }
