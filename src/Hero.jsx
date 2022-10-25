@@ -33,7 +33,7 @@ const Hero = () => {
         </motion.p>
         <motion.h1 variants={ContainerVariants}>Sebastian Ruiz</motion.h1>
         <motion.h2 variants={ContainerVariants}>
-          I build things for the web
+          I <del>break</del> build things for the web
         </motion.h2>
         <motion.a href="#featuredProjects">
           <motion.button variants={ContainerVariants}>

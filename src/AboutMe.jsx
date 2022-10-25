@@ -37,14 +37,33 @@ const AboutMe = () => {
         <div className="aboutme-text">
           <motion.p variants={ContainerVariants}>
             I'm Sebastian Ruiz. A web developer, an eternal learner, a creative.
-            <strong>I have internet and technology in my veins.</strong>
+            <strong> I have internet and technology in my veins.</strong>
           </motion.p>
           <motion.p variants={ContainerVariants}>
-            I've been curious since I was little and I love to discover and
-            learn new things. I am currently on my way to be a Systems Engineer
-            at the University of Antioquia. Loving the way internet works made
-            me focus on <strong>web development</strong> from now on.
+            My work focuses on building Web Applications (And everything in
+            between) using State of the Art web technologies such as{" "}
+            <strong>
+              {" "}
+              React, NextJS, Javascript, Typescript, Webpack, etc.
+            </strong>{" "}
+            My self-taught spirit drives me to never stop learning.
           </motion.p>
+
+            <motion.p variants={ContainerVariants}>
+            I also have a big passion for being a person who
+            <strong> shares knowledge </strong> and <strong> teaches people</strong> about
+            whatever I learn, that's why I also work as a <strong> Mentor with the local
+            communities </strong>to engage new people into the ecosystems and encourage
+            them to build amazing things.
+            </motion.p>
+            
+          <motion.p variants={ContainerVariants}>
+            As a complement to my skills on the
+            Web, I have learned about <strong> blockchain technologies </strong>such as
+            <strong> Web3JS, HardHat, and Solidity Programming </strong> to deliver highly efficient
+            Decentralized Apps and Smart contracts.
+           </motion.p>
+            
           <motion.p variants={ContainerVariants}>
             Earlier in my life I learned about{" "}
             <a href="https://www.behance.net/imsebarz" target="_blank">
@@ -63,15 +82,22 @@ const AboutMe = () => {
           </motion.h3>
           <motion.ul variants={ContainerVariants} className="tags">
             <motion.li>Git/Github</motion.li>
-            <motion.li>ReactJS</motion.li>
             <motion.li>Javascript</motion.li>
+            <motion.li>Typescript</motion.li>
+            <motion.li>ReactJS</motion.li>
+            <motion.li>NextJS</motion.li>
             <motion.li>CSS</motion.li>
             <motion.li>Sass</motion.li>
+            <motion.li>Styled components</motion.li>
             <motion.li>HTML</motion.li>
             <motion.li>NodeJS</motion.li>
             <motion.li>MongoDB</motion.li>
             <motion.li>Webpack</motion.li>
             <motion.li>Parcel</motion.li>
+            <motion.li>Solidity</motion.li>
+            <motion.li>Hardhat</motion.li>
+            <motion.li>Unit Testing</motion.li>
+            <motion.li>Microfrontends</motion.li>
           </motion.ul>
         </div>
       </motion.div>

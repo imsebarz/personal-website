@@ -38,7 +38,7 @@ const Nav = () => {
           <a href="#contact"> Contact</a>
         </li>
         <a
-          href="https://drive.google.com/file/d/19yMIzcPPwK8I1tPdUZAYsdX8Oc3vmQaQ/view?usp=sharing"
+          href="https://drive.google.com/file/d/11azWYcyX_1A0rx4mfCNuD9FddqPpIxU7/view?usp=sharing"
           target="_blank"
         >
           <button>Resume</button>
@@ -90,7 +90,7 @@ const Nav = () => {
             <a href="#contact"> Contact</a>
           </li>
           <a
-            href="https://drive.google.com/file/d/19yMIzcPPwK8I1tPdUZAYsdX8Oc3vmQaQ/view?usp=sharing"
+            href="https://drive.google.com/file/d/11azWYcyX_1A0rx4mfCNuD9FddqPpIxU7/view?usp=sharing"
             target="_blank"
           >
             <button>Resume</button>

@@ -1,4 +1,4 @@
-@use './colors.scss';
+@use "./colors.scss";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 * {
   margin: 0;
@@ -40,7 +40,7 @@ body {
 }
 
 section {
-  margin: 3em 0;
+  margin: 4em 0;
 }
 
 .title {

@@ -5,8 +5,8 @@ const FloatRight = () => {
   return (
     <div className="floating-mail">
       <div className="floating-line"></div>
-      <a className="mail" href="mailto:hello@imsebarz.com">
-        hello@imsebarz.com
+      <a className="mail" href="mailto:imsebarz@gmail.com">
+        imsebarz@gmail.com
       </a>
     </div>
   );
