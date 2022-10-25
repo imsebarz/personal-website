@@ -2,6 +2,16 @@
   "projects": [
     {
       "id": 0,
+      "name": "🎮 Manikins Arena",
+      "description": "ReactJS Interactive landing page for an online videogame. page made for Life is The Game S.A.S",
+      "tags": ["ReactJS", "Javascript", "Sass", "React Router", "Web3JS"],
+      "img": "manikins.webp",
+      "githubRepo": "https://github.com/imsebarz/manikins",
+      "demo": "https://manikins.io",
+      "featured": true
+    },
+    {
+      "id": 1,
       "name": "🛒 Petit Store",
       "description": "A full responsive e-commerce for small business,  made on ReactJS, Using React Router, Sass, and the React Context API ",
       "tags": ["ReactJS", "Javascript", "Sass", "React Router", "Responsive"],
@@ -10,16 +20,7 @@
       "demo": "https://petit-website.web.app/",
       "featured": true
     },
-    {
-      "id": 1,
-      "name": "🏥 Health Bazar",
-      "description": "Web Bazar about self-care and health, made for the UPB University in Medellín. Is a SPA using only Vanilla Javascript",
-      "tags": ["Javascript", "Async JS", "Sass", "SPA"],
-      "img": "bazar.webp",
-      "githubRepo": "https://github.com/imsebarz/bazar-salud",
-      "demo": "http://bit.ly/BazarSaludUPB",
-      "featured": true
-    },
+
     {
       "id": 2,
       "name": "📷 Photolalaphy Portfolio",
