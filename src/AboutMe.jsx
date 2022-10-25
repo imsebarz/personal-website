@@ -81,7 +81,6 @@ const AboutMe = () => {
             Some technologies I've used
           </motion.h3>
           <motion.ul variants={ContainerVariants} className="tags">
-            <motion.li>Git/Github</motion.li>
             <motion.li>Javascript</motion.li>
             <motion.li>Typescript</motion.li>
             <motion.li>ReactJS</motion.li>
@@ -92,6 +91,9 @@ const AboutMe = () => {
             <motion.li>HTML</motion.li>
             <motion.li>NodeJS</motion.li>
             <motion.li>MongoDB</motion.li>
+            <motion.li>CI/CD</motion.li>
+            <motion.li>Git/Github</motion.li>
+            <motion.li>Github Actions</motion.li>
             <motion.li>Webpack</motion.li>
             <motion.li>Parcel</motion.li>
             <motion.li>Solidity</motion.li>
