@@ -11,3 +11,9 @@
   flex-direction: column;
   gap: 3em;
 }
+
+@media screen and (max-width: 905px) {
+  .featuredProjects {
+    margin: 0;
+  }
+}
