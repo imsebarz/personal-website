@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import "./assets/styles/contact.scss";
 import { ContainerVariants } from "./animation";
+import strings from "./contact.json";
 
 const Contact = () => {
   const [ref, inView] = useInView();
@@ -25,15 +26,13 @@ const Contact = () => {
       animate={animation}
     >
       <h1 className="title" id="contact">
-        Get in touch
+        {strings.contactTitle}
       </h1>
       <p>
-        I am willing to work with you or with your company, wherever you are
-        from, in any challenge that involves web development, systems
-        engineering or any creative process
+        {strings.contactText}
       </p>
-      <a href="mailto:imsebarz@gmail.com">
-        <button>Say hello</button>
+      <a href={`mailto:${strings.socials.mail}`}>
+        <button>{strings.contactButton}</button>
       </a>
     </motion.section>
   );

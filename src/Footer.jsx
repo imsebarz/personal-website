@@ -1,13 +1,14 @@
 import React from "react";
 import "./assets/styles/footer.scss";
+import strigns from "./assets/strings/contact.json";
 
 const Footer = () => {
   return (
     <section className="footer">
       <p>
         Made with 💛 by{" "}
-        <a href="https://github.com/imsebarz" target="_blank">
-          @imsebarz
+        <a href={strigns.socials.github} target="_blank">
+          {strigns.socials.username}
         </a>
       </p>
     </section>

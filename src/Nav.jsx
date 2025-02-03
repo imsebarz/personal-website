@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./assets/styles/nav.scss";
+import navStrings from "./assets/strings/nav.json";
+import socialStrings from "./assets/strings/contact.json";
 
 const Nav = () => {
   const [sideDisplay, setSideDisplay] = useState("-100%");
@@ -18,30 +20,30 @@ const Nav = () => {
   return (
     <nav className="nav">
       <a href="#">
-        <h1>Sebarz</h1>
+        <h1>{navStrings.name}</h1>
       </a>
       <ul className="nav-links">
         <li>
           {" "}
-          <a href="#aboutme"> About me</a>
+          <a href="#aboutme">{navStrings.links.aboutme}</a>
         </li>
         <li>
           {" "}
-          <a href="#featuredProjects"> Featured</a>
+          <a href="#featuredProjects">{navStrings.links.featuredProjects}</a>
         </li>
         <li>
           {" "}
-          <a href="#mywork"> Projects</a>
+          <a href="#mywork">{navStrings.links.projects}</a>
         </li>
         <li>
           {" "}
-          <a href="#contact"> Contact</a>
+          <a href="#contact">{navStrings.links.contact}</a>
         </li>
         <a
-          href="https://drive.google.com/file/d/11azWYcyX_1A0rx4mfCNuD9FddqPpIxU7/view?usp=sharing"
+          href={navStrings.resumeLink}
           target="_blank"
         >
-          <button>Resume</button>
+          <button>{navStrings.links.resume}</button>
         </a>
       </ul>
       <div className={`hamburger ${isOpen}`} onClick={toggleSidebar}>
@@ -75,30 +77,30 @@ const Nav = () => {
         <ul className="aside-links">
           <li>
             {" "}
-            <a href="#aboutme"> About me</a>
+            <a href="#aboutme">{navStrings.links.aboutMe}</a>
           </li>
           <li>
             {" "}
-            <a href="#featuredProjects"> Featured</a>
+            <a href="#featuredProjects">{navStrings.links.featuredProjects}</a>
           </li>
           <li>
             {" "}
-            <a href="#mywork"> Projects</a>
+            <a href="#mywork">{navStrings.links.projects}</a>
           </li>
           <li>
             {" "}
-            <a href="#contact"> Contact</a>
+            <a href="#contact">{navStrings.links.contact}</a>
           </li>
           <a
-            href="https://drive.google.com/file/d/11azWYcyX_1A0rx4mfCNuD9FddqPpIxU7/view?usp=sharing"
+            href={navStrings.resumeLink}
             target="_blank"
           >
-            <button>Resume</button>
+            <button>{navStrings.links.resume}</button>
           </a>
           <ul className="aside-social">
             <li>
               {" "}
-              <a href="https://github.com/imsebarz" target="_blank">
+              <a href={socialStrings.socials.github} target="_blank">
                 {" "}
                 <svg
                   width="21"
@@ -118,7 +120,7 @@ const Nav = () => {
             </li>
             <li>
               {" "}
-              <a href="https://twitter.com/imsebarz" target="_blank">
+              <a href={socialStrings.socials.twitter} target="_blank">
                 {" "}
                 <svg
                   width="21"
@@ -139,7 +141,7 @@ const Nav = () => {
             </li>
             <li>
               {" "}
-              <a href="https://www.linkedin.com/in/imsebarz/" target="_blank">
+              <a href={socialStrings.socials.linkedin} target="_blank">
                 {" "}
                 <svg
                   width="22"
@@ -162,7 +164,7 @@ const Nav = () => {
             </li>
             <li>
               {" "}
-              <a href="https://www.instagram.com/imsebarz/" target="_blank">
+              <a href={socialStrings.socials.instagram} target="_blank">
                 {" "}
                 <svg
                   width="21"
@@ -183,7 +185,7 @@ const Nav = () => {
             </li>
             <li>
               {" "}
-              <a href="https://www.behance.net/imsebarz" target="_blank">
+              <a href={socialStrings.socials.behance} target="_blank">
                 {" "}
                 <svg
                   width="25"

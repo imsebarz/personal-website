@@ -1,5 +1,6 @@
 import React from "react";
 import "./assets/styles/floatsocial.scss";
+import strings from "./assets/strings/contact.json";
 
 const FloatLeft = () => {
   return (
@@ -7,7 +8,7 @@ const FloatLeft = () => {
       <ul>
         <li>
           {" "}
-          <a href="https://github.com/imsebarz" target="_blank">
+          <a href={strings.socials.github} target="_blank">
             {" "}
             <svg
               width="21"
@@ -27,7 +28,7 @@ const FloatLeft = () => {
         </li>
         <li>
           {" "}
-          <a href="https://twitter.com/imsebarz" target="_blank">
+          <a href={strings.socials.twitter} target="_blank">
             {" "}
             <svg
               width="21"
@@ -48,7 +49,7 @@ const FloatLeft = () => {
         </li>
         <li>
           {" "}
-          <a href="https://www.linkedin.com/in/imsebarz/" target="_blank">
+          <a href={strings.socials.linkedin} target="_blank">
             {" "}
             <svg
               width="22"
@@ -71,7 +72,7 @@ const FloatLeft = () => {
         </li>
         <li>
           {" "}
-          <a href="https://www.instagram.com/imsebarz/" target="_blank">
+          <a href={strings.socials.instagram} target="_blank">
             {" "}
             <svg
               width="21"
@@ -92,7 +93,7 @@ const FloatLeft = () => {
         </li>
         <li>
           {" "}
-          <a href="https://www.behance.net/imsebarz" target="_blank">
+          <a href={strings.socials.behance} target="_blank">
             {" "}
             <svg
               width="25"
