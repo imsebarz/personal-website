@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import "./assets/styles/contact.scss";
 import { ContainerVariants } from "./animation";
-import strings from "./contact.json";
+import strings from "./assets/strings/contact.json";
 
 const Contact = () => {
   const [ref, inView] = useInView();

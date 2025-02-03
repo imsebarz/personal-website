@@ -4,7 +4,7 @@ import "./assets/styles/aboutme.scss";
 import { motion, useAnimation } from "framer-motion";
 import { ContainerVariants } from "./animation";
 import SebasAbout from "./assets/images/sebas.webp";
-import strings from "./aboutme.json";
+import strings from "./assets/strings/aboutme.json";
 
 const AboutMe = () => {
   const [ref, inView] = useInView();

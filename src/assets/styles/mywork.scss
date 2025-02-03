@@ -7,11 +7,13 @@
   flex-direction: column;
   place-items: center;
   gap: 60px;
+  width: 100%;
   .mywork-container {
     display: grid;
     height: auto;
     padding: 1em 0;
     width: 100%;
+    max-width: 1000px;
     place-items: center;
     place-content: center;
     grid-template: repeat(auto-fit, minmax(300px, auto)) / repeat(

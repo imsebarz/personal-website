@@ -6,7 +6,7 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 0.8em 2em;
+  padding: 0.8em 10em;
   background-color: rgba(colors.$black, 0.8);
   color: colors.$mint;
   font-weight: 500;
@@ -36,12 +36,12 @@
     color: colors.$mint;
   }
   button {
-    width: 7em;
-    height: 3em;
+    width: 10em;
+    height: 3.5em;
     color: colors.$green;
     background-color: colors.$mint;
     border: 1.5px dotted colors.$green;
-    border-radius: 4px;
+    border-radius: 10px;
     font-weight: 500;
     font-family: "Roboto";
   }

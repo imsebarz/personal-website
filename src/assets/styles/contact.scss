@@ -3,8 +3,8 @@
 .contact {
   display: flex;
   flex-direction: column;
-  height: 50vh;
-  width: 60%;
+  height: 30vh;
+  width: 40%;
   margin: auto;
   place-items: center;
   justify-content: space-around;
@@ -12,19 +12,21 @@
   text-align: center;
   border-radius: 15px;
   button {
-    // background: colors.$mint;
-    color: colors.$green;
-    background: colors.$mint;
-    height: 4em;
-    border: dotted 1.5px colors.$green;
-    width: 9em;
-    padding: 1em;
-    font-weight: 700;
-    border-radius: 5px;
-  }
-  button:hover {
     color: colors.$mint;
     background: colors.$green;
+    height: 4em;
+    width: 12em;
+    padding: 1em;
+    font-weight: 700;
+    border-radius: 10px;
+  }
+  button:hover {
+    border: solid 1.5px colors.$green;
+    color: colors.$green;
+    background: colors.$mint;
+  }
+  p{
+    font-size: 1.1rem;
   }
 }
 

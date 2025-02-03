@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "./assets/styles/hero.scss";
 import Sebas from "./assets/images/hero.webp";
+import bg from "./assets/images/wave-bg.svg";
 import { ContainerVariants } from "./animation";
-import strings from "./assets/strings/contact.json";
+import strings from "./assets/strings/aboutme.json";
 
 const Hero = () => {
   const [bgHeight, setBgHeight] = useState(0);
@@ -22,7 +23,7 @@ const Hero = () => {
 
   return (
     <section className="hero">
-      <div className="hero-bg" style={{ height: bgHeight + 120 + "px" }}></div>
+      <img className="hero-bg" src={bg} alt="Sebarz Background" />
       <motion.div
         className="hero-info"
         variants={ContainerVariants}
@@ -47,6 +48,7 @@ const Hero = () => {
         initial="hidden"
         animate="visible"
         src={Sebas}
+        id='hero-img'
         alt="Sebarz Profile Photo"
       />
     </section>

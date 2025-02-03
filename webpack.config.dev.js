@@ -32,7 +32,7 @@ module.exports = {
         use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
-        test: /\.(png|jpg|webp)/,
+        test: /\.(png|jpg|webp|otf)/,
         type: "asset/resource",
       },
       {
@@ -51,9 +51,13 @@ module.exports = {
     }),
   ],
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
     compress: true,
-    host: "0.0.0.0",
+    host: '0.0.0.0',
     port: 6969,
+    hot: true,
+    open: true,
   },
 };

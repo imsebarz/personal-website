@@ -1,3 +1,5 @@
+@use './colors.scss';
+
 .floating-social {
   position: fixed;
   display: flex;
@@ -16,7 +18,7 @@
     }
     img {
       filter: brightness(1.01);
-      height: 21px;
+      height: 35px;
       width: auto;
     }
 
@@ -26,8 +28,8 @@
   }
   .floating-line {
     margin: 1em 0 0 0;
-    width: 2px;
+    width: 3px;
     height: 6em;
-    background-color: black;
+    background-color: colors.$green;
   }
 }

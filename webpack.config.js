@@ -40,7 +40,7 @@ module.exports = {
         use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
-        test: /\.(png|jpg|webp)/,
+        test: /\.(png|jpg|webp|otf)/,
         type: "asset/resource",
       },
       {

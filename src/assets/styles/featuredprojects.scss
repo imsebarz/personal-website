@@ -1,8 +1,9 @@
 .featuredProjects {
   display: flex;
+  margin: 0 5em;
   flex-direction: column;
   place-items: center;
-  gap: 4em;
+  gap: 5em;
 }
 
 .featuredProjects-container {
