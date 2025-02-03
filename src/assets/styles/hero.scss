@@ -70,7 +70,6 @@
   #hero-img {
     width: 45%;
     min-width: 240px;
-    margin: auto;
     height: auto;
   }
 }
@@ -78,17 +77,21 @@
 @media screen and (max-width: 905px) {
   .hero {
     flex-direction: column-reverse;
+    justify-content: center;
     margin-top: 7em;
     .hero-info {
       width: 100%;
       place-items: center;
       text-align: center;
-      margin: auto;
-      margin-bottom: none;
+      margin: 0px auto;
+      max-height: fit-content;
     }
     img {
       width: 50%;
       height: auto;
+    }
+    .hero-bg{
+      height: 1000px;
     }
   }
 }
