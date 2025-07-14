@@ -5,7 +5,7 @@ import '@/styles/footer.scss'
 
 const Footer: React.FC = () => {
   return (
-    <footer>
+    <footer className="footer">
       <p>© 2025 Sebastian Ruiz. All rights reserved.</p>
     </footer>
   )

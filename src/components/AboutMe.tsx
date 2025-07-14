@@ -36,11 +36,12 @@ const AboutMe: React.FC = () => {
         variants={ContainerVariants}
         initial="hidden"
       >
-        <motion.div variants={ContainerVariants} style={{ position: 'relative', width: '100%', height: '400px' }}>
+        <motion.div className="aboutme-image" variants={ContainerVariants}>
           <Image 
             src="/images/sebas.webp" 
             alt="Sebastian Ruiz" 
-            fill
+            width={400}
+            height={500}
             style={{ objectFit: 'cover' }}
           />
         </motion.div>
@@ -50,15 +51,15 @@ const AboutMe: React.FC = () => {
           <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText3 }} />
           <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText4 }} />
           <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText5 }} />
-          <br />
-          <motion.h3 variants={ContainerVariants}>
+          
+          <motion.h3 variants={ContainerVariants} className="technologies-title">
             {strings.someTechnologiesTitle}
           </motion.h3>
-          <motion.ul variants={ContainerVariants} className="tags">
+          <motion.div variants={ContainerVariants} className="technologies-grid">
             {strings.technologies.map((tech: string, index: number) => (
-              <motion.li key={index}>{tech}</motion.li>
+              <motion.span key={index} className="tech-badge">{tech}</motion.span>
             ))}
-          </motion.ul>
+          </motion.div>
         </div>
       </motion.div>
     </motion.section>

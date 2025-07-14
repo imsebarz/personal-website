@@ -64,7 +64,6 @@ const Hero: React.FC = () => {
         variants={ContainerVariants}
         initial="hidden"
         animate="visible"
-        style={{ position: 'relative', width: '100%', height: '100%' }}
       >
         <Image
           src="/images/hero.webp"

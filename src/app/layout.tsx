@@ -1,8 +1,15 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import '../styles/globals.scss'
 
 const inter = Inter({ subsets: ['latin'] })
+
+const recoleta = localFont({
+  src: '../assets/font/Recoleta.otf',
+  variable: '--font-recoleta',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Sebarz | Web Developer',
@@ -47,7 +54,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${recoleta.variable}`}>
         {children}
       </body>
     </html>

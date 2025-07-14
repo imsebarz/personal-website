@@ -16,10 +16,14 @@
     li::before {
       display: none;
     }
-    img {
+    img,
+    svg {
       filter: brightness(1.01);
       height: 35px;
       width: auto;
+      path {
+        fill: colors.$green;
+      }
     }
 
     li:hover {

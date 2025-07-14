@@ -83,7 +83,7 @@ const FloatSocial: React.FC = () => {
           </a>
         </li>
       </ul>
-      <div className="floating-social-line"></div>
+      <div className="floating-line"></div>
     </div>
   )
 }
