@@ -3,14 +3,30 @@
 .contact {
   display: flex;
   flex-direction: column;
-  height: 30vh;
-  width: 40%;
-  margin: auto;
+  min-height: 40vh;
+  width: 100%;
+  max-width: 800px;
+  margin: 4em auto;
+  padding: 3em 2em;
   place-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 2em;
   background-color: colors.$mint;
   text-align: center;
   border-radius: 15px;
+  
+  .title {
+    margin-bottom: 0;
+    font-family: var(--font-recoleta);
+  }
+  
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0;
+  }
+  
   button {
     color: colors.$mint;
     background: colors.$green;
@@ -19,19 +35,36 @@
     padding: 1em;
     font-weight: 700;
     border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
+  
   button:hover {
-    border: solid 1.5px colors.$green;
+    border: solid 2px colors.$green;
     color: colors.$green;
     background: colors.$mint;
-  }
-  p{
-    font-size: 1.1rem;
+    transform: translateY(-2px);
   }
 }
 
 @media screen and (max-width: 900px) {
   .contact {
-    width: 100%;
+    width: 95%;
+    margin: 2em auto;
+    padding: 2em 1em;
+    
+    .title {
+      font-size: 2.5rem;
+    }
+    
+    p {
+      font-size: 1rem;
+    }
+    
+    button {
+      width: 10em;
+      height: 3.5em;
+    }
   }
 }

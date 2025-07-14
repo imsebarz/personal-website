@@ -7,8 +7,22 @@
   display: flex;
   place-content: center;
   place-items: center;
-  p,
+  
+  p {
+    color: colors.$mint;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
   a {
     color: colors.$mint;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: colors.$black;
+      text-decoration: underline;
+    }
   }
 }

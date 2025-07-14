@@ -54,6 +54,22 @@
     display: flex;
     width: 70px;
     justify-content: space-evenly;
+    
+    a {
+      color: colors.$pepper;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        color: colors.$green;
+        transform: translateY(-2px);
+      }
+      
+      svg {
+        width: 20px;
+        height: 20px;
+        transition: inherit;
+      }
+    }
   }
   ul {
     display: flex;

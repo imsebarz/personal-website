@@ -17,8 +17,8 @@ export default function Home() {
         <FloatMail />
         <Hero />
         <AboutMe />
-        <MyWork />
         <FeaturedProjects />
+        <MyWork />
         <Contact />
       </main>
       <Footer />

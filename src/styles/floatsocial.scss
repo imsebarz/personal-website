@@ -11,23 +11,27 @@
     list-style: none;
     li {
       margin: 1.2em 0;
-      transition: all 0.2s ease;
+      
+      a {
+        display: block;
+        color: colors.$green;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          color: colors.$pepper;
+          transform: translateY(-3px);
+        }
+        
+        svg {
+          filter: brightness(1.01);
+          height: 35px;
+          width: auto;
+          transition: inherit;
+        }
+      }
     }
     li::before {
       display: none;
-    }
-    img,
-    svg {
-      filter: brightness(1.01);
-      height: 35px;
-      width: auto;
-      path {
-        fill: colors.$green;
-      }
-    }
-
-    li:hover {
-      transform: translateY(-3px);
     }
   }
   .floating-line {

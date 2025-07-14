@@ -77,13 +77,30 @@
         
         .tech-badge {
           display: inline-block;
-          padding: 0.4em 0.8em;
+          position: relative;
+          padding: 0.4em 0.3em 0.6em;
           background: transparent;
           color: colors.$black;
-          border-bottom: 2px dotted colors.$green;
           font-size: 0.9rem;
           font-weight: 500;
           white-space: nowrap;
+          
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0.2em;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 0.6em);
+            height: 1px;
+            background: repeating-linear-gradient(
+              to right,
+              colors.$green 0,
+              colors.$green 2px,
+              transparent 2px,
+              transparent 6px
+            );
+          }
         }
       }
     }
@@ -141,7 +158,11 @@
         .technologies-grid {
           .tech-badge {
             font-size: 0.8rem;
-            padding: 0.3em 0.6em;
+            padding: 0.3em 0.2em 0.5em;
+            
+            &::after {
+              width: calc(100% - 0.4em);
+            }
           }
         }
       }

@@ -30,6 +30,21 @@
       display: flex;
       width: 22%;
       justify-content: space-between;
+      
+      a {
+        color: colors.$green;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          color: colors.$black;
+          transform: translateY(-2px);
+        }
+        
+        svg {
+          width: 28px;
+          height: 28px;
+        }
+      }
     }
   }
 

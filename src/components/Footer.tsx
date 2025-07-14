@@ -6,7 +6,16 @@ import '@/styles/footer.scss'
 const Footer: React.FC = () => {
   return (
     <footer className="footer">
-      <p>© 2025 Sebastian Ruiz. All rights reserved.</p>
+      <p>
+        Made with 💛 by{' '}
+        <a 
+          href="https://github.com/imsebarz" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          @imsebarz
+        </a>
+      </p>
     </footer>
   )
 }
