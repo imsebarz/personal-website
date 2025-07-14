@@ -1,4 +1,3 @@
-// Tipos para los proyectos
 export interface Project {
   id: number
   name: string
@@ -10,7 +9,6 @@ export interface Project {
   featured?: boolean
 }
 
-// Tipos para la información personal
 export interface PersonalInfo {
   hero: {
     greeting: string
@@ -27,7 +25,6 @@ export interface PersonalInfo {
   technologies: string[]
 }
 
-// Tipos para navegación
 export interface NavigationLinks {
   name: string
   links: {
@@ -40,7 +37,6 @@ export interface NavigationLinks {
   resumeLink: string
 }
 
-// Tipos para contacto y redes sociales
 export interface ContactInfo {
   contactTitle: string
   contactText: string
@@ -56,7 +52,6 @@ export interface ContactInfo {
   }
 }
 
-// Tipos para componentes de animación
 export interface AnimationVariants {
   hidden: {
     opacity: number
@@ -78,13 +73,11 @@ export interface AnimationVariants {
   }
 }
 
-// Props comunes para componentes
 export interface BaseComponentProps {
   className?: string
   children?: React.ReactNode
 }
 
-// Props para componentes de proyecto
 export interface ProjectComponentProps extends BaseComponentProps {
   project: Project
   isReversed?: boolean

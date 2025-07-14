@@ -1,12 +1,10 @@
 @use "./colors.scss";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 
-// Variables CSS personalizadas
 :root {
   --font-recoleta: 'Recoleta', 'Roboto', sans-serif;
   --font-roboto: 'Roboto', sans-serif;
   
-  // Espaciado consistente
   --spacing-xs: 0.5em;
   --spacing-sm: 1em;
   --spacing-md: 2em;
@@ -14,12 +12,10 @@
   --spacing-xl: 4em;
   --spacing-xxl: 6em;
   
-  // Transiciones
   --transition-fast: all 0.2s ease;
   --transition-normal: all 0.3s ease;
   --transition-slow: all 0.5s ease;
   
-  // Tamaños de fuente
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
@@ -27,20 +23,17 @@
   --font-size-2xl: 2rem;
   --font-size-3xl: 3rem;
   
-  // Border radius
   --radius-sm: 5px;
   --radius-md: 10px;
   --radius-lg: 15px;
 }
 
-// Reset y estilos base
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-// Aplicar overflow-x: hidden solo al html y body para prevenir scroll horizontal
 html {
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -54,7 +47,6 @@ body {
   line-height: 1.6;
 }
 
-// Scrollbar personalizada
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -81,7 +73,6 @@ main {
   padding: 0 var(--spacing-md);
 }
 
-// Tipografía
 h1 {
   font-size: var(--font-size-2xl);
   font-weight: 700;
@@ -109,7 +100,6 @@ p {
   color: colors.$black;
 }
 
-// Enlaces
 a {
   text-decoration: none;
   color: inherit;
@@ -120,7 +110,6 @@ a {
   }
 }
 
-// Botones
 button {
   cursor: pointer;
   border: none;
@@ -134,7 +123,6 @@ button {
   }
 }
 
-// Secciones
 section {
   margin: var(--spacing-xl) 0;
 }
@@ -143,7 +131,6 @@ section.contact {
   margin: var(--spacing-xxl) 0;
 }
 
-// Clases utilitarias
 .title {
   border-bottom: colors.$green 2px dotted;
   font-size: var(--font-size-3xl);
@@ -158,7 +145,6 @@ section.contact {
   }
 }
 
-// Prevenir scroll innecesario en contenedores comunes
 .mywork-container,
 .featuredProjects-container,
 .aboutme-container {
@@ -169,17 +155,14 @@ section.contact {
   overflow: visible;
 }
 
-// Asegurar que los elementos de lista no generen scroll
 ul, ol {
   overflow: visible;
 }
 
-// Para contenedores de proyectos
 .project {
   overflow: visible;
 }
 
-// Iconos y SVG
 .project-links,
 .ftProject-links {
   a {
@@ -197,7 +180,6 @@ svg {
   }
 }
 
-// Media queries
 @media screen and (max-width: 900px) {
   .floating-social,
   .floating-mail {

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { Project, PersonalInfo, NavigationLinks, ContactInfo } from '@/types'
 
-// Hook para cargar datos de proyectos
 export const useProjects = () => {
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
@@ -26,7 +25,6 @@ export const useProjects = () => {
   return { projects, loading, error }
 }
 
-// Hook para cargar información personal
 export const usePersonalInfo = () => {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null)
   const [loading, setLoading] = useState(true)
@@ -51,7 +49,6 @@ export const usePersonalInfo = () => {
   return { personalInfo, loading, error }
 }
 
-// Hook para cargar datos de navegación
 export const useNavigation = () => {
   const [navigation, setNavigation] = useState<NavigationLinks | null>(null)
   const [loading, setLoading] = useState(true)
@@ -76,7 +73,6 @@ export const useNavigation = () => {
   return { navigation, loading, error }
 }
 
-// Hook para cargar datos de contacto
 export const useContact = () => {
   const [contact, setContact] = useState<ContactInfo | null>(null)
   const [loading, setLoading] = useState(true)

@@ -1,22 +1,16 @@
-// Mixins para manejo de overflow y layout
-
-// Mixin para contenedores que NO deben tener scroll
 @mixin no-scroll {
   overflow: visible;
 }
 
-// Mixin para contenedores que necesitan ocultar overflow (como imágenes)
 @mixin hide-overflow {
   overflow: hidden;
 }
 
-// Mixin para contenedores que pueden tener scroll vertical
 @mixin scroll-y {
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-// Mixin para contenedores flexibles responsivos
 @mixin flex-container($direction: row, $wrap: wrap, $gap: 1em) {
   display: flex;
   flex-direction: $direction;
@@ -25,7 +19,6 @@
   overflow: visible;
 }
 
-// Mixin para grid containers responsivos
 @mixin grid-container($min-width: 250px, $gap: 1em) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
@@ -33,19 +26,16 @@
   overflow: visible;
 }
 
-// Mixin para transiciones consistentes
 @mixin smooth-transition($property: all, $duration: 0.3s, $easing: ease) {
   transition: #{$property} #{$duration} #{$easing};
 }
 
-// Mixin para centrar contenido
 @mixin center-content {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-// Mixin para responsive font sizes
 @mixin responsive-font($mobile: 1rem, $tablet: 1.2rem, $desktop: 1.5rem) {
   font-size: $mobile;
   

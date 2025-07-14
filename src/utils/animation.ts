@@ -1,7 +1,6 @@
 import { Variants } from 'framer-motion'
 import { APP_CONFIG } from '@/config/constants'
 
-// Configuración base de animaciones
 const ANIMATION_CONFIG = {
   duration: APP_CONFIG.ANIMATION.DURATION.NORMAL,
   ease: APP_CONFIG.ANIMATION.EASING,
@@ -9,7 +8,6 @@ const ANIMATION_CONFIG = {
   offset: 50,
 }
 
-// Variantes de animación reutilizables
 export const ContainerVariants: Variants = {
   hidden: {
     opacity: 0,
@@ -100,7 +98,6 @@ export const ScaleVariants: Variants = {
   },
 }
 
-// Variantes específicas para diferentes secciones
 export const HeroVariants: Variants = {
   hidden: { 
     opacity: 0, 
