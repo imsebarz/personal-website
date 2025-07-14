@@ -48,17 +48,6 @@
     }
   }
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1em;
-    li {
-      color: colors.$pepper;
-      width: max-content;
-      font-weight: 400;
-      font-size: 14px;
-  }
-  
   .project-title {
     font-size: 1.25em;
     font-weight: bold;
@@ -75,17 +64,29 @@
     flex-grow: 1;
   }
 
-  .tags {
+  .project-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.8em;
+    gap: 0.6em;
     margin-top: auto;
+    list-style: none;
     
     li {
-      color: colors.$pepper;
-      font-size: 0.85em;
-      font-weight: 400;
+      background-color: rgba(4, 161, 117, 0.1);
+      color: colors.$green;
+      font-size: 0.8em;
+      font-weight: 500;
+      padding: 0.4em 0.8em;
+      border-radius: 12px;
+      border: 1px solid rgba(4, 161, 117, 0.2);
       white-space: nowrap;
+      @include mixins.smooth-transition(all, 0.2s);
+      
+      &:hover {
+        background-color: rgba(4, 161, 117, 0.15);
+        border-color: rgba(4, 161, 117, 0.4);
+        transform: translateY(-1px);
+      }
     }
   }
 }
@@ -97,5 +98,4 @@
   h3 {
     color: colors.$green;
   }
-}
 }
