@@ -1,0 +1,97 @@
+@use './colors.scss';
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  max-width: 1200px;
+  color: colors.$mint;
+  height: auto;
+  margin-top: 3em;
+  margin-bottom: 0;
+  gap: 2em;
+  .hero-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top:0;
+    object-fit: cover;
+    z-index: -1;
+  }
+  .hero-info {
+    display: flex;
+    flex-direction: column;
+    margin-right: 3em;
+    width: 30%;
+    min-width: 250px;
+    flex-grow: 1;
+    gap: 10px;
+
+    button {
+      width: 15em;
+      margin-top: 2em;
+      height: 4em;
+      color: colors.$mint;
+      background-color: colors.$green;
+      border: 1.5px solid colors.$mint;
+      border-radius: 10px;
+      font-weight: 500;
+      font-family: "Roboto";
+    }
+
+    button:hover {
+      background-color: colors.$mint;
+      border-color: colors.$green;
+      color: colors.$green;
+      transition: background 0.3s ease;
+    }
+
+    h1 {
+      font-size: 70px;
+      color: colors.$black;
+      font-weight: 900;
+    }
+    h2 {
+      font-size: 35px;
+      color: colors.$pepper;
+    }
+    p {
+      font-size: 30px;
+      color: colors.$pepper;
+    }
+
+    span {
+      font-weight: 900;
+    }
+  }
+  #hero-img {
+    width: 45%;
+    min-width: 240px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 905px) {
+  .hero {
+    flex-direction: column-reverse;
+    justify-content: center;
+    margin-top: 7em;
+    .hero-info {
+      width: 100%;
+      place-items: center;
+      text-align: center;
+      margin: 0px auto;
+      max-height: fit-content;
+    }
+    img {
+      width: 50%;
+      height: auto;
+    }
+    .hero-bg{
+      height: 1000px;
+    }
+  }
+}

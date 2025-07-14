@@ -1,0 +1,2210 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.github/
+  workflows/
+    webpack.yml
+public/
+  index.html
+src/
+  assets/
+    images/
+      hero (1).webp:Zone.Identifier
+      sebas (1).webp:Zone.Identifier
+      wave-bg.svg
+    strings/
+      aboutme.json
+      contact.json
+      nav.json
+    styles/
+      aboutme.scss
+      colors.scss
+      contact.scss
+      featuredproject.scss
+      featuredprojects.scss
+      floatmail.scss
+      floatsocial.scss
+      footer.scss
+      global.scss
+      hero.scss
+      mywork.scss
+      nav.scss
+      project.scss
+  AboutMe.jsx
+  animation.js
+  App.jsx
+  Contact.jsx
+  FeaturedProject.jsx
+  FeaturedProjects.jsx
+  FloatMail.jsx
+  FloatSocial.jsx
+  Footer.jsx
+  Hero.jsx
+  index.js
+  MyWork.jsx
+  Nav.jsx
+  Project.jsx
+  projects.json
+.babelrc
+.gitignore
+package.json
+site.webmanifest
+webpack.config.dev.js
+webpack.config.js
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".github/workflows/webpack.yml">
+name: NodeJS with Webpack
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      run: |
+        npm install
+        npx webpack build
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages  # The branch where dist is deployed
+        folder: dist  # The directory to deploy
+</file>
+
+<file path="src/assets/images/hero (1).webp:Zone.Identifier">
+[ZoneTransfer]
+ZoneId=3
+HostUrl=https://squoosh.app/
+</file>
+
+<file path="src/assets/images/sebas (1).webp:Zone.Identifier">
+[ZoneTransfer]
+ZoneId=3
+HostUrl=https://squoosh.app/
+</file>
+
+<file path="src/assets/images/wave-bg.svg">
+<svg id="visual" viewBox="0 0 900 600" width="900" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><rect x="0" y="0" width="900" height="600" fill="#e4fdeb"></rect><defs><linearGradient id="grad1_0" x1="33.3%" y1="0%" x2="100%" y2="100%"><stop offset="20%" stop-color="#004747" stop-opacity="1"></stop><stop offset="80%" stop-color="#004747" stop-opacity="1"></stop></linearGradient></defs><defs><linearGradient id="grad1_1" x1="33.3%" y1="0%" x2="100%" y2="100%"><stop offset="20%" stop-color="#004747" stop-opacity="1"></stop><stop offset="80%" stop-color="#759e92" stop-opacity="1"></stop></linearGradient></defs><defs><linearGradient id="grad1_2" x1="33.3%" y1="0%" x2="100%" y2="100%"><stop offset="20%" stop-color="#e4fdeb" stop-opacity="1"></stop><stop offset="80%" stop-color="#759e92" stop-opacity="1"></stop></linearGradient></defs><defs><linearGradient id="grad2_0" x1="0%" y1="0%" x2="66.7%" y2="100%"><stop offset="20%" stop-color="#004747" stop-opacity="1"></stop><stop offset="80%" stop-color="#004747" stop-opacity="1"></stop></linearGradient></defs><defs><linearGradient id="grad2_1" x1="0%" y1="0%" x2="66.7%" y2="100%"><stop offset="20%" stop-color="#759e92" stop-opacity="1"></stop><stop offset="80%" stop-color="#004747" stop-opacity="1"></stop></linearGradient></defs><defs><linearGradient id="grad2_2" x1="0%" y1="0%" x2="66.7%" y2="100%"><stop offset="20%" stop-color="#759e92" stop-opacity="1"></stop><stop offset="80%" stop-color="#e4fdeb" stop-opacity="1"></stop></linearGradient></defs><g transform="translate(900, 0)"><path d="M0 405.6C-74.9 397.3 -149.8 389 -202.8 351.3C-255.8 313.6 -286.8 246.4 -317 183C-347.1 119.6 -376.4 59.8 -405.6 0L0 0Z" fill="#acccbd"></path><path d="M0 270.4C-49.9 264.9 -99.9 259.3 -135.2 234.2C-170.5 209 -191.2 164.3 -211.3 122C-231.4 79.7 -250.9 39.9 -270.4 0L0 0Z" fill="#41716b"></path><path d="M0 135.2C-25 132.4 -49.9 129.7 -67.6 117.1C-85.3 104.5 -95.6 82.1 -105.7 61C-115.7 39.9 -125.5 19.9 -135.2 0L0 0Z" fill="#004747"></path></g><g transform="translate(0, 600)"><path d="M0 -405.6C72.7 -396 145.4 -386.5 202.8 -351.3C260.2 -316.1 302.2 -255.3 333.4 -192.5C364.7 -129.7 385.1 -64.8 405.6 0L0 0Z" fill="#acccbd"></path><path d="M0 -270.4C48.5 -264 97 -257.6 135.2 -234.2C173.5 -210.7 201.5 -170.2 222.3 -128.3C243.1 -86.5 256.8 -43.2 270.4 0L0 0Z" fill="#41716b"></path><path d="M0 -135.2C24.2 -132 48.5 -128.8 67.6 -117.1C86.7 -105.4 100.7 -85.1 111.1 -64.2C121.6 -43.2 128.4 -21.6 135.2 0L0 0Z" fill="#004747"></path></g></svg>
+</file>
+
+<file path="src/assets/strings/contact.json">
+{
+  "contactTitle": "Get in touch",
+  "contactText": "I am willing to work with you or with your company, wherever you are from, in any challenge that involves web development, systems engineering or any creative process",
+  "contactButton": "Say hello",
+  "socials": {
+    "behance": "https://www.behance.net/imsebarz",
+    "github": "https://github.com/imsebarz",
+    "linkedin": "https://www.linkedin.com/in/imsebarz/",
+    "twitter": "https://twitter.com/imsebarz",
+    "instagram": "https://www.instagram.com/imsebarz/",
+    "mail": "imsebarz@gmail.com",
+    "username": "@imsebarz"
+  }
+}
+</file>
+
+<file path="src/assets/strings/nav.json">
+{
+  "name": "Sebarz",
+  "links": {
+    "aboutMe": "About me",
+    "featuredProjects": "Featured",
+    "projects": "Projects",
+    "contact": "Contact",
+    "resume": "Resume"
+  },
+  "resumeLink": ""
+}
+</file>
+
+<file path="src/assets/styles/footer.scss">
+@use './colors.scss';
+
+.footer {
+  height: 5em;
+  background-color: colors.$green;
+  margin-bottom: 0;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  p,
+  a {
+    color: colors.$mint;
+  }
+}
+</file>
+
+<file path="src/index.js">
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+
+var mountNode = document.getElementById("app");
+ReactDOM.render(<App />, mountNode);
+</file>
+
+<file path=".babelrc">
+{
+    "presets": ["@babel/preset-env", "@babel/preset-react"]
+  }
+</file>
+
+<file path="site.webmanifest">
+{"name":"","short_name":"","icons":[{"src":"/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},{"src":"/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}],"theme_color":"#ffffff","background_color":"#ffffff","display":"standalone"}
+</file>
+
+<file path="src/assets/strings/aboutme.json">
+{
+  "hero": {
+    "greeting": "👋 Hi there! My name is",
+    "name": "Sebastian Ruiz",
+    "description": "I <del>break</del> build things for the web",
+    "buttonText": "See my projects"
+  },
+  "aboutMeTitle": "About Me",
+  "aboutMeText1": "I'm Sebastian Ruiz. A web developer, an eternal learner, a creative. <strong>I have internet and technology in my veins.</strong>",
+  "aboutMeText2": "My work focuses on building Web Applications (And everything in between) using State of the Art web technologies such as <strong>React, NextJS, Javascript, Typescript, Webpack, etc.</strong> My self-taught spirit drives me to never stop learning.",
+  "aboutMeText3": "I also have a big passion for being a person who <strong>shares knowledge</strong> and <strong>teaches people</strong> about whatever I learn, that's why I also work as a <strong>Mentor with the local communities</strong> to engage new people into the ecosystems and encourage them to build amazing things.",
+  "aboutMeText4": "As a complement to my skills on the Web, I have learned about <strong>blockchain technologies</strong> such as <strong>Web3JS, HardHat, and Solidity Programming</strong> to deliver highly efficient Decentralized Apps and Smart contracts.",
+  "aboutMeText5": "Earlier in my life I learned about <a href=\"https://www.behance.net/imsebarz\" target=\"_blank\">Design</a>, photography and Filmmaking. Skills that have been very helpful in my career. The guiding principle of everything I do is: <strong>I learn and then teach, and teaching is the way I learn.</strong>",
+  "someTechnologiesTitle": "Some technologies I've used",
+  "technologies": [
+    "Javascript",
+    "Typescript",
+    "ReactJS",
+    "NextJS",
+    "CSS",
+    "Sass",
+    "Styled components",
+    "HTML",
+    "NodeJS",
+    "MongoDB",
+    "CI/CD",
+    "Git/Github",
+    "Github Actions",
+    "Webpack",
+    "Parcel",
+    "Solidity",
+    "Hardhat",
+    "Unit Testing",
+    "Microfrontends"
+  ]
+}
+</file>
+
+<file path="src/assets/styles/colors.scss">
+$mint: #eefff3;
+$green: #004747;
+$pepper: #403d39ff;
+$black: #252422ff;
+$orange: #eb5e28ff;
+</file>
+
+<file path="src/assets/styles/floatmail.scss">
+@use './colors.scss';
+
+.floating-mail {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  bottom: -10px;
+  left: 4em;
+  transform-origin: 0%;
+  transform: rotate(270deg);
+  .floating-line {
+    margin: 0 2em 0 0;
+    width: 6em;
+    height: 3px;
+    background-color: black;
+  }
+  .mail {
+    color: colors.$green;
+    font-weight: 300;
+    font-size: 18px;
+    text-decoration: none;
+  }
+}
+</file>
+
+<file path="src/assets/styles/floatsocial.scss">
+@use './colors.scss';
+
+.floating-social {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  bottom: 0;
+  right: 3em;
+  ul {
+    list-style: none;
+    li {
+      margin: 1.2em 0;
+      transition: all 0.2s ease;
+    }
+    li::before {
+      display: none;
+    }
+    img {
+      filter: brightness(1.01);
+      height: 35px;
+      width: auto;
+    }
+
+    li:hover {
+      transform: translateY(-3px);
+    }
+  }
+  .floating-line {
+    margin: 1em 0 0 0;
+    width: 3px;
+    height: 6em;
+    background-color: colors.$green;
+  }
+}
+</file>
+
+<file path="src/assets/styles/mywork.scss">
+@use './colors.scss';
+
+.mywork {
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  gap: 60px;
+  width: 100%;
+  .mywork-container {
+    display: grid;
+    height: auto;
+    padding: 1em 0;
+    width: 100%;
+    max-width: 1000px;
+    place-items: center;
+    place-content: center;
+    grid-template: repeat(auto-fit, minmax(300px, auto)) / repeat(
+        auto-fit,
+        minmax(auto, 300px)
+      );
+    grid-auto-flow: row;
+    gap: 1em;
+  }
+}
+
+@media screen and (max-width: 905px) {
+  .mywork {
+    .mywork-container {
+      grid-template: repeat(auto-fit, minmax(300px, auto)) / repeat(
+          auto-fit,
+          minmax(auto, 400px)
+        );
+    }
+  }
+}
+</file>
+
+<file path="src/animation.js">
+export const ContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: "0.2",
+      type: "tween",
+      when: "beforeChildren",
+      staggerChildren: "0.1",
+    },
+  },
+};
+</file>
+
+<file path="src/FeaturedProject.jsx">
+import { motion, useAnimation } from "framer-motion";
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import "./assets/styles/featuredproject.scss";
+import { ContainerVariants } from "./animation";
+
+const FeaturedProject = ({
+  direction,
+  name,
+  description,
+  tags,
+  githubRepo,
+  demo,
+  img,
+}) => {
+  const [ref, inView] = useInView();
+  const animation = useAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      animation.start("visible");
+    } else {
+      animation.start("hidden");
+    }
+  }, [inView]);
+
+  return (
+    <motion.div
+      className={`ftProject ${direction}`}
+      ref={ref}
+      variants={ContainerVariants}
+      initial="hidden"
+      animate={animation}
+    >
+      <div className="ftProject-image">
+        <a href={demo} target="_blank">
+          <img src={require(`./assets/images/${img}`)} alt="" />
+        </a>
+      </div>
+      <div className="ftProject-content">
+        <h1>{name}</h1>
+        <div className="desc">
+          <p>{description}</p>
+        </div>
+        <ul className="tags">
+          {tags.map((tag) => (
+            <li key={tags.indexOf(tag)}>{tag}</li>
+          ))}
+        </ul>
+        <div className="ftProject-links">
+          <a href={githubRepo} target="_blank">
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 25 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="Github">
+                <path
+                  id="Vector"
+                  d="M12.5516 0.454773C5.92157 0.454773 0.551575 5.82477 0.551575 12.4548C0.551575 17.7648 3.98657 22.2498 8.75657 23.8398C9.35657 23.9448 9.58157 23.5848 9.58157 23.2698C9.58157 22.9848 9.56658 22.0398 9.56658 21.0348C6.55157 21.5898 5.77157 20.2998 5.53157 19.6248C5.39657 19.2798 4.81157 18.2148 4.30157 17.9298C3.88157 17.7048 3.28157 17.1498 4.28657 17.1348C5.23157 17.1198 5.90657 18.0048 6.13157 18.3648C7.21157 20.1798 8.93657 19.6698 9.62657 19.3548C9.73157 18.5748 10.0466 18.0498 10.3916 17.7498C7.72157 17.4498 4.93157 16.4148 4.93157 11.8248C4.93157 10.5198 5.39657 9.43977 6.16157 8.59977C6.04157 8.29977 5.62157 7.06977 6.28157 5.41977C6.28157 5.41977 7.28657 5.10477 9.58157 6.64977C10.5416 6.37977 11.5616 6.24477 12.5816 6.24477C13.6016 6.24477 14.6216 6.37977 15.5816 6.64977C17.8766 5.08977 18.8816 5.41977 18.8816 5.41977C19.5416 7.06977 19.1216 8.29977 19.0016 8.59977C19.7666 9.43977 20.2316 10.5048 20.2316 11.8248C20.2316 16.4298 17.4266 17.4498 14.7566 17.7498C15.1916 18.1248 15.5666 18.8448 15.5666 19.9698C15.5666 21.5748 15.5516 22.8648 15.5516 23.2698C15.5516 23.5848 15.7766 23.9598 16.3766 23.8398C18.7588 23.0355 20.8288 21.5045 22.2952 19.4621C23.7617 17.4198 24.5509 14.9691 24.5516 12.4548C24.5516 5.82477 19.1816 0.454773 12.5516 0.454773Z"
+                  fill="black"
+                />
+              </g>
+            </svg>
+          </a>
+          <a href={demo} target="_blank">
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 19 19"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.2703 0.814453L13.5633 4.10745L6.56329 11.1075L7.97729 12.5215L14.9773 5.52145L18.2703 8.81445V0.814453H10.2703Z"
+                fill="black"
+              />
+              <path
+                d="M16.2703 16.8145H2.27026V2.81445H9.27026L7.27026 0.814453H2.27026C1.16726 0.814453 0.270264 1.71145 0.270264 2.81445V16.8145C0.270264 17.9175 1.16726 18.8145 2.27026 18.8145H16.2703C17.3733 18.8145 18.2703 17.9175 18.2703 16.8145V11.8145L16.2703 9.81445V16.8145Z"
+                fill="black"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+export default FeaturedProject;
+</file>
+
+<file path="src/FeaturedProjects.jsx">
+import React, { useEffect } from "react";
+import FeaturedProject from "./FeaturedProject";
+import "./assets/styles/featuredprojects.scss";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { ContainerVariants } from "./animation";
+import Projects from "./projects.json";
+const { projects } = Projects;
+
+const FeaturedProjects = () => {
+  const [ref, inView] = useInView();
+  const animation = useAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      animation.start("visible");
+    } else {
+      animation.start("hidden");
+    }
+  }, [inView]);
+
+  return (
+    <section className="featuredProjects" id="featuredProjects" ref={ref}>
+      <motion.h1
+        className="title"
+        variants={ContainerVariants}
+        initial="hidden"
+        animate={animation}
+      >
+        Featured Projects
+      </motion.h1>
+      <div className="featuredProjects-container">
+        {projects.map((item) => {
+          if (item.featured) {
+            if (item.id % 2 === 0) {
+              return (
+                <FeaturedProject direction="rigth" {...item} key={item.id} />
+              );
+            } else {
+              return (
+                <FeaturedProject direction="left" {...item} key={item.id} />
+              );
+            }
+          }
+        })}
+      </div>
+    </section>
+  );
+};
+
+export default FeaturedProjects;
+</file>
+
+<file path="src/Footer.jsx">
+import React from "react";
+import "./assets/styles/footer.scss";
+import strigns from "./assets/strings/contact.json";
+
+const Footer = () => {
+  return (
+    <section className="footer">
+      <p>
+        Made with 💛 by{" "}
+        <a href={strigns.socials.github} target="_blank">
+          {strigns.socials.username}
+        </a>
+      </p>
+    </section>
+  );
+};
+
+export default Footer;
+</file>
+
+<file path="src/MyWork.jsx">
+import React from "react";
+import "./assets/styles/mywork.scss";
+import Project from "./Project";
+import Projects from "./projects.json";
+const { projects } = Projects;
+
+const MyWork = () => {
+  return (
+    <section className="mywork" id="mywork">
+      <h1 className="title">Some other work </h1>
+      <div className="mywork-container">
+        {projects.map((item) => {
+          if (!item.featured) {
+            return <Project {...item} key={item.id} />;
+          }
+        })}
+      </div>
+    </section>
+  );
+};
+
+export default MyWork;
+</file>
+
+<file path="src/Project.jsx">
+import { motion, useAnimation } from "framer-motion";
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import "./assets/styles/project.scss";
+import { ContainerVariants } from "./animation";
+
+const Project = ({ name, description, tags, githubRepo, demo }) => {
+  const [ref, inView] = useInView();
+  const animation = useAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      animation.start("visible");
+    } else {
+      animation.start("hidden");
+    }
+  }, [inView]);
+
+  return (
+    <motion.div
+      className="project"
+      ref={ref}
+      variants={ContainerVariants}
+      initial="hidden"
+      animate={animation}
+    >
+      <div className="project-header">
+        <svg
+          width="36"
+          height="32"
+          id="folder"
+          viewBox="0 0 23 21"
+          fill="#04a175"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.5928 17.8992V7.89919C21.5928 7.36875 21.3821 6.86004 21.007 6.48497C20.6319 6.1099 20.1232 5.89919 19.5928 5.89919H12.8288C12.4573 5.89917 12.0931 5.79569 11.7771 5.60034C11.4612 5.40499 11.2058 5.1255 11.0398 4.79319L10.1458 3.00519C9.97964 2.67272 9.72415 2.39312 9.40797 2.19776C9.0918 2.00241 8.72744 1.89901 8.35577 1.89919H3.59277C3.06234 1.89919 2.55363 2.1099 2.17856 2.48497C1.80349 2.86004 1.59277 3.36875 1.59277 3.89919V17.8992C1.59277 18.4296 1.80349 18.9383 2.17856 19.3134C2.55363 19.6885 3.06234 19.8992 3.59277 19.8992H19.5928C20.1232 19.8992 20.6319 19.6885 21.007 19.3134C21.3821 18.9383 21.5928 18.4296 21.5928 17.8992Z"
+            stroke="black"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+
+        <div className="project-links">
+          <a href={githubRepo} target="_blank">
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 25 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="Github">
+                <path
+                  id="Vector"
+                  d="M12.5516 0.454773C5.92157 0.454773 0.551575 5.82477 0.551575 12.4548C0.551575 17.7648 3.98657 22.2498 8.75657 23.8398C9.35657 23.9448 9.58157 23.5848 9.58157 23.2698C9.58157 22.9848 9.56658 22.0398 9.56658 21.0348C6.55157 21.5898 5.77157 20.2998 5.53157 19.6248C5.39657 19.2798 4.81157 18.2148 4.30157 17.9298C3.88157 17.7048 3.28157 17.1498 4.28657 17.1348C5.23157 17.1198 5.90657 18.0048 6.13157 18.3648C7.21157 20.1798 8.93657 19.6698 9.62657 19.3548C9.73157 18.5748 10.0466 18.0498 10.3916 17.7498C7.72157 17.4498 4.93157 16.4148 4.93157 11.8248C4.93157 10.5198 5.39657 9.43977 6.16157 8.59977C6.04157 8.29977 5.62157 7.06977 6.28157 5.41977C6.28157 5.41977 7.28657 5.10477 9.58157 6.64977C10.5416 6.37977 11.5616 6.24477 12.5816 6.24477C13.6016 6.24477 14.6216 6.37977 15.5816 6.64977C17.8766 5.08977 18.8816 5.41977 18.8816 5.41977C19.5416 7.06977 19.1216 8.29977 19.0016 8.59977C19.7666 9.43977 20.2316 10.5048 20.2316 11.8248C20.2316 16.4298 17.4266 17.4498 14.7566 17.7498C15.1916 18.1248 15.5666 18.8448 15.5666 19.9698C15.5666 21.5748 15.5516 22.8648 15.5516 23.2698C15.5516 23.5848 15.7766 23.9598 16.3766 23.8398C18.7588 23.0355 20.8288 21.5045 22.2952 19.4621C23.7617 17.4198 24.5509 14.9691 24.5516 12.4548C24.5516 5.82477 19.1816 0.454773 12.5516 0.454773Z"
+                  fill="black"
+                />
+              </g>
+            </svg>
+          </a>
+          <a href={demo} target="_blank">
+            <svg
+              width="19"
+              height="19"
+              viewBox="0 0 19 19"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.2703 0.814453L13.5633 4.10745L6.56329 11.1075L7.97729 12.5215L14.9773 5.52145L18.2703 8.81445V0.814453H10.2703Z"
+                fill="black"
+              />
+              <path
+                d="M16.2703 16.8145H2.27026V2.81445H9.27026L7.27026 0.814453H2.27026C1.16726 0.814453 0.270264 1.71145 0.270264 2.81445V16.8145C0.270264 17.9175 1.16726 18.8145 2.27026 18.8145H16.2703C17.3733 18.8145 18.2703 17.9175 18.2703 16.8145V11.8145L16.2703 9.81445V16.8145Z"
+                fill="black"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <h3 className="project-title">{name}</h3>
+      <p className="project-desc">{description}</p>
+      <ul className="tags">
+        {tags.map((tag) => (
+          <li key={tags.indexOf(tag)}>{tag}</li>
+        ))}
+      </ul>
+    </motion.div>
+  );
+};
+
+export default Project;
+</file>
+
+<file path="public/index.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Sebarz | Web Developer </title>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
+</file>
+
+<file path="src/assets/styles/contact.scss">
+@use './colors.scss';
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  height: 30vh;
+  width: 40%;
+  margin: auto;
+  place-items: center;
+  justify-content: space-around;
+  background-color: colors.$mint;
+  text-align: center;
+  border-radius: 15px;
+  button {
+    color: colors.$mint;
+    background: colors.$green;
+    height: 4em;
+    width: 12em;
+    padding: 1em;
+    font-weight: 700;
+    border-radius: 10px;
+  }
+  button:hover {
+    border: solid 1.5px colors.$green;
+    color: colors.$green;
+    background: colors.$mint;
+  }
+  p{
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .contact {
+    width: 100%;
+  }
+}
+</file>
+
+<file path="src/assets/styles/featuredproject.scss">
+@use './colors.scss';
+
+.ftProject {
+  display: grid;
+  height: max-content;
+  gap: 5px;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.ftProject-image {
+  grid-column: 1 / 8;
+  grid-row: 1 / 2;
+  height: 100%;
+  overflow: hidden;
+
+  a {
+    overflow: hidden;
+    display: block;
+    height: 100%;
+  }
+  img {
+    height: 100%;
+    width: 100%;
+    filter: brightness(0.8) saturate(0.8);
+    object-fit: cover;
+    transition: all 0.3s ease;
+  }
+}
+.ftProject-image:hover img {
+  transform: scale(1.05);
+  filter: brightness(0.9);
+}
+
+.ftProject-content {
+  grid-column: 7 / -1;
+  grid-row: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  justify-content: space-evenly;
+  .desc {
+    background-color: colors.$green;
+    padding: 2em;
+    border-radius: 5px;
+    margin-right: 1em;
+    opacity: 0.8;
+    p {
+      color: colors.$mint;
+      opacity: 1;
+    }
+  }
+  .ftProject-links {
+    display: flex;
+    width: 70px;
+    justify-content: space-evenly;
+  }
+  ul {
+    display: flex;
+    width: 80%;
+    flex-wrap: wrap;
+    gap: 1vw;
+    li {
+      color: colors.$pepper;
+      width: max-content;
+    }
+  }
+}
+
+.left {
+  .ftProject-image {
+    grid-column: 6 / -1;
+    grid-row: 1 / 2;
+  }
+
+  .ftProject-content {
+    grid-column: 1 / 7;
+    grid-row: 1 / 2;
+    align-items: flex-start;
+    text-align: left;
+    .desc {
+      margin-left: 1em;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .ftProject {
+    border-radius: 5px;
+    .ftProject-image {
+      grid-column: 1 / -1;
+      position: relative;
+      img {
+        filter: brightness(0.5) saturate(0.5) contrast(1.2);
+      }
+    }
+    .ftProject-image::after {
+      height: 100%;
+      content: "";
+      top: 0;
+      width: 100%;
+      background: #027555bb;
+      position: absolute;
+    }
+    .ftProject-content {
+      align-items: flex-start;
+      text-align: left;
+      padding: 3em;
+      color: white;
+      grid-column: 1 / -1;
+      z-index: 5;
+      h1 {
+        color: colors.$mint;
+      }
+      .desc {
+        background: transparent;
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        color: colors.$mint;
+      }
+      .ftProject-links {
+        justify-content: space-between;
+        svg {
+          path {
+            fill: colors.$mint !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .ftProject {
+    .ftProject-content {
+      gap: 35px;
+    }
+  }
+}
+</file>
+
+<file path="src/assets/styles/featuredprojects.scss">
+.featuredProjects {
+  display: flex;
+  margin: 0 5em;
+  flex-direction: column;
+  place-items: center;
+  gap: 5em;
+}
+
+.featuredProjects-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+}
+
+@media screen and (max-width: 905px) {
+  .featuredProjects {
+    margin: 0;
+  }
+}
+</file>
+
+<file path="src/App.jsx">
+import React from "react";
+import Nav from "./Nav";
+import FloatSocial from "./FloatSocial";
+import FloatMail from "./FloatMail";
+import Hero from "./Hero";
+import "./assets/styles/global.scss";
+import AboutMe from "./AboutMe";
+import MyWork from "./MyWork";
+import FeaturedProjects from "./FeaturedProjects";
+import Footer from "./Footer";
+import Contact from "./Contact";
+
+const App = () => {
+  return (
+    <>
+      <Nav></Nav>
+      <main>
+        <FloatSocial />
+        <FloatMail />
+        <Hero />
+        <AboutMe />
+        <FeaturedProjects />
+        <MyWork />
+        <Contact />
+      </main>
+      <Footer />
+    </>
+  );
+};
+
+export default App;
+</file>
+
+<file path=".gitignore">
+node_modules
+</file>
+
+<file path="webpack.config.js">
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+  },
+  mode: "production",
+  resolve: {
+    extensions: [".js", ".jsx"],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: "html-loader",
+        },
+      },
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+      {
+        test: /\.(png|jpg|webp|otf)/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.svg$/,
+        use: [{ loader: "url-loader" }],
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+      output: "./index.html",
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+    }),
+
+    new CleanWebpackPlugin(),
+  ],
+};
+</file>
+
+<file path="src/assets/styles/project.scss">
+@use './colors.scss';
+
+.project {
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  min-height: 400px;
+  min-width: 250px;
+  max-width: 300px;
+  border: 1.8px dotted colors.$green;
+  background-color: colors.$mint;
+  padding: 2em;
+  gap: 2em;
+  justify-content: baseline;
+  transition: all 0.33s ease;
+  border-radius: 5px;
+  .project-header {
+    display: flex;
+    width: auto;
+    height: 25%;
+    justify-content: space-between;
+    align-items: flex-end;
+    #folder {
+      path {
+        fill: colors.$green;
+      }
+    }
+    .project-links {
+      display: flex;
+      width: 22%;
+      justify-content: space-between;
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    li {
+      color: colors.$pepper;
+      width: max-content;
+      font-weight: 400;
+      font-size: 14px;
+    }
+  }
+}
+
+.project:hover {
+  transform: translateY(-5px);
+  h3 {
+    color: colors.$green;
+  }
+}
+</file>
+
+<file path="src/FloatMail.jsx">
+import React from "react";
+import "./assets/styles/floatmail.scss";
+import strings from "./assets/strings/contact.json";
+
+const FloatRight = () => {
+  return (
+    <div className="floating-mail">
+      <div className="floating-line"></div>
+      <a className="mail" href={`mailto:${strings.socials.mail}`}>
+        {strings.socials.mail}
+      </a>
+    </div>
+  );
+};
+
+export default FloatRight;
+</file>
+
+<file path="src/projects.json">
+{
+  "projects": [
+    {
+      "id": 0,
+      "name": "🎮 Manikins Arena",
+      "description": "ReactJS Interactive landing page for an online videogame. page made for Life is The Game S.A.S",
+      "tags": ["ReactJS", "Javascript", "Sass", "React Router", "Web3JS"],
+      "img": "manikins.webp",
+      "githubRepo": "https://github.com/imsebarz/manikins",
+      "demo": "https://manikins.io",
+      "featured": true
+    },
+    {
+      "id": 1,
+      "name": "🛒 Petit Store",
+      "description": "A full responsive e-commerce for small business,  made on ReactJS, Using React Router, Sass, and the React Context API ",
+      "tags": ["ReactJS", "Javascript", "Sass", "React Router", "Responsive"],
+      "img": "petit.webp",
+      "githubRepo": "https://github.com/imsebarz/petit-website",
+      "demo": "https://petit-website.web.app/",
+      "featured": true
+    },
+
+    {
+      "id": 2,
+      "name": "📷 Photolalaphy Portfolio",
+      "description": "A responsive creative photography portfolio built on Javascript Using GSAP for animations and transitions",
+      "tags": ["Javascript", "Sass", "GSAP", "Responsive"],
+      "img": "lala.webp",
+      "githubRepo": "https://github.com/imsebarz/lalaphoto",
+      "demo": "https://imsebarz.github.io/lalaphoto/",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "name": "🔠 Lexical analyzer",
+      "description": "A lexical analyzer for a programming language based on the Javascript Sintax. Is a Fullstack application with backend on Python and Javascript Frontend.",
+      "tags": ["Fullstack", "Javascript", "API", "ReactJS", "Python"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/analizador-lexico",
+      "demo": "https://analizador-lexico.netlify.app/",
+      "featured": false
+    },
+
+    {
+      "id": 4,
+      "name": "🎬 MediaPlayer",
+      "description": "An extensible media player. Implemented Plugins for Autoplay, AutoPause and Ads. Built using Typescript, OOP and Software Design patterns.",
+      "tags": ["Typescript", "Javascript", "OOP", "Plugins"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/mediaplayer",
+      "demo": "https://imsebarz.github.io/lalaphoto/",
+      "featured": false
+    },
+    {
+      "id": 5,
+      "name": "🤖 FRIDAY Clone",
+      "description": "Iron Man's Friday Clone, Web Application Build on Vanilla Javascript Using Web Speech Recognition and Speech To Text API's",
+      "tags": [
+        "Javascript",
+        "Speech to text",
+        "Speech Recognition",
+        "svg animation"
+      ],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/FRIDAY",
+      "demo": "https://imsebarz.github.io/FRIDAY/",
+      "featured": false
+    },
+    {
+      "id": 6,
+      "name": "👩 Personal Cards",
+      "description": "Website that fetchs random user data and shows a nice presentation card about each user. This website was built using Webpack for improve performance and optimization.",
+      "tags": ["Javascript", "Webpack", "Sass", "HTML"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/webpack-project",
+      "demo": "",
+      "featured": false
+    },
+    {
+      "id": 7,
+      "name": "💰 Batatabit Landing page",
+      "description": "Mobile-First landing page for a criptocurrency company. Page built using only HTML and CSS. ",
+      "tags": ["HTML", "CSS", "Mobile-First", "Responsive"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/mobile-first",
+      "demo": "https://imsebarz.github.io/mobile-first/",
+      "featured": false
+    },
+    {
+      "id": 8,
+      "name": "📺 PlatziVideo",
+      "description": "Video streaming platform Homepage. The site is build on ReactJS and bundled using Parcel ",
+      "tags": ["Javascript", "Sass", "ReactJS", "Parcel", "API"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/platzivideo",
+      "demo": "",
+      "featured": false
+    }
+  ]
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "imsebarz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --config webpack.config.dev.js",
+    "build": "webpack --config webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
+    "babel": "^6.23.0",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^5.2.6",
+    "css-minimizer-webpack-plugin": "^3.0.2",
+    "file-loader": "^6.2.0",
+    "framer-motion": "^4.1.17",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-intersection-observer": "^8.32.0",
+    "sass": "^1.35.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.0.0",
+    "terser-webpack-plugin": "^5.1.4",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.2"
+  }
+}
+</file>
+
+<file path="webpack.config.dev.js">
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+  },
+  mode: "development",
+  resolve: {
+    extensions: [".js", ".jsx"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: "html-loader",
+        },
+      },
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+      {
+        test: /\.(png|jpg|webp|otf)/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.svg$/,
+        use: [{ loader: "url-loader" }],
+      },
+    ],
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+      output: "./index.html",
+    }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+    }),
+  ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    host: '0.0.0.0',
+    port: 6969,
+    hot: true,
+    open: true,
+  },
+};
+</file>
+
+<file path="src/FloatSocial.jsx">
+import React from "react";
+import "./assets/styles/floatsocial.scss";
+import strings from "./assets/strings/contact.json";
+
+const FloatLeft = () => {
+  return (
+    <div className="floating-social">
+      <ul>
+        <li>
+          {" "}
+          <a href={strings.socials.github} target="_blank">
+            {" "}
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 25 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="Github">
+                <path
+                  d="M12.5516 0.454773C5.92157 0.454773 0.551575 5.82477 0.551575 12.4548C0.551575 17.7648 3.98657 22.2498 8.75657 23.8398C9.35657 23.9448 9.58157 23.5848 9.58157 23.2698C9.58157 22.9848 9.56658 22.0398 9.56658 21.0348C6.55157 21.5898 5.77157 20.2998 5.53157 19.6248C5.39657 19.2798 4.81157 18.2148 4.30157 17.9298C3.88157 17.7048 3.28157 17.1498 4.28657 17.1348C5.23157 17.1198 5.90657 18.0048 6.13157 18.3648C7.21157 20.1798 8.93657 19.6698 9.62657 19.3548C9.73157 18.5748 10.0466 18.0498 10.3916 17.7498C7.72157 17.4498 4.93157 16.4148 4.93157 11.8248C4.93157 10.5198 5.39657 9.43977 6.16157 8.59977C6.04157 8.29977 5.62157 7.06977 6.28157 5.41977C6.28157 5.41977 7.28657 5.10477 9.58157 6.64977C10.5416 6.37977 11.5616 6.24477 12.5816 6.24477C13.6016 6.24477 14.6216 6.37977 15.5816 6.64977C17.8766 5.08977 18.8816 5.41977 18.8816 5.41977C19.5416 7.06977 19.1216 8.29977 19.0016 8.59977C19.7666 9.43977 20.2316 10.5048 20.2316 11.8248C20.2316 16.4298 17.4266 17.4498 14.7566 17.7498C15.1916 18.1248 15.5666 18.8448 15.5666 19.9698C15.5666 21.5748 15.5516 22.8648 15.5516 23.2698C15.5516 23.5848 15.7766 23.9598 16.3766 23.8398C18.7588 23.0355 20.8288 21.5045 22.2952 19.4621C23.7617 17.4198 24.5509 14.9691 24.5516 12.4548C24.5516 5.82477 19.1816 0.454773 12.5516 0.454773Z"
+                  fill="black"
+                />
+              </g>
+            </svg>
+          </a>
+        </li>
+        <li>
+          {" "}
+          <a href={strings.socials.twitter} target="_blank">
+            {" "}
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 23 19"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="Twitter">
+                <path
+                  id="Vector"
+                  d="M22.869 2.41503C22.034 2.78503 21.137 3.03503 20.194 3.14803C21.167 2.56582 21.8949 1.64949 22.242 0.570028C21.3278 1.11302 20.3273 1.49522 19.284 1.70003C18.5824 0.950893 17.653 0.454354 16.6403 0.287502C15.6276 0.12065 14.5881 0.29282 13.6832 0.777281C12.7784 1.26174 12.0588 2.03139 11.6361 2.96673C11.2135 3.90207 11.1115 4.95078 11.346 5.95003C9.49367 5.85702 7.68161 5.37558 6.02741 4.53693C4.37321 3.69829 2.91383 2.52119 1.74399 1.08203C1.34399 1.77203 1.11399 2.57203 1.11399 3.42403C1.11354 4.19102 1.30242 4.94627 1.66387 5.62276C2.02531 6.29925 2.54815 6.87607 3.18599 7.30203C2.44626 7.27849 1.72286 7.07861 1.07599 6.71903V6.77903C1.07591 7.85477 1.44802 8.89741 2.12917 9.73002C2.81032 10.5626 3.75856 11.134 4.81299 11.347C4.12677 11.5327 3.40732 11.5601 2.70899 11.427C3.00648 12.3526 3.58598 13.1621 4.36635 13.742C5.14673 14.3219 6.0889 14.6432 7.06099 14.661C5.41082 15.9564 3.37287 16.6591 1.27499 16.656C0.903368 16.6561 0.532063 16.6344 0.162987 16.591C2.29246 17.9602 4.77133 18.6868 7.30299 18.684C15.873 18.684 20.558 11.586 20.558 5.43003C20.558 5.23003 20.553 5.02803 20.544 4.82803C21.4553 4.169 22.2419 3.35292 22.867 2.41803L22.869 2.41503V2.41503Z"
+                  fill="black"
+                />
+              </g>
+            </svg>
+          </a>
+        </li>
+        <li>
+          {" "}
+          <a href={strings.socials.linkedin} target="_blank">
+            {" "}
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="LinkedIn">
+                <path
+                  id="Vector"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M2.7206e-07 1.838C2.7206e-07 1.35053 0.193646 0.883032 0.538338 0.53834C0.88303 0.193648 1.35053 2.45031e-06 1.838 2.45031e-06H20.16C20.4016 -0.000392101 20.6409 0.0468654 20.8641 0.139069C21.0874 0.231273 21.2903 0.366612 21.4612 0.537339C21.6322 0.708065 21.7677 0.910826 21.8602 1.13401C21.9526 1.3572 22.0001 1.59643 22 1.838V20.16C22.0003 20.4016 21.9529 20.6409 21.8606 20.8642C21.7683 21.0875 21.6328 21.2904 21.462 21.4613C21.2912 21.6322 21.0884 21.7678 20.8651 21.8602C20.6419 21.9526 20.4026 22.0001 20.161 22H1.838C1.59655 22 1.35746 21.9524 1.1344 21.86C0.911335 21.7676 0.708671 21.6321 0.537984 21.4613C0.367297 21.2905 0.231932 21.0878 0.139623 20.8647C0.0473133 20.6416 -0.000131096 20.4025 2.7206e-07 20.161V1.838ZM8.708 8.388H11.687V9.884C12.117 9.024 13.217 8.25 14.87 8.25C18.039 8.25 18.79 9.963 18.79 13.106V18.928H15.583V13.822C15.583 12.032 15.153 11.022 14.061 11.022C12.546 11.022 11.916 12.111 11.916 13.822V18.928H8.708V8.388ZM3.208 18.791H6.416V8.25H3.208V18.79V18.791ZM6.875 4.812C6.88105 5.08667 6.83217 5.35979 6.73124 5.61532C6.63031 5.87084 6.47935 6.10364 6.28723 6.30003C6.09511 6.49643 5.8657 6.65248 5.61246 6.75901C5.35921 6.86554 5.08724 6.92042 4.8125 6.92042C4.53776 6.92042 4.26579 6.86554 4.01255 6.75901C3.7593 6.65248 3.52989 6.49643 3.33777 6.30003C3.14565 6.10364 2.99469 5.87084 2.89376 5.61532C2.79283 5.35979 2.74395 5.08667 2.75 4.812C2.76187 4.27286 2.98439 3.75979 3.36989 3.38269C3.75539 3.00558 4.27322 2.79442 4.8125 2.79442C5.35178 2.79442 5.86961 3.00558 6.25512 3.38269C6.64062 3.75979 6.86313 4.27286 6.875 4.812V4.812Z"
+                  fill="black"
+                />
+              </g>
+            </svg>
+          </a>
+        </li>
+        <li>
+          {" "}
+          <a href={strings.socials.instagram} target="_blank">
+            {" "}
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 22 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="Instagram">
+                <path
+                  id="Vector"
+                  d="M6.465 0.066C7.638 0.012 8.012 0 11 0C13.988 0 14.362 0.013 15.534 0.066C16.706 0.119 17.506 0.306 18.206 0.577C18.939 0.854 19.604 1.287 20.154 1.847C20.714 2.396 21.146 3.06 21.422 3.794C21.694 4.494 21.88 5.294 21.934 6.464C21.988 7.639 22 8.013 22 11C22 13.988 21.987 14.362 21.934 15.535C21.881 16.705 21.694 17.505 21.422 18.205C21.146 18.9391 20.7133 19.6042 20.154 20.154C19.604 20.714 18.939 21.146 18.206 21.422C17.506 21.694 16.706 21.88 15.536 21.934C14.362 21.988 13.988 22 11 22C8.012 22 7.638 21.987 6.465 21.934C5.295 21.881 4.495 21.694 3.795 21.422C3.06092 21.146 2.39582 20.7133 1.846 20.154C1.28638 19.6047 0.853315 18.9399 0.577 18.206C0.306 17.506 0.12 16.706 0.066 15.536C0.012 14.361 0 13.987 0 11C0 8.012 0.013 7.638 0.066 6.466C0.119 5.294 0.306 4.494 0.577 3.794C0.853723 3.06008 1.28712 2.39531 1.847 1.846C2.39604 1.2865 3.06047 0.853443 3.794 0.577C4.494 0.306 5.294 0.12 6.464 0.066H6.465ZM15.445 2.046C14.285 1.993 13.937 1.982 11 1.982C8.063 1.982 7.715 1.993 6.555 2.046C5.482 2.095 4.9 2.274 4.512 2.425C3.999 2.625 3.632 2.862 3.247 3.247C2.88205 3.60205 2.60118 4.03428 2.425 4.512C2.274 4.9 2.095 5.482 2.046 6.555C1.993 7.715 1.982 8.063 1.982 11C1.982 13.937 1.993 14.285 2.046 15.445C2.095 16.518 2.274 17.1 2.425 17.488C2.601 17.965 2.882 18.398 3.247 18.753C3.602 19.118 4.035 19.399 4.512 19.575C4.9 19.726 5.482 19.905 6.555 19.954C7.715 20.007 8.062 20.018 11 20.018C13.938 20.018 14.285 20.007 15.445 19.954C16.518 19.905 17.1 19.726 17.488 19.575C18.001 19.375 18.368 19.138 18.753 18.753C19.118 18.398 19.399 17.965 19.575 17.488C19.726 17.1 19.905 16.518 19.954 15.445C20.007 14.285 20.018 13.937 20.018 11C20.018 8.063 20.007 7.715 19.954 6.555C19.905 5.482 19.726 4.9 19.575 4.512C19.375 3.999 19.138 3.632 18.753 3.247C18.3979 2.88207 17.9657 2.60121 17.488 2.425C17.1 2.274 16.518 2.095 15.445 2.046V2.046ZM9.595 14.391C10.3797 14.7176 11.2534 14.7617 12.0669 14.5157C12.8805 14.2697 13.5834 13.7489 14.0556 13.0422C14.5278 12.3356 14.7401 11.4869 14.656 10.6411C14.572 9.79534 14.197 9.00497 13.595 8.405C13.2112 8.02148 12.7472 7.72781 12.2363 7.54515C11.7255 7.36248 11.1804 7.29536 10.6405 7.34862C10.1006 7.40187 9.57915 7.57418 9.1138 7.85313C8.64846 8.13208 8.25074 8.51074 7.9493 8.96185C7.64786 9.41296 7.45019 9.92529 7.37052 10.462C7.29084 10.9986 7.33115 11.5463 7.48854 12.0655C7.64593 12.5847 7.91648 13.0626 8.28072 13.4647C8.64496 13.8668 9.09382 14.1832 9.595 14.391ZM7.002 7.002C7.52702 6.47698 8.15032 6.0605 8.8363 5.77636C9.52228 5.49222 10.2575 5.34597 11 5.34597C11.7425 5.34597 12.4777 5.49222 13.1637 5.77636C13.8497 6.0605 14.473 6.47698 14.998 7.002C15.523 7.52702 15.9395 8.15032 16.2236 8.8363C16.5078 9.52228 16.654 10.2575 16.654 11C16.654 11.7425 16.5078 12.4777 16.2236 13.1637C15.9395 13.8497 15.523 14.473 14.998 14.998C13.9377 16.0583 12.4995 16.654 11 16.654C9.50046 16.654 8.06234 16.0583 7.002 14.998C5.94166 13.9377 5.34597 12.4995 5.34597 11C5.34597 9.50046 5.94166 8.06234 7.002 7.002V7.002ZM17.908 6.188C18.0381 6.06527 18.1423 5.91768 18.2143 5.75397C18.2863 5.59027 18.3248 5.41377 18.3274 5.23493C18.33 5.05609 18.2967 4.87855 18.2295 4.71281C18.1622 4.54707 18.0624 4.39651 17.936 4.27004C17.8095 4.14357 17.6589 4.04376 17.4932 3.97652C17.3275 3.90928 17.1499 3.87598 16.9711 3.87858C16.7922 3.88119 16.6157 3.91965 16.452 3.9917C16.2883 4.06374 16.1407 4.1679 16.018 4.298C15.7793 4.55103 15.6486 4.88712 15.6537 5.23493C15.6588 5.58274 15.7992 5.91488 16.0452 6.16084C16.2911 6.40681 16.6233 6.54723 16.9711 6.5523C17.3189 6.55737 17.655 6.42669 17.908 6.188V6.188Z"
+                  fill="black"
+                />
+              </g>
+            </svg>
+          </a>
+        </li>
+      </ul>
+      <div className="floating-line"></div>
+    </div>
+  );
+};
+
+export default FloatLeft;
+</file>
+
+<file path="src/assets/styles/global.scss">
+@use "./colors.scss";
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+
+@font-face {
+  font-family: 'Recoleta';
+  src: url('../font/Recoleta.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  // border: 1px solid red;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: colors.$mint;
+}
+
+::-webkit-scrollbar-thumb {
+  background: colors.$green;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: colors.$black;
+}
+
+main {
+  margin: 0 10vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: colors.$mint;
+  font-family: "Recoleta", "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+section {
+  margin: 8em 0;
+}
+
+.title {
+  border-bottom: colors.$green 2px dotted;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+button{
+  cursor: pointer;
+}
+
+p{
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h3,
+p {
+  color: colors.$black;
+}
+.tags {
+  li {
+    border-bottom: colors.$green 2px dotted;
+  }
+}
+
+.project-links,
+.ftProject-links {
+  a {
+    svg:hover {
+      path {
+        fill: colors.$green;
+      }
+    }
+  }
+}
+
+svg {
+  path {
+    fill: colors.$green;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .floating-social {
+    display: none;
+  }
+  .floating-mail {
+    display: none;
+  }
+}
+</file>
+
+<file path="src/Contact.jsx">
+import { motion, useAnimation } from "framer-motion";
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import "./assets/styles/contact.scss";
+import { ContainerVariants } from "./animation";
+import strings from "./assets/strings/contact.json";
+
+const Contact = () => {
+  const [ref, inView] = useInView();
+  const animation = useAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      animation.start("visible");
+    } else {
+      animation.start("hidden");
+    }
+  }, [inView]);
+
+  return (
+    <motion.section
+      className="contact"
+      ref={ref}
+      variants={ContainerVariants}
+      initial="hidden"
+      animate={animation}
+    >
+      <h1 className="title" id="contact">
+        {strings.contactTitle}
+      </h1>
+      <p>
+        {strings.contactText}
+      </p>
+      <a href={`mailto:${strings.socials.mail}`}>
+        <button>{strings.contactButton}</button>
+      </a>
+    </motion.section>
+  );
+};
+
+export default Contact;
+</file>
+
+<file path="src/assets/styles/aboutme.scss">
+@use './colors.scss';
+
+.aboutme {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  min-height: 90vh;
+  text-align: left;
+  height: auto;
+  gap: 60px;
+
+  .aboutme-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    gap: 70px;
+    place-items: center;
+    place-content: center;
+    .aboutme-text {
+      flex-grow: 1;
+      min-width: 245px;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 2em;
+      place-items: center;
+      align-items: flex-start;
+      text-align: justify;
+      place-content: center;
+      a {
+        text-decoration: none;
+        color: colors.$green;
+        border-bottom: 1px dotted;
+      }
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        width: 70%;
+        gap: 1em;
+        li {
+          color: colors.$pepper;
+        }
+      }
+    }
+  }
+  img {
+    width: 30%;
+    min-width: 250px;
+    place-items: flex-start;
+    height: auto;
+  }
+}
+
+
+@media screen and (max-width: 905px) {
+  .aboutme{
+    margin-top: 1rem;
+  }
+}
+</file>
+
+<file path="src/AboutMe.jsx">
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import "./assets/styles/aboutme.scss";
+import { motion, useAnimation } from "framer-motion";
+import { ContainerVariants } from "./animation";
+import SebasAbout from "./assets/images/sebas.webp";
+import strings from "./assets/strings/aboutme.json";
+
+const AboutMe = () => {
+  const [ref, inView] = useInView();
+  const animation = useAnimation();
+
+  useEffect(() => {
+    if (inView) {
+      animation.start("visible");
+    } else {
+      animation.start("hidden");
+    }
+  }, [inView]);
+
+  return (
+    <motion.section className="aboutme" id="aboutme" ref={ref}>
+      <motion.h1
+        className="title"
+        animate={animation}
+        variants={ContainerVariants}
+        initial="hidden"
+      >
+        {strings.aboutMeTitle}
+      </motion.h1>
+      <motion.div
+        className="aboutme-container"
+        animate={animation}
+        variants={ContainerVariants}
+        initial="hidden"
+      >
+        <motion.img src={SebasAbout} alt="" variants={ContainerVariants} />
+        <div className="aboutme-text">
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText1 }} />
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText2 }} />
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText3 }} />
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText4 }} />
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText5 }} />
+          <br />
+          <motion.h3 variants={ContainerVariants}>
+            {strings.someTechnologiesTitle}
+          </motion.h3>
+          <motion.ul variants={ContainerVariants} className="tags">
+            {strings.technologies.map((tech, index) => (
+              <motion.li key={index}>{tech}</motion.li>
+            ))}
+          </motion.ul>
+        </div>
+      </motion.div>
+    </motion.section>
+  );
+};
+
+export default AboutMe;
+</file>
+
+<file path="src/Hero.jsx">
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import "./assets/styles/hero.scss";
+import Sebas from "./assets/images/hero.webp";
+import bg from "./assets/images/wave-bg.svg";
+import { ContainerVariants } from "./animation";
+import strings from "./assets/strings/aboutme.json";
+
+const Hero = () => {
+  const [bgHeight, setBgHeight] = useState(0);
+
+  useEffect(() => {
+    const hero = document.querySelector(".hero");
+    function handleResize() {
+      setBgHeight(hero.clientHeight);
+      console.log(hero.clientHeight);
+    }
+    setTimeout(() => {
+      handleResize();
+    }, 0);
+    window.addEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <section className="hero">
+      <img className="hero-bg" src={bg} alt="Sebarz Background" />
+      <motion.div
+        className="hero-info"
+        variants={ContainerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.p variants={ContainerVariants}>
+          {strings.hero.greeting}
+        </motion.p>
+        <motion.h1 variants={ContainerVariants}>
+          {strings.hero.name}
+        </motion.h1>
+        <motion.h2 variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.hero.description }} />
+        <motion.a href="#featuredProjects">
+          <motion.button variants={ContainerVariants}>
+            {strings.hero.buttonText}
+          </motion.button>
+        </motion.a>
+      </motion.div>
+      <motion.img
+        variants={ContainerVariants}
+        initial="hidden"
+        animate="visible"
+        src={Sebas}
+        id='hero-img'
+        alt="Sebarz Profile Photo"
+      />
+    </section>
+  );
+};
+
+export default Hero;
+</file>
+
+<file path="src/assets/styles/hero.scss">
+@use './colors.scss';
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  max-width: 1200px;
+  color: colors.$mint;
+  height: auto;
+  margin-top: 3em;
+  margin-bottom: 0;
+  gap: 2em;
+  .hero-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top:0;
+    object-fit: cover;
+    z-index: -1;
+  }
+  .hero-info {
+    display: flex;
+    flex-direction: column;
+    margin-right: 3em;
+    width: 30%;
+    min-width: 250px;
+    flex-grow: 1;
+    gap: 10px;
+
+    button {
+      width: 15em;
+      margin-top: 2em;
+      height: 4em;
+      color: colors.$mint;
+      background-color: colors.$green;
+      border: 1.5px solid colors.$mint;
+      border-radius: 10px;
+      font-weight: 500;
+      font-family: "Roboto";
+    }
+
+    button:hover {
+      background-color: colors.$mint;
+      border-color: colors.$green;
+      color: colors.$green;
+      transition: background 0.3s ease;
+    }
+
+    h1 {
+      font-size: 70px;
+      color: colors.$black;
+      font-weight: 900;
+    }
+    h2 {
+      font-size: 35px;
+      color: colors.$pepper;
+    }
+    p {
+      font-size: 30px;
+      color: colors.$pepper;
+    }
+
+    span {
+      font-weight: 900;
+    }
+  }
+  #hero-img {
+    width: 45%;
+    min-width: 240px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 905px) {
+  .hero {
+    flex-direction: column-reverse;
+    justify-content: center;
+    margin-top: 7em;
+    .hero-info {
+      width: 100%;
+      place-items: center;
+      text-align: center;
+      margin: 0px auto;
+      max-height: fit-content;
+    }
+    img {
+      width: 50%;
+      height: auto;
+    }
+    .hero-bg{
+      height: 1000px;
+    }
+  }
+}
+</file>
+
+<file path="src/assets/styles/nav.scss">
+@use "./colors.scss";
+
+.nav {
+  position: fixed;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8em 10em;
+  background-color: rgba(colors.$black, 0.8);
+  color: colors.$mint;
+  font-weight: 500;
+  font-size: 17px;
+  z-index: 11;
+  .nav-links {
+    width: 50%;
+    opacity: 1;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    li {
+      a {
+        color: colors.$mint;
+        text-decoration: none;
+      }
+    }
+    li::before {
+      display: none;
+    }
+  }
+  a {
+    text-decoration: none;
+  }
+  h1 {
+    color: colors.$mint;
+  }
+  button {
+    width: 10em;
+    height: 3.5em;
+    color: colors.$green;
+    background-color: colors.$mint;
+    border: 1.5px dotted colors.$green;
+    border-radius: 10px;
+    font-weight: 500;
+    font-family: "Roboto";
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  .hamburger.closed {
+    svg {
+      #top,
+      #middle,
+      #bottom {
+        transform: rotate(0deg) translate(0px, 0px);
+        transition: all 0.1s ease;
+      }
+      path {
+        fill: colors.$mint;
+      }
+    }
+  }
+
+  .hamburger.open {
+    svg {
+      #top {
+        transform: rotate(45deg) translate(15%, -20%);
+        transition: all 0.1s ease;
+        transform-origin: top left;
+      }
+      #middle {
+        transition: all 0.1s ease;
+        opacity: 0;
+      }
+      #bottom {
+        transition: all 0.1s ease;
+        transform-origin: top left;
+        transform: rotate(-45deg) translate(-45%, -15%);
+      }
+    }
+  }
+
+  .sidebar {
+    position: fixed;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    width: 65vw;
+    min-width: 250px;
+    padding: 2em;
+    top: 0;
+    right: -100%;
+    background: rgba(#04a174, 0.95);
+    z-index: 10;
+    transition: all 0.2s ease;
+    .aside-links {
+      place-content: center;
+      display: flex;
+      flex-direction: column;
+      height: 60%;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      li {
+        list-style: none;
+        a {
+          color: colors.$mint;
+          text-decoration: none;
+        }
+      }
+      li::before {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .nav {
+    padding: 0.8em 2em;
+    .nav-links {
+      display: none;
+    }
+    .hamburger {
+      display: flex;
+      place-items: center;
+      z-index: 20;
+      svg {
+        height: 25px;
+        width: auto;
+      }
+    }
+    .sidebar {
+      .aside-links {
+        font-size: 24px;
+      }
+      button {
+        font-size: 22px;
+      }
+      .aside-social {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        gap: 7%;
+        min-height: 80px;
+        svg {
+          width: 25px;
+          height: auto;
+          path {
+            fill: colors.$mint;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .sidebar {
+    display: none !important;
+  }
+}
+</file>
+
+<file path="src/Nav.jsx">
+import React, { useState } from "react";
+import "./assets/styles/nav.scss";
+import navStrings from "./assets/strings/nav.json";
+import socialStrings from "./assets/strings/contact.json";
+
+const Nav = () => {
+  const [sideDisplay, setSideDisplay] = useState("-100%");
+  const [isOpen, setIsOpen] = useState("closed");
+
+  const toggleSidebar = () => {
+    if (sideDisplay === "-100%") {
+      setSideDisplay("0%");
+      setIsOpen("open");
+    } else {
+      setSideDisplay("-100%");
+      setIsOpen("closed");
+    }
+  };
+
+  return (
+    <nav className="nav">
+      <a href="#">
+        <h1>{navStrings.name}</h1>
+      </a>
+      <ul className="nav-links">
+        <li>
+          {" "}
+          <a href="#aboutme">{navStrings.links.aboutme}</a>
+        </li>
+        <li>
+          {" "}
+          <a href="#featuredProjects">{navStrings.links.featuredProjects}</a>
+        </li>
+        <li>
+          {" "}
+          <a href="#mywork">{navStrings.links.projects}</a>
+        </li>
+        <li>
+          {" "}
+          <a href="#contact">{navStrings.links.contact}</a>
+        </li>
+        <a
+          href={navStrings.resumeLink}
+          target="_blank"
+        >
+          <button>{navStrings.links.resume}</button>
+        </a>
+      </ul>
+      <div className={`hamburger ${isOpen}`} onClick={toggleSidebar}>
+        <svg
+          width="105"
+          height="90"
+          viewBox="0 0 105 90"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="hamburger">
+            <path
+              id="bottom"
+              d="M10.5875 70.3995H94.5039C95.7861 70.3995 97.0558 70.6521 98.2405 71.1428C99.4251 71.6335 100.502 72.3527 101.408 73.2594C102.315 74.1661 103.034 75.2425 103.525 76.4271C104.016 77.6118 104.268 78.8815 104.268 80.1637C104.268 81.446 104.016 82.7157 103.525 83.9003C103.034 85.085 102.315 86.1614 101.408 87.0681C100.502 87.9748 99.4251 88.694 98.2405 89.1847C97.0558 89.6754 95.7861 89.928 94.5039 89.928H10.5875C9.30528 89.928 8.03558 89.6754 6.85093 89.1847C5.66628 88.694 4.58988 87.9748 3.68318 87.0681C2.77649 86.1614 2.05726 85.085 1.56656 83.9003C1.07586 82.7157 0.823303 81.446 0.823303 80.1637C0.823303 78.8815 1.07586 77.6118 1.56656 76.4271C2.05726 75.2425 2.77649 74.1661 3.68318 73.2594C4.58988 72.3527 5.66628 71.6335 6.85093 71.1428C8.03558 70.6521 9.30528 70.3995 10.5875 70.3995V70.3995Z"
+              fill="#E9E9E9"
+            />
+            <path
+              id="middle"
+              d="M10.5875 35.267H94.5039C95.7861 35.267 97.0558 35.5195 98.2405 36.0102C99.4251 36.5009 100.502 37.2201 101.408 38.1268C102.315 39.0335 103.034 40.1099 103.525 41.2946C104.016 42.4792 104.268 43.7489 104.268 45.0312C104.268 46.3134 104.016 47.5832 103.525 48.7678C103.034 49.9525 102.315 51.0289 101.408 51.9355C100.502 52.8422 99.4251 53.5615 98.2405 54.0522C97.0558 54.5429 95.7861 54.7954 94.5039 54.7954H10.5875C9.30528 54.7954 8.03558 54.5429 6.85093 54.0522C5.66628 53.5615 4.58988 52.8422 3.68318 51.9355C2.77649 51.0289 2.05726 49.9525 1.56656 48.7678C1.07586 47.5832 0.823303 46.3134 0.823303 45.0312C0.823303 43.7489 1.07586 42.4792 1.56656 41.2946C2.05726 40.1099 2.77649 39.0335 3.68318 38.1268C4.58988 37.2201 5.66628 36.5009 6.85093 36.0102C8.03558 35.5195 9.30528 35.267 10.5875 35.267V35.267Z"
+              fill="#E9E9E9"
+            />
+            <path
+              id="top"
+              d="M10.5875 0.138149H94.5039C97.0935 0.138149 99.5771 1.16688 101.408 2.99803C103.239 4.82918 104.268 7.31275 104.268 9.90238C104.268 12.492 103.239 14.9756 101.408 16.8067C99.5771 18.6379 97.0935 19.6666 94.5039 19.6666H10.5875C7.9979 19.6666 5.51433 18.6379 3.68318 16.8067C1.85203 14.9756 0.823303 12.492 0.823303 9.90238C0.823303 7.31275 1.85203 4.82918 3.68318 2.99803C5.51433 1.16688 7.9979 0.138149 10.5875 0.138149V0.138149Z"
+              fill="#E9E9E9"
+            />
+          </g>
+        </svg>
+      </div>
+      <aside className="sidebar" style={{ right: sideDisplay }}>
+        <ul className="aside-links">
+          <li>
+            {" "}
+            <a href="#aboutme">{navStrings.links.aboutMe}</a>
+          </li>
+          <li>
+            {" "}
+            <a href="#featuredProjects">{navStrings.links.featuredProjects}</a>
+          </li>
+          <li>
+            {" "}
+            <a href="#mywork">{navStrings.links.projects}</a>
+          </li>
+          <li>
+            {" "}
+            <a href="#contact">{navStrings.links.contact}</a>
+          </li>
+          <a
+            href={navStrings.resumeLink}
+            target="_blank"
+          >
+            <button>{navStrings.links.resume}</button>
+          </a>
+          <ul className="aside-social">
+            <li>
+              {" "}
+              <a href={socialStrings.socials.github} target="_blank">
+                {" "}
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 25 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="Github">
+                    <path
+                      d="M12.5516 0.454773C5.92157 0.454773 0.551575 5.82477 0.551575 12.4548C0.551575 17.7648 3.98657 22.2498 8.75657 23.8398C9.35657 23.9448 9.58157 23.5848 9.58157 23.2698C9.58157 22.9848 9.56658 22.0398 9.56658 21.0348C6.55157 21.5898 5.77157 20.2998 5.53157 19.6248C5.39657 19.2798 4.81157 18.2148 4.30157 17.9298C3.88157 17.7048 3.28157 17.1498 4.28657 17.1348C5.23157 17.1198 5.90657 18.0048 6.13157 18.3648C7.21157 20.1798 8.93657 19.6698 9.62657 19.3548C9.73157 18.5748 10.0466 18.0498 10.3916 17.7498C7.72157 17.4498 4.93157 16.4148 4.93157 11.8248C4.93157 10.5198 5.39657 9.43977 6.16157 8.59977C6.04157 8.29977 5.62157 7.06977 6.28157 5.41977C6.28157 5.41977 7.28657 5.10477 9.58157 6.64977C10.5416 6.37977 11.5616 6.24477 12.5816 6.24477C13.6016 6.24477 14.6216 6.37977 15.5816 6.64977C17.8766 5.08977 18.8816 5.41977 18.8816 5.41977C19.5416 7.06977 19.1216 8.29977 19.0016 8.59977C19.7666 9.43977 20.2316 10.5048 20.2316 11.8248C20.2316 16.4298 17.4266 17.4498 14.7566 17.7498C15.1916 18.1248 15.5666 18.8448 15.5666 19.9698C15.5666 21.5748 15.5516 22.8648 15.5516 23.2698C15.5516 23.5848 15.7766 23.9598 16.3766 23.8398C18.7588 23.0355 20.8288 21.5045 22.2952 19.4621C23.7617 17.4198 24.5509 14.9691 24.5516 12.4548C24.5516 5.82477 19.1816 0.454773 12.5516 0.454773Z"
+                      fill="black"
+                    />
+                  </g>
+                </svg>
+              </a>
+            </li>
+            <li>
+              {" "}
+              <a href={socialStrings.socials.twitter} target="_blank">
+                {" "}
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 23 19"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="Twitter">
+                    <path
+                      id="Vector"
+                      d="M22.869 2.41503C22.034 2.78503 21.137 3.03503 20.194 3.14803C21.167 2.56582 21.8949 1.64949 22.242 0.570028C21.3278 1.11302 20.3273 1.49522 19.284 1.70003C18.5824 0.950893 17.653 0.454354 16.6403 0.287502C15.6276 0.12065 14.5881 0.29282 13.6832 0.777281C12.7784 1.26174 12.0588 2.03139 11.6361 2.96673C11.2135 3.90207 11.1115 4.95078 11.346 5.95003C9.49367 5.85702 7.68161 5.37558 6.02741 4.53693C4.37321 3.69829 2.91383 2.52119 1.74399 1.08203C1.34399 1.77203 1.11399 2.57203 1.11399 3.42403C1.11354 4.19102 1.30242 4.94627 1.66387 5.62276C2.02531 6.29925 2.54815 6.87607 3.18599 7.30203C2.44626 7.27849 1.72286 7.07861 1.07599 6.71903V6.77903C1.07591 7.85477 1.44802 8.89741 2.12917 9.73002C2.81032 10.5626 3.75856 11.134 4.81299 11.347C4.12677 11.5327 3.40732 11.5601 2.70899 11.427C3.00648 12.3526 3.58598 13.1621 4.36635 13.742C5.14673 14.3219 6.0889 14.6432 7.06099 14.661C5.41082 15.9564 3.37287 16.6591 1.27499 16.656C0.903368 16.6561 0.532063 16.6344 0.162987 16.591C2.29246 17.9602 4.77133 18.6868 7.30299 18.684C15.873 18.684 20.558 11.586 20.558 5.43003C20.558 5.23003 20.553 5.02803 20.544 4.82803C21.4553 4.169 22.2419 3.35292 22.867 2.41803L22.869 2.41503V2.41503Z"
+                      fill="black"
+                    />
+                  </g>
+                </svg>
+              </a>
+            </li>
+            <li>
+              {" "}
+              <a href={socialStrings.socials.linkedin} target="_blank">
+                {" "}
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="LinkedIn">
+                    <path
+                      id="Vector"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M2.7206e-07 1.838C2.7206e-07 1.35053 0.193646 0.883032 0.538338 0.53834C0.88303 0.193648 1.35053 2.45031e-06 1.838 2.45031e-06H20.16C20.4016 -0.000392101 20.6409 0.0468654 20.8641 0.139069C21.0874 0.231273 21.2903 0.366612 21.4612 0.537339C21.6322 0.708065 21.7677 0.910826 21.8602 1.13401C21.9526 1.3572 22.0001 1.59643 22 1.838V20.16C22.0003 20.4016 21.9529 20.6409 21.8606 20.8642C21.7683 21.0875 21.6328 21.2904 21.462 21.4613C21.2912 21.6322 21.0884 21.7678 20.8651 21.8602C20.6419 21.9526 20.4026 22.0001 20.161 22H1.838C1.59655 22 1.35746 21.9524 1.1344 21.86C0.911335 21.7676 0.708671 21.6321 0.537984 21.4613C0.367297 21.2905 0.231932 21.0878 0.139623 20.8647C0.0473133 20.6416 -0.000131096 20.4025 2.7206e-07 20.161V1.838ZM8.708 8.388H11.687V9.884C12.117 9.024 13.217 8.25 14.87 8.25C18.039 8.25 18.79 9.963 18.79 13.106V18.928H15.583V13.822C15.583 12.032 15.153 11.022 14.061 11.022C12.546 11.022 11.916 12.111 11.916 13.822V18.928H8.708V8.388ZM3.208 18.791H6.416V8.25H3.208V18.79V18.791ZM6.875 4.812C6.88105 5.08667 6.83217 5.35979 6.73124 5.61532C6.63031 5.87084 6.47935 6.10364 6.28723 6.30003C6.09511 6.49643 5.8657 6.65248 5.61246 6.75901C5.35921 6.86554 5.08724 6.92042 4.8125 6.92042C4.53776 6.92042 4.26579 6.86554 4.01255 6.75901C3.7593 6.65248 3.52989 6.49643 3.33777 6.30003C3.14565 6.10364 2.99469 5.87084 2.89376 5.61532C2.79283 5.35979 2.74395 5.08667 2.75 4.812C2.76187 4.27286 2.98439 3.75979 3.36989 3.38269C3.75539 3.00558 4.27322 2.79442 4.8125 2.79442C5.35178 2.79442 5.86961 3.00558 6.25512 3.38269C6.64062 3.75979 6.86313 4.27286 6.875 4.812V4.812Z"
+                      fill="black"
+                    />
+                  </g>
+                </svg>
+              </a>
+            </li>
+            <li>
+              {" "}
+              <a href={socialStrings.socials.instagram} target="_blank">
+                {" "}
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="Instagram">
+                    <path
+                      id="Vector"
+                      d="M6.465 0.066C7.638 0.012 8.012 0 11 0C13.988 0 14.362 0.013 15.534 0.066C16.706 0.119 17.506 0.306 18.206 0.577C18.939 0.854 19.604 1.287 20.154 1.847C20.714 2.396 21.146 3.06 21.422 3.794C21.694 4.494 21.88 5.294 21.934 6.464C21.988 7.639 22 8.013 22 11C22 13.988 21.987 14.362 21.934 15.535C21.881 16.705 21.694 17.505 21.422 18.205C21.146 18.9391 20.7133 19.6042 20.154 20.154C19.604 20.714 18.939 21.146 18.206 21.422C17.506 21.694 16.706 21.88 15.536 21.934C14.362 21.988 13.988 22 11 22C8.012 22 7.638 21.987 6.465 21.934C5.295 21.881 4.495 21.694 3.795 21.422C3.06092 21.146 2.39582 20.7133 1.846 20.154C1.28638 19.6047 0.853315 18.9399 0.577 18.206C0.306 17.506 0.12 16.706 0.066 15.536C0.012 14.361 0 13.987 0 11C0 8.012 0.013 7.638 0.066 6.466C0.119 5.294 0.306 4.494 0.577 3.794C0.853723 3.06008 1.28712 2.39531 1.847 1.846C2.39604 1.2865 3.06047 0.853443 3.794 0.577C4.494 0.306 5.294 0.12 6.464 0.066H6.465ZM15.445 2.046C14.285 1.993 13.937 1.982 11 1.982C8.063 1.982 7.715 1.993 6.555 2.046C5.482 2.095 4.9 2.274 4.512 2.425C3.999 2.625 3.632 2.862 3.247 3.247C2.88205 3.60205 2.60118 4.03428 2.425 4.512C2.274 4.9 2.095 5.482 2.046 6.555C1.993 7.715 1.982 8.063 1.982 11C1.982 13.937 1.993 14.285 2.046 15.445C2.095 16.518 2.274 17.1 2.425 17.488C2.601 17.965 2.882 18.398 3.247 18.753C3.602 19.118 4.035 19.399 4.512 19.575C4.9 19.726 5.482 19.905 6.555 19.954C7.715 20.007 8.062 20.018 11 20.018C13.938 20.018 14.285 20.007 15.445 19.954C16.518 19.905 17.1 19.726 17.488 19.575C18.001 19.375 18.368 19.138 18.753 18.753C19.118 18.398 19.399 17.965 19.575 17.488C19.726 17.1 19.905 16.518 19.954 15.445C20.007 14.285 20.018 13.937 20.018 11C20.018 8.063 20.007 7.715 19.954 6.555C19.905 5.482 19.726 4.9 19.575 4.512C19.375 3.999 19.138 3.632 18.753 3.247C18.3979 2.88207 17.9657 2.60121 17.488 2.425C17.1 2.274 16.518 2.095 15.445 2.046V2.046ZM9.595 14.391C10.3797 14.7176 11.2534 14.7617 12.0669 14.5157C12.8805 14.2697 13.5834 13.7489 14.0556 13.0422C14.5278 12.3356 14.7401 11.4869 14.656 10.6411C14.572 9.79534 14.197 9.00497 13.595 8.405C13.2112 8.02148 12.7472 7.72781 12.2363 7.54515C11.7255 7.36248 11.1804 7.29536 10.6405 7.34862C10.1006 7.40187 9.57915 7.57418 9.1138 7.85313C8.64846 8.13208 8.25074 8.51074 7.9493 8.96185C7.64786 9.41296 7.45019 9.92529 7.37052 10.462C7.29084 10.9986 7.33115 11.5463 7.48854 12.0655C7.64593 12.5847 7.91648 13.0626 8.28072 13.4647C8.64496 13.8668 9.09382 14.1832 9.595 14.391ZM7.002 7.002C7.52702 6.47698 8.15032 6.0605 8.8363 5.77636C9.52228 5.49222 10.2575 5.34597 11 5.34597C11.7425 5.34597 12.4777 5.49222 13.1637 5.77636C13.8497 6.0605 14.473 6.47698 14.998 7.002C15.523 7.52702 15.9395 8.15032 16.2236 8.8363C16.5078 9.52228 16.654 10.2575 16.654 11C16.654 11.7425 16.5078 12.4777 16.2236 13.1637C15.9395 13.8497 15.523 14.473 14.998 14.998C13.9377 16.0583 12.4995 16.654 11 16.654C9.50046 16.654 8.06234 16.0583 7.002 14.998C5.94166 13.9377 5.34597 12.4995 5.34597 11C5.34597 9.50046 5.94166 8.06234 7.002 7.002V7.002ZM17.908 6.188C18.0381 6.06527 18.1423 5.91768 18.2143 5.75397C18.2863 5.59027 18.3248 5.41377 18.3274 5.23493C18.33 5.05609 18.2967 4.87855 18.2295 4.71281C18.1622 4.54707 18.0624 4.39651 17.936 4.27004C17.8095 4.14357 17.6589 4.04376 17.4932 3.97652C17.3275 3.90928 17.1499 3.87598 16.9711 3.87858C16.7922 3.88119 16.6157 3.91965 16.452 3.9917C16.2883 4.06374 16.1407 4.1679 16.018 4.298C15.7793 4.55103 15.6486 4.88712 15.6537 5.23493C15.6588 5.58274 15.7992 5.91488 16.0452 6.16084C16.2911 6.40681 16.6233 6.54723 16.9711 6.5523C17.3189 6.55737 17.655 6.42669 17.908 6.188V6.188Z"
+                      fill="black"
+                    />
+                  </g>
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </ul>
+      </aside>
+    </nav>
+  );
+};
+
+export default Nav;
+</file>
+
+</files>

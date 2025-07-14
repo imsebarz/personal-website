@@ -1,0 +1,14 @@
+@use './colors.scss';
+
+.footer {
+  height: 5em;
+  background-color: colors.$green;
+  margin-bottom: 0;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  p,
+  a {
+    color: colors.$mint;
+  }
+}

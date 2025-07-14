@@ -1,0 +1,68 @@
+'use client'
+
+import React, { useEffect } from 'react'
+import { useInView } from 'react-intersection-observer'
+import '@/styles/aboutme.scss'
+import { motion, useAnimation } from 'framer-motion'
+import { ContainerVariants } from '@/utils/animation'
+import strings from '@/data/aboutme.json'
+import Image from 'next/image'
+
+const AboutMe: React.FC = () => {
+  const [ref, inView] = useInView()
+  const animation = useAnimation()
+
+  useEffect(() => {
+    if (inView) {
+      animation.start('visible')
+    } else {
+      animation.start('hidden')
+    }
+  }, [inView, animation])
+
+  return (
+    <motion.section className="aboutme" id="aboutme" ref={ref}>
+      <motion.h1
+        className="title"
+        animate={animation}
+        variants={ContainerVariants}
+        initial="hidden"
+      >
+        {strings.aboutMeTitle}
+      </motion.h1>
+      <motion.div
+        className="aboutme-container"
+        animate={animation}
+        variants={ContainerVariants}
+        initial="hidden"
+      >
+        <motion.div variants={ContainerVariants} style={{ position: 'relative', width: '100%', height: '400px' }}>
+          <Image 
+            src="/images/sebas.webp" 
+            alt="Sebastian Ruiz" 
+            fill
+            style={{ objectFit: 'cover' }}
+          />
+        </motion.div>
+        <div className="aboutme-text">
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText1 }} />
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText2 }} />
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText3 }} />
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText4 }} />
+          <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText5 }} />
+          <br />
+          <motion.h3 variants={ContainerVariants}>
+            {strings.someTechnologiesTitle}
+          </motion.h3>
+          <motion.ul variants={ContainerVariants} className="tags">
+            {strings.technologies.map((tech: string, index: number) => (
+              <motion.li key={index}>{tech}</motion.li>
+            ))}
+          </motion.ul>
+        </div>
+      </motion.div>
+    </motion.section>
+  )
+}
+
+export default AboutMe

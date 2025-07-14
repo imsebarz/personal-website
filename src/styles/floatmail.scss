@@ -1,0 +1,23 @@
+@use './colors.scss';
+
+.floating-mail {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  bottom: -10px;
+  left: 4em;
+  transform-origin: 0%;
+  transform: rotate(270deg);
+  .floating-line {
+    margin: 0 2em 0 0;
+    width: 6em;
+    height: 3px;
+    background-color: black;
+  }
+  .mail {
+    color: colors.$green;
+    font-weight: 300;
+    font-size: 18px;
+    text-decoration: none;
+  }
+}
