@@ -1,20 +1,18 @@
 'use client'
 
 import { motion, useAnimation } from 'framer-motion'
+import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import '@/styles/featuredproject.scss'
 import { ContainerVariants } from '@/utils/animation'
-import Image from 'next/image'
 import type { Project } from '@/types'
 
 interface FeaturedProjectProps extends Project {
-  direction?: string
   index: number
 }
 
 const FeaturedProject: React.FC<FeaturedProjectProps> = ({
-  direction = 'left',
   name,
   description,
   tags,

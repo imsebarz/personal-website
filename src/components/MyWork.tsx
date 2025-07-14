@@ -2,9 +2,9 @@
 
 import React from 'react'
 import '@/styles/mywork.scss'
-import Project from './Project'
 import Projects from '@/data/projects.json'
 import type { Project as ProjectType } from '@/types'
+import Project from './Project'
 
 const { projects }: { projects: ProjectType[] } = Projects
 

@@ -1,13 +1,13 @@
 'use client'
 
 import React, { useEffect } from 'react'
-import FeaturedProject from './FeaturedProject'
-import '@/styles/featuredprojects.scss'
 import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import '@/styles/featuredprojects.scss'
 import { ContainerVariants } from '@/utils/animation'
 import Projects from '@/data/projects.json'
 import type { Project } from '@/types'
+import FeaturedProject from './FeaturedProject'
 
 const { projects }: { projects: Project[] } = Projects
 

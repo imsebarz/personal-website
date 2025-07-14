@@ -1,20 +1,17 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import '@/styles/hero.scss'
 import { ContainerVariants } from '@/utils/animation'
 import strings from '@/data/aboutme.json'
-import Image from 'next/image'
 
 const Hero: React.FC = () => {
-  const [bgHeight, setBgHeight] = useState<number>(0)
-
   useEffect(() => {
     const hero = document.querySelector('.hero') as HTMLElement
     function handleResize() {
       if (hero) {
-        setBgHeight(hero.clientHeight)
         console.log(hero.clientHeight)
       }
     }

@@ -2,11 +2,11 @@
 
 import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import '@/styles/aboutme.scss'
 import { motion, useAnimation } from 'framer-motion'
+import Image from 'next/image'
+import '@/styles/aboutme.scss'
 import { ContainerVariants } from '@/utils/animation'
 import strings from '@/data/aboutme.json'
-import Image from 'next/image'
 
 const AboutMe: React.FC = () => {
   const [ref, inView] = useInView()

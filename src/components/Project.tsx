@@ -7,9 +7,7 @@ import '@/styles/project.scss'
 import { ContainerVariants } from '@/utils/animation'
 import type { Project as ProjectType } from '@/types'
 
-interface ProjectProps extends ProjectType {}
-
-const Project: React.FC<ProjectProps> = ({ name, description, tags, githubRepo, demo }) => {
+const Project: React.FC<ProjectType> = ({ name, description, tags, githubRepo, demo }) => {
   const [ref, inView] = useInView()
   const animation = useAnimation()
 
