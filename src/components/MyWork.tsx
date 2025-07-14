@@ -4,12 +4,7 @@ import React from 'react'
 import '@/styles/mywork.scss'
 import Project from './Project'
 import Projects from '@/data/projects.json'
-
-interface ProjectType {
-  id: number
-  featured: boolean
-  [key: string]: any
-}
+import type { Project as ProjectType } from '@/types'
 
 const { projects }: { projects: ProjectType[] } = Projects
 

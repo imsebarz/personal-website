@@ -1,18 +1,60 @@
 @use "./colors.scss";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
 
+// Variables CSS personalizadas
 :root {
   --font-recoleta: 'Recoleta', 'Roboto', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+  
+  // Espaciado consistente
+  --spacing-xs: 0.5em;
+  --spacing-sm: 1em;
+  --spacing-md: 2em;
+  --spacing-lg: 3em;
+  --spacing-xl: 4em;
+  --spacing-xxl: 6em;
+  
+  // Transiciones
+  --transition-fast: all 0.2s ease;
+  --transition-normal: all 0.3s ease;
+  --transition-slow: all 0.5s ease;
+  
+  // Tamaños de fuente
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 3rem;
+  
+  // Border radius
+  --radius-sm: 5px;
+  --radius-md: 10px;
+  --radius-lg: 15px;
 }
 
+// Reset y estilos base
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  // border: 1px solid red;
-  overflow-x: hidden;
 }
 
+// Aplicar overflow-x: hidden solo al html y body para prevenir scroll horizontal
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: colors.$mint;
+  font-family: var(--font-recoleta);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+// Scrollbar personalizada
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -36,60 +78,104 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 2em;
+  padding: 0 var(--spacing-md);
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background-color: colors.$mint;
+// Tipografía
+h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
   font-family: var(--font-recoleta);
-  font-weight: 300;
+  color: colors.$black;
 }
 
+h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  font-family: var(--font-recoleta);
+  color: colors.$black;
+}
+
+h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  font-family: var(--font-recoleta);
+  color: colors.$black;
+}
+
+p {
+  font-size: var(--font-size-base);
+  font-family: var(--font-roboto);
+  color: colors.$black;
+}
+
+// Enlaces
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-normal);
+  
+  &:hover {
+    color: colors.$green;
+  }
+}
+
+// Botones
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition-normal);
+  font-family: var(--font-roboto);
+  
+  &:focus-visible {
+    outline: 2px solid colors.$green;
+    outline-offset: 2px;
+  }
+}
+
+// Secciones
 section {
-  margin: 4em 0;
+  margin: var(--spacing-xl) 0;
 }
 
 section.contact {
-  margin: 3em 0;
+  margin: var(--spacing-xxl) 0;
 }
 
+// Clases utilitarias
 .title {
   border-bottom: colors.$green 2px dotted;
-  font-size: 3rem;
+  font-size: var(--font-size-3xl);
   font-weight: 700;
   font-family: var(--font-recoleta);
-}
-
-h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  font-family: var(--font-recoleta);
-}
-
-button{
-  cursor: pointer;
-}
-
-p{
-  font-size: 16px;
-  font-family: "Roboto", sans-serif;
-}
-
-h1,
-h3,
-p {
   color: colors.$black;
 }
+
 .tags {
   li {
     border-bottom: colors.$green 2px dotted;
   }
 }
 
+// Prevenir scroll innecesario en contenedores comunes
+.mywork-container,
+.featuredProjects-container,
+.aboutme-container {
+  overflow: visible;
+}
+
+// Asegurar que los elementos de lista no generen scroll
+ul, ol {
+  overflow: visible;
+}
+
+// Para contenedores de proyectos
+.project {
+  overflow: visible;
+}
+
+// Iconos y SVG
 .project-links,
 .ftProject-links {
   a {
@@ -107,11 +193,24 @@ svg {
   }
 }
 
+// Media queries
 @media screen and (max-width: 900px) {
-  .floating-social {
-    display: none;
-  }
+  .floating-social,
   .floating-mail {
     display: none;
+  }
+  
+  main {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    font-size: 2rem;
   }
 }

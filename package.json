@@ -8,7 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
+    "clean": "rm -rf .next out",
+    "analyze": "ANALYZE=true npm run build",
+    "preview": "npm run build && npm run start"
   },
   "dependencies": {
     "next": "^15.3.5",

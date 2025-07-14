@@ -1,39 +1,39 @@
 @use './colors.scss';
+@use './mixins.scss';
 
 .project {
-  height: max-content;
-  display: flex;
-  flex-direction: column;
-  width: auto;
-  min-height: 400px;
-  min-width: 250px;
-  max-width: 300px;
+  height: 100%;
+  @include mixins.flex-container(column, nowrap, 1.5em);
+  @include mixins.no-scroll;
+  width: 100%;
+  min-height: 350px;
+  max-width: 100%;
   border: 1.8px dotted colors.$green;
   background-color: colors.$mint;
-  padding: 2em;
-  gap: 2em;
-  justify-content: baseline;
-  transition: all 0.33s ease;
+  padding: 1.5em;
+  justify-content: space-between;
+  @include mixins.smooth-transition(all, 0.33s);
   border-radius: 5px;
   .project-header {
     display: flex;
-    width: auto;
-    height: 25%;
+    width: 100%;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
+    margin-bottom: 1em;
+    
     #folder {
       path {
         fill: colors.$green;
       }
     }
+    
     .project-links {
       display: flex;
-      width: 22%;
-      justify-content: space-between;
+      gap: 0.8em;
       
       a {
         color: colors.$green;
-        transition: all 0.3s ease;
+        @include mixins.smooth-transition(all, 0.3s);
         
         &:hover {
           color: colors.$black;
@@ -57,27 +57,29 @@
       width: max-content;
       font-weight: 400;
       font-size: 14px;
-    }
   }
+  
   .project-title {
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: bold;
     color: colors.$green;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.8em;
+    line-height: 1.3;
   }
-}
+  
   .project-description {
-    font-size: 1em;
+    font-size: 0.95em;
     color: colors.$pepper;
-    margin-bottom: 1em;
+    margin-bottom: 1.2em;
+    line-height: 1.5;
+    flex-grow: 1;
   }
 
-  .project-tags {
+  .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5em;
-    list-style: none;
-    padding: 0;
+    gap: 0.8em;
+    margin-top: auto;
     margin: 0;
   }
 .project:hover {

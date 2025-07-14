@@ -7,14 +7,9 @@ import { motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { ContainerVariants } from '@/utils/animation'
 import Projects from '@/data/projects.json'
+import type { Project } from '@/types'
 
-interface ProjectType {
-  id: number
-  featured: boolean
-  [key: string]: any
-}
-
-const { projects }: { projects: ProjectType[] } = Projects
+const { projects }: { projects: Project[] } = Projects
 
 const FeaturedProjects: React.FC = () => {
   const [ref, inView] = useInView()

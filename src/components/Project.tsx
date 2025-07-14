@@ -5,14 +5,9 @@ import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import '@/styles/project.scss'
 import { ContainerVariants } from '@/utils/animation'
+import type { Project as ProjectType } from '@/types'
 
-interface ProjectProps {
-  name: string
-  description: string
-  tags: string[]
-  githubRepo?: string
-  demo?: string
-}
+interface ProjectProps extends ProjectType {}
 
 const Project: React.FC<ProjectProps> = ({ name, description, tags, githubRepo, demo }) => {
   const [ref, inView] = useInView()

@@ -1,37 +1,51 @@
 @use './colors.scss';
+@use './mixins.scss';
 
 .mywork {
-  min-height: 100vh;
+  min-height: auto;
   height: auto;
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  gap: 60px;
+  @include mixins.flex-container(column, nowrap, 3em);
+  align-items: center;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2em;
+  
+  .title {
+    text-align: center;
+    margin-bottom: 2em;
+  }
+  
   .mywork-container {
     display: grid;
-    height: auto;
-    padding: 1em 0;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2em;
     width: 100%;
     max-width: 1000px;
-    place-items: center;
-    place-content: center;
-    grid-template: repeat(auto-fit, minmax(300px, auto)) / repeat(
-        auto-fit,
-        minmax(auto, 300px)
-      );
-    grid-auto-flow: row;
-    gap: 1em;
+    justify-items: center;
+    align-items: start;
+    @include mixins.no-scroll;
   }
 }
 
 @media screen and (max-width: 905px) {
   .mywork {
+    padding: 1.5em;
+    
     .mywork-container {
-      grid-template: repeat(auto-fit, minmax(300px, auto)) / repeat(
-          auto-fit,
-          minmax(auto, 400px)
-        );
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5em;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .mywork {
+    padding: 1em;
+    
+    .mywork-container {
+      grid-template-columns: 1fr;
+      gap: 1em;
     }
   }
 }

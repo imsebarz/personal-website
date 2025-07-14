@@ -6,7 +6,7 @@ import '../styles/globals.scss'
 const inter = Inter({ subsets: ['latin'] })
 
 const recoleta = localFont({
-  src: '../assets/font/Recoleta.otf',
+  src: '../../public/fonts/Recoleta.otf',
   variable: '--font-recoleta',
   display: 'swap',
 })

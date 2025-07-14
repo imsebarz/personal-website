@@ -6,15 +6,10 @@ import { useInView } from 'react-intersection-observer'
 import '@/styles/featuredproject.scss'
 import { ContainerVariants } from '@/utils/animation'
 import Image from 'next/image'
+import type { Project } from '@/types'
 
-interface FeaturedProjectProps {
+interface FeaturedProjectProps extends Project {
   direction?: string
-  name: string
-  description: string
-  tags: string[]
-  githubRepo?: string
-  demo?: string
-  img: string
   index: number
 }
 
