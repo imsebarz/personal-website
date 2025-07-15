@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { NotionWebhookPayload, ProcessingResult } from '@/types/notion-todoist';
 import { getNotionPageContent, isUserMentioned } from '@/utils/notion-client';
-import { createTodoistTask, formatDateForTodoist } from '@/utils/todoist-client';
+import { createTodoistTask, updateTodoistTask, findTaskByNotionUrl, formatDateForTodoist } from '@/utils/todoist-client';
 import { enhanceTaskWithAI } from '@/utils/openai-client';
 import { 
   isValidNotionWebhook, 
-  shouldProcessEvent 
+  shouldProcessEvent,
+  getEventAction
 } from '@/utils/notion-webhook-validator';
 import { createWorkspaceTag, combineTagsWithWorkspace } from '@/utils/tag-helpers';
 
@@ -130,10 +131,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           }
           
           // Procesar la página
-          const result = await processNotionPage(pageId, payload?.workspace_name);
+          const eventAction = getEventAction(payload?.type);
+          const result = await processNotionPage(pageId, payload?.workspace_name, eventAction);
           
           if (result.success) {
-            console.log(`✅ Página ${pageId} procesada exitosamente (evento final)`);
+            const actionText = eventAction === 'update' ? 'actualizada' : 'procesada';
+            console.log(`✅ Página ${pageId} ${actionText} exitosamente (evento final)`);
           } else {
             console.error(`❌ Error procesando página ${pageId}:`, result.error);
           }
@@ -182,8 +185,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 }
 
-async function processNotionPage(pageId: string, workspaceName?: string): Promise<ProcessingResult> {
+async function processNotionPage(pageId: string, workspaceName?: string, action: 'create' | 'update' = 'create'): Promise<ProcessingResult> {
   try {
+    console.log(`${action === 'update' ? 'Actualizando' : 'Creando'} tarea para página:`, pageId);
+    
+    // Si es una actualización, primero buscar la tarea existente
+    if (action === 'update') {
+      const existingTask = await findTaskByNotionUrl(pageId, TODOIST_PROJECT_ID);
+      if (existingTask) {
+        console.log(`📝 Tarea existente encontrada: ${existingTask.id}`);
+        return await updateExistingTask(existingTask, pageId, workspaceName);
+      } else {
+        console.log(`⚠️ No se encontró tarea existente para página ${pageId}, creando nueva tarea`);
+        // Si no encuentra la tarea existente, crear una nueva
+        action = 'create';
+      }
+    }
+
+    // Crear nueva tarea (flujo original)
     console.log('Obteniendo contenido de Notion para página:', pageId);
     const pageContent = await getNotionPageContent(pageId);
 
@@ -252,6 +271,75 @@ async function processNotionPage(pageId: string, workspaceName?: string): Promis
   }
 }
 
+async function updateExistingTask(existingTask: any, pageId: string, workspaceName?: string): Promise<ProcessingResult> {
+  try {
+    console.log('Obteniendo contenido actualizado de Notion para página:', pageId);
+    const pageContent = await getNotionPageContent(pageId);
+
+    let finalContent = pageContent;
+    let enhancedWithAI = false;
+
+    if (ENABLE_AI_ENHANCEMENT && process.env.OPENAI_API_KEY) {
+      try {
+        console.log('Enriqueciendo actualización de tarea con IA...');
+        const aiEnhancement = await enhanceTaskWithAI(pageContent);
+        
+        finalContent = {
+          ...pageContent,
+          title: aiEnhancement.enhancedTitle,
+          content: aiEnhancement.enhancedDescription,
+          priority: aiEnhancement.suggestedPriority,
+          tags: aiEnhancement.suggestedLabels,
+          dueDate: aiEnhancement.suggestedDueDate || pageContent.dueDate,
+        };
+        
+        enhancedWithAI = true;
+        console.log('Actualización de tarea enriquecida con IA exitosamente');
+      } catch (aiError) {
+        console.error('Error al enriquecer actualización con IA, continuando sin mejoras:', aiError);
+      }
+    }
+
+    console.log('Actualizando tarea en Todoist...');
+    
+    const baseTags = finalContent.tags || ['notion'];
+    const workspaceTag = workspaceName ? createWorkspaceTag(workspaceName) : '';
+    const allTags = workspaceTag 
+      ? combineTagsWithWorkspace(baseTags, workspaceTag)
+      : baseTags;
+    
+    console.log(`🏷️ Etiquetas actualizadas para la tarea: ${allTags.join(', ')}${workspaceName ? ` (workspace: ${workspaceName})` : ''}`);
+    
+    const updates = {
+      content: finalContent.title,
+      description: `${finalContent.content}\n\n🔗 Ver en Notion: ${finalContent.url}${workspaceName ? `\n📁 Workspace: ${workspaceName}` : ''}`,
+      priority: finalContent.priority || 2,
+      labels: allTags,
+      ...(finalContent.dueDate && {
+        due_date: formatDateForTodoist(finalContent.dueDate),
+      }),
+    };
+
+    await updateTodoistTask(existingTask.id, updates);
+    
+    console.log('Tarea actualizada exitosamente en Todoist:', existingTask.id);
+
+    return {
+      success: true,
+      todoistTaskId: existingTask.id,
+      notionPageId: pageId,
+      enhancedWithAI,
+    };
+  } catch (error) {
+    console.error('Error actualizando tarea existente:', error);
+    return {
+      success: false,
+      notionPageId: pageId,
+      error: error instanceof Error ? error.message : 'Error desconocido al actualizar',
+    };
+  }
+}
+
 // Endpoint GET para verificar que la API está funcionando
 export async function GET(): Promise<NextResponse> {
   return NextResponse.json({
@@ -263,6 +351,7 @@ export async function GET(): Promise<NextResponse> {
     },
     features: {
       duplicatePrevention: 'Latest-event debounce system (60s window)',
+      taskUpdates: 'Updates existing Todoist tasks for page property changes',
       aiEnhancement: 'OpenAI task improvement',
       workspaceTags: 'Automatic workspace labeling',
       mentionDetection: 'User-specific filtering',

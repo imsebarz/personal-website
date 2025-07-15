@@ -7,9 +7,45 @@
 const createMockWebhookHandler = () => {
   const recentlyProcessed = new Map();
   const pendingEvents = new Map();
+  const mockTodoistTasks = new Map(); // Simular base de datos de tareas de Todoist
   const DEBOUNCE_TIME = 1000; // Reducido para tests más rápidos
 
-  return async (request) => {
+  // Función auxiliar para determinar si es creación o actualización
+  const getEventAction = (eventType) => {
+    const updateEvents = [
+      'page.updated',
+      'page.content_updated',
+      'page.property_updated',
+      'page.properties_updated'
+    ];
+    return updateEvents.includes(eventType || '') ? 'update' : 'create';
+  };
+
+  // Mock de función para encontrar tarea existente
+  const findTaskByNotionUrl = (pageId) => {
+    return mockTodoistTasks.get(pageId) || null;
+  };
+
+  // Mock de función para crear tarea
+  const createTodoistTask = (pageId, taskData) => {
+    const taskId = `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const task = { id: taskId, ...taskData, pageId };
+    mockTodoistTasks.set(pageId, task);
+    return task;
+  };
+
+  // Mock de función para actualizar tarea
+  const updateTodoistTask = (pageId, taskData) => {
+    const existingTask = mockTodoistTasks.get(pageId);
+    if (existingTask) {
+      const updatedTask = { ...existingTask, ...taskData, updated: true };
+      mockTodoistTasks.set(pageId, updatedTask);
+      return updatedTask;
+    }
+    return null;
+  };
+
+  const handler = async (request) => {
     const payload = await request.json();
     
     // Manejo de verificación
@@ -48,6 +84,22 @@ const createMockWebhookHandler = () => {
       };
     }
 
+    // Verificar eventos relevantes para procesamiento
+    const relevantEvents = [
+      'page.created',
+      'page.updated',
+      'page.content_updated',
+      'page.property_updated',
+      'page.properties_updated'
+    ];
+    
+    if (!relevantEvents.includes(payload.type)) {
+      return {
+        status: 200,
+        data: { message: `Evento ${payload.type} ignorado - no relevante` }
+      };
+    }
+
     // Nueva lógica de debounce: procesar el último evento
     const now = Date.now();
     
@@ -59,12 +111,39 @@ const createMockWebhookHandler = () => {
     
     // Crear nuevo timeout para procesar este evento (el más reciente)
     const timeoutId = setTimeout(async () => {
-      // Simular procesamiento exitoso del evento final
+      // Simular procesamiento del evento final
       pendingEvents.delete(pageId);
       recentlyProcessed.set(pageId, Date.now());
       
-      // En un test real, aquí se procesaría la página
-      console.log(`Procesando evento final para página ${pageId}`);
+      // Determinar si es creación o actualización
+      const eventAction = getEventAction(payload.type);
+      
+      if (eventAction === 'update') {
+        // Buscar tarea existente
+        const existingTask = findTaskByNotionUrl(pageId);
+        if (existingTask) {
+          // Actualizar tarea existente
+          updateTodoistTask(pageId, {
+            content: `Updated content for ${pageId}`,
+            description: `Updated via ${payload.type}`,
+            updated_at: new Date().toISOString()
+          });
+        } else {
+          // No se encontró tarea existente, crear nueva
+          createTodoistTask(pageId, {
+            content: `New task for ${pageId}`,
+            description: `Created via ${payload.type} (fallback)`,
+            created_at: new Date().toISOString()
+          });
+        }
+      } else {
+        // Crear nueva tarea
+        createTodoistTask(pageId, {
+          content: `New task for ${pageId}`,
+          description: `Created via ${payload.type}`,
+          created_at: new Date().toISOString()
+        });
+      }
     }, DEBOUNCE_TIME);
     
     // Guardar el evento pendiente
@@ -80,15 +159,24 @@ const createMockWebhookHandler = () => {
       data: { 
         message: 'Evento programado para procesamiento (se procesará el más reciente)',
         pageId,
+        eventAction: getEventAction(payload.type),
         debounceTimeMs: DEBOUNCE_TIME
       }
     };
   };
+
+  // Exponer funciones auxiliares para tests
+  handler.getTasksMap = () => mockTodoistTasks;
+  handler.getTasks = () => Array.from(mockTodoistTasks.values());
+  handler.getTaskByPageId = (pageId) => mockTodoistTasks.get(pageId);
+  handler.clearTasks = () => mockTodoistTasks.clear();
+
+  return handler;
 };
 
 // Mock request
-const createMockRequest = () => ({
-  json: jest.fn(),
+const createMockRequest = (payload = null) => ({
+  json: jest.fn().mockResolvedValue(payload),
   headers: {
     get: jest.fn((header) => {
       const headers = {
@@ -179,6 +267,34 @@ const realPayloads = {
         id: "1f61ad4d-650d-80e0-b231-d9b12ffea832",
         type: "database"
       }
+    }
+  },
+
+  pagePropertiesUpdated: {
+    id: "33173d5b-b4fc-4976-96eb-8e7a4941410e",
+    timestamp: "2025-07-15T21:40:48.566Z",
+    workspace_id: "bcd7dac8-d5d8-4726-ad5a-f6a0e1ad9ef1",
+    workspace_name: "Corabella Pets",
+    subscription_id: "231d872b-594c-8122-963e-0099eb119522",
+    integration_id: "230d872b-594c-8060-8665-0037427fe4f8",
+    authors: [{
+      id: "79d3b102-9821-4d8e-bf2b-1e94a65d5120",
+      type: "person"
+    }],
+    attempt_number: 1,
+    entity: {
+      id: "2311ad4d-650d-803e-8470-d503ff8e7985",
+      type: "page"
+    },
+    type: "page.properties_updated",
+    data: {
+      parent: {
+        id: "1f61ad4d-650d-80e0-b231-d9b12ffea832",
+        type: "database"
+      },
+      updated_properties: [
+        "Vun%7C"
+      ]
     }
   },
 
@@ -313,6 +429,198 @@ describe('Notion Webhook - Escenarios Reales', () => {
       expect(firstResponse.data.message).toContain('programado para procesamiento');
       expect(secondResponse.status).toBe(200);
       expect(secondResponse.data.message).toContain('programado para procesamiento');
+    });
+  });
+
+  // Tests específicos para la nueva funcionalidad de actualización
+  describe('Funcionalidad de actualización de tareas', () => {
+    beforeEach(() => {
+      webhookHandler.clearTasks(); // Limpiar tareas antes de cada test
+    });
+
+    it('debe procesar solo el último evento cuando se reciben múltiples eventos de la misma página', async () => {
+      const pageId = 'test-page-123';
+
+      // Simular múltiples eventos en rápida sucesión
+      const events = [
+        { ...realPayloads.pageCreated, entity: { id: pageId, type: 'page' }, type: 'page.created' },
+        { ...realPayloads.pageUpdated, entity: { id: pageId, type: 'page' }, type: 'page.updated' },
+        { ...realPayloads.pagePropertiesUpdated, entity: { id: pageId, type: 'page' }, type: 'page.properties_updated' }
+      ];
+
+      // Enviar todos los eventos
+      const responses = [];
+      for (const event of events) {
+        mockRequest.json.mockResolvedValueOnce(event);
+        const response = await webhookHandler(mockRequest);
+        responses.push(response);
+      }
+
+      // Todos deberían devolver 200
+      responses.forEach(response => {
+        expect(response.status).toBe(200);
+        expect(response.data.message).toContain('Evento programado para procesamiento');
+      });
+
+      // El último evento debería indicar actualización
+      expect(responses[responses.length - 1].data.eventAction).toBe('update');
+
+      // Esperar a que se procese el evento final
+      await new Promise(resolve => setTimeout(resolve, 1200));
+
+      // Verificar que se creó/actualizó la tarea
+      const task = webhookHandler.getTaskByPageId(pageId);
+      expect(task).toBeDefined();
+      expect(task.description).toContain('page.properties_updated');
+    });
+
+    it('debe manejar correctamente eventos page.properties_updated', async () => {
+      const pageId = realPayloads.pagePropertiesUpdated.entity.id;
+
+      // Primero crear una tarea (simular que ya existe)
+      mockRequest.json.mockResolvedValueOnce({
+        ...realPayloads.pageCreated,
+        entity: { id: pageId, type: 'page' },
+        type: 'page.created'
+      });
+      const createResponse = await webhookHandler(mockRequest);
+      
+      expect(createResponse.status).toBe(200);
+      await new Promise(resolve => setTimeout(resolve, 1200));
+
+      // Verificar que se creó la tarea inicial
+      let task = webhookHandler.getTaskByPageId(pageId);
+      expect(task).toBeDefined();
+      expect(task.updated).toBeUndefined();
+
+      // Ahora enviar evento de properties_updated
+      mockRequest.json.mockResolvedValueOnce(realPayloads.pagePropertiesUpdated);
+      const updateResponse = await webhookHandler(mockRequest);
+      
+      expect(updateResponse.status).toBe(200);
+      expect(updateResponse.data.eventAction).toBe('update');
+      
+      // Esperar a que se procese
+      await new Promise(resolve => setTimeout(resolve, 1200));
+
+      // Verificar que se actualizó la tarea existente
+      task = webhookHandler.getTaskByPageId(pageId);
+      expect(task).toBeDefined();
+      expect(task.updated).toBe(true);
+      expect(task.description).toContain('page.properties_updated');
+    });
+
+    it('debe crear nueva tarea cuando no se encuentra tarea existente para actualización', async () => {
+      const pageId = 'non-existent-page';
+
+      // Enviar evento de actualización para página sin tarea existente
+      mockRequest.json.mockResolvedValueOnce({
+        ...realPayloads.pagePropertiesUpdated,
+        entity: { id: pageId, type: 'page' },
+        type: 'page.properties_updated'
+      });
+      const response = await webhookHandler(mockRequest);
+      
+      expect(response.status).toBe(200);
+      expect(response.data.eventAction).toBe('update');
+      
+      // Esperar a que se procese
+      await new Promise(resolve => setTimeout(resolve, 1200));
+
+      // Verificar que se creó nueva tarea (fallback)
+      const task = webhookHandler.getTaskByPageId(pageId);
+      expect(task).toBeDefined();
+      expect(task.description).toContain('fallback');
+    });
+
+    it('debe distinguir correctamente entre eventos de creación y actualización', async () => {
+      const createEvents = ['page.created'];
+      const updateEvents = ['page.updated', 'page.content_updated', 'page.property_updated', 'page.properties_updated'];
+
+      // Test eventos de creación
+      for (const eventType of createEvents) {
+        mockRequest.json.mockResolvedValueOnce({
+          type: eventType,
+          entity: { id: `page-${eventType}`, type: 'page' }
+        });
+        const response = await webhookHandler(mockRequest);
+        expect(response.data.eventAction).toBe('create');
+      }
+
+      // Test eventos de actualización
+      for (const eventType of updateEvents) {
+        mockRequest.json.mockResolvedValueOnce({
+          type: eventType,
+          entity: { id: `page-${eventType}`, type: 'page' }
+        });
+        const response = await webhookHandler(mockRequest);
+        expect(response.data.eventAction).toBe('update');
+      }
+    });
+
+    it('debe ignorar eventos no relevantes', async () => {
+      const irrelevantEvents = [
+        { type: 'database.created', entity: { id: 'test-db', type: 'database' } },
+        { type: 'database.updated', entity: { id: 'test-db', type: 'database' } },
+        { type: 'page.deleted', entity: { id: 'test-page', type: 'page' } }
+      ];
+      
+      for (const event of irrelevantEvents) {
+        mockRequest.json.mockResolvedValueOnce(event);
+        const response = await webhookHandler(mockRequest);
+        
+        expect(response.status).toBe(200);
+        if (event.type === 'page.deleted') {
+          expect(response.data.message).toContain('página eliminada');
+        } else if (event.entity.type !== 'page') {
+          expect(response.data.message).toContain('no es una página');
+        } else {
+          expect(response.data.message).toContain('no relevante');
+        }
+      }
+    });
+
+    it('debe manejar secuencia completa: crear -> actualizar -> actualizar propiedades', async () => {
+      const pageId = 'full-lifecycle-page';
+
+      // 1. Crear página
+      mockRequest.json.mockResolvedValueOnce({
+        type: 'page.created',
+        entity: { id: pageId, type: 'page' }
+      });
+      const createResponse = await webhookHandler(mockRequest);
+      expect(createResponse.data.eventAction).toBe('create');
+      
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      let task = webhookHandler.getTaskByPageId(pageId);
+      expect(task).toBeDefined();
+      expect(task.updated).toBeUndefined();
+
+      // 2. Actualizar contenido
+      mockRequest.json.mockResolvedValueOnce({
+        type: 'page.content_updated',
+        entity: { id: pageId, type: 'page' }
+      });
+      const updateResponse = await webhookHandler(mockRequest);
+      expect(updateResponse.data.eventAction).toBe('update');
+      
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      task = webhookHandler.getTaskByPageId(pageId);
+      expect(task.updated).toBe(true);
+      expect(task.description).toContain('page.content_updated');
+
+      // 3. Actualizar propiedades
+      mockRequest.json.mockResolvedValueOnce({
+        type: 'page.properties_updated',
+        entity: { id: pageId, type: 'page' }
+      });
+      const propsResponse = await webhookHandler(mockRequest);
+      expect(propsResponse.data.eventAction).toBe('update');
+      
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      task = webhookHandler.getTaskByPageId(pageId);
+      expect(task.updated).toBe(true);
+      expect(task.description).toContain('page.properties_updated');
     });
   });
 });

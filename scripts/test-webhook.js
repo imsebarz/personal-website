@@ -8,6 +8,7 @@
  * npm run test:webhook                    # Test básico del endpoint
  * npm run test:webhook -- --real         # Tests con payloads reales
  * npm run test:webhook -- --sequence     # Test de secuencia de eventos
+ * npm run test:webhook -- --update       # Test de actualización de propiedades
  * npm run test:webhook -- --logs         # Ver logs recientes
  * npm run test:webhook -- --stats        # Ver estadísticas
  */
@@ -89,6 +90,23 @@ const realPayloads = {
     type: "page.created",
     data: {
       parent: { id: "1f61ad4d-650d-80e0-b231-d9b12ffea832", type: "database" }
+    }
+  },
+
+  pagePropertiesUpdated: {
+    id: "33173d5b-b4fc-4976-96eb-8e7a4941410e",
+    timestamp: "2025-07-15T21:40:48.566Z",
+    workspace_id: "bcd7dac8-d5d8-4726-ad5a-f6a0e1ad9ef1",
+    workspace_name: "Corabella Pets",
+    subscription_id: "231d872b-594c-8122-963e-0099eb119522",
+    integration_id: "230d872b-594c-8060-8665-0037427fe4f8",
+    authors: [{ id: "79d3b102-9821-4d8e-bf2b-1e94a65d5120", type: "person" }],
+    attempt_number: 1,
+    entity: { id: "2311ad4d-650d-803e-8470-d503ff8e7985", type: "page" },
+    type: "page.properties_updated",
+    data: {
+      parent: { id: "1f61ad4d-650d-80e0-b231-d9b12ffea832", type: "database" },
+      updated_properties: ["Vun%7C"]
     }
   }
 };
@@ -220,8 +238,12 @@ async function testDuplicateProtection() {
       body: realPayloads.pageCreated
     });
 
-    if (response2.status === 200 && response2.data.message?.includes('procesado recientemente')) {
-      log('✅ Protección contra duplicados funcionando', colors.green);
+    // Con el nuevo sistema de debounce, ambos eventos deberían devolver 200
+    // y el mensaje debería indicar que están programados para procesamiento
+    if (response1.status === 200 && response2.status === 200 && 
+        response1.data.message?.includes('programado para procesamiento') &&
+        response2.data.message?.includes('programado para procesamiento')) {
+      log('✅ Protección contra duplicados funcionando (sistema de debounce)', colors.green);
       return true;
     } else {
       log(`❌ Protección contra duplicados falló`, colors.red);
@@ -231,6 +253,82 @@ async function testDuplicateProtection() {
     }
   } catch (error) {
     log(`❌ Error en test de duplicados: ${error.message}`, colors.red);
+    return false;
+  }
+}
+
+async function testPagePropertiesUpdated() {
+  log('📝 Testeando evento de propiedades actualizadas...', colors.cyan);
+  
+  try {
+    const response = await makeRequest(WEBHOOK_URL, {
+      method: 'POST',
+      body: realPayloads.pagePropertiesUpdated
+    });
+
+    if (response.status === 200 && response.data.message?.includes('programado para procesamiento')) {
+      log('✅ Evento de propiedades actualizadas procesado correctamente', colors.green);
+      log(`   📄 Página: ${response.data.pageId}`, colors.blue);
+      log(`   ⏰ Debounce: ${response.data.debounceTimeMs}ms`, colors.blue);
+      return true;
+    } else {
+      log(`❌ Error procesando evento de propiedades actualizadas: ${response.status}`, colors.red);
+      console.log(response.data);
+      return false;
+    }
+  } catch (error) {
+    log(`❌ Error en test de propiedades actualizadas: ${error.message}`, colors.red);
+    return false;
+  }
+}
+
+async function testUpdateSequence() {
+  log('🔄 Testeando secuencia de creación y actualización...', colors.cyan);
+  
+  try {
+    // Primer evento: crear página
+    log('  📤 Enviando: page.created', colors.blue);
+    const createResponse = await makeRequest(WEBHOOK_URL, {
+      method: 'POST',
+      body: realPayloads.pageCreated
+    });
+
+    // Esperar un poco
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    // Segundo evento: actualizar propiedades de la misma página
+    log('  📤 Enviando: page.properties_updated (misma página)', colors.blue);
+    const updateResponse = await makeRequest(WEBHOOK_URL, {
+      method: 'POST',
+      body: {
+        ...realPayloads.pagePropertiesUpdated,
+        entity: { id: realPayloads.pageCreated.entity.id, type: 'page' } // Misma página
+      }
+    });
+
+    const results = [
+      { event: 'page.created', status: createResponse.status, message: createResponse.data.message },
+      { event: 'page.properties_updated', status: updateResponse.status, message: updateResponse.data.message }
+    ];
+
+    log('📊 Resultados de la secuencia creación -> actualización:', colors.blue);
+    results.forEach((result, index) => {
+      const color = result.status === 200 ? colors.green : colors.red;
+      log(`  ${index + 1}. ${result.event}: ${result.status} - ${result.message}`, color);
+    });
+
+    // Verificar que ambos eventos fueron programados para procesamiento
+    const allProcessed = results.every(r => r.status === 200 && r.message?.includes('programado'));
+
+    if (allProcessed) {
+      log('✅ Secuencia de creación -> actualización manejada correctamente', colors.green);
+      return true;
+    } else {
+      log('❌ Secuencia de creación -> actualización no manejada como esperado', colors.red);
+      return false;
+    }
+  } catch (error) {
+    log(`❌ Error en test de secuencia de actualización: ${error.message}`, colors.red);
     return false;
   }
 }
@@ -275,10 +373,11 @@ async function testSequenceScenario() {
       log(`  ${index + 1}. ${result.event}: ${result.status} - ${result.message}`, color);
     });
 
-    // Verificar que la secuencia es correcta (primer evento procesado, segundo rechazado)
+    // Verificar que la secuencia es correcta (ambos eventos son programados para procesamiento)
     const expectedPattern = results[0].status === 200 && 
                            results[1].status === 200 && 
-                           results[1].message?.includes('procesado recientemente');
+                           results[0].message?.includes('programado para procesamiento') &&
+                           results[1].message?.includes('programado para procesamiento');
 
     if (expectedPattern) {
       log('✅ Secuencia de eventos manejada correctamente', colors.green);
@@ -300,6 +399,8 @@ async function runRealScenarioTests() {
     { name: 'Verificación de Notion', fn: testVerification },
     { name: 'Página eliminada', fn: testPageDeleted },
     { name: 'Protección duplicados', fn: testDuplicateProtection },
+    { name: 'Propiedades actualizadas', fn: testPagePropertiesUpdated },
+    { name: 'Secuencia creación/actualización', fn: testUpdateSequence },
     { name: 'Secuencia de eventos', fn: testSequenceScenario }
   ];
 
@@ -423,6 +524,7 @@ async function main() {
     log('  npm run test:webhook                    # Test básico del endpoint');
     log('  npm run test:webhook -- --real         # Tests con payloads reales');
     log('  npm run test:webhook -- --sequence     # Test de secuencia de eventos');
+    log('  npm run test:webhook -- --update       # Test de actualización de propiedades');
     log('  npm run test:webhook -- --logs         # Ver logs recientes');
     log('  npm run test:webhook -- --stats        # Ver estadísticas');
     return;
@@ -433,6 +535,9 @@ async function main() {
     process.exit(success ? 0 : 1);
   } else if (args.includes('--sequence')) {
     const success = await testSequenceScenario();
+    process.exit(success ? 0 : 1);
+  } else if (args.includes('--update')) {
+    const success = await testUpdateSequence();
     process.exit(success ? 0 : 1);
   } else if (args.includes('--logs')) {
     await showLogs();
