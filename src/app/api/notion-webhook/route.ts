@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { NotionWebhookPayload, ProcessingResult } from '@/types/notion-todoist';
-import { getNotionPageContent, isUserMentioned } from '@/utils/notion-client';
-import { createTodoistTask, updateTodoistTask, findTaskByNotionUrl, formatDateForTodoist } from '@/utils/todoist-client';
+import { getNotionPageContent, isUserMentioned, getNotionPageStatus } from '@/utils/notion-client';
+import { createTodoistTask, updateTodoistTask, findTaskByNotionUrl, formatDateForTodoist, completeTodoistTask } from '@/utils/todoist-client';
 import { enhanceTaskWithAI } from '@/utils/openai-client';
 import { 
   isValidNotionWebhook, 
@@ -275,6 +275,33 @@ async function updateExistingTask(existingTask: any, pageId: string, workspaceNa
   try {
     console.log('Obteniendo contenido actualizado de Notion para página:', pageId);
     const pageContent = await getNotionPageContent(pageId);
+    
+    // Verificar el estado de la página
+    console.log('Verificando estado de la página...');
+    const pageStatus = await getNotionPageStatus(pageId);
+    console.log('Estado de la página:', pageStatus);
+    
+    // Si el estado es "Listo" o "Done", completar la tarea en Todoist
+    const completedStatuses = ['Listo', 'Done', 'Completed', 'Completado', 'Terminado', 'Finished'];
+    if (pageStatus && completedStatuses.includes(pageStatus)) {
+      console.log(`📋 Página marcada como "${pageStatus}" - completando tarea en Todoist`);
+      
+      try {
+        await completeTodoistTask(existingTask.id);
+        console.log('✅ Tarea completada exitosamente en Todoist');
+        
+        return {
+          success: true,
+          action: 'completed',
+          taskId: existingTask.id,
+          title: pageContent.title,
+          message: `Tarea marcada como completada en Todoist (estado: ${pageStatus})`
+        };
+      } catch (error) {
+        console.error('Error al completar tarea en Todoist:', error);
+        // Continuar con actualización normal si no se puede completar
+      }
+    }
 
     let finalContent = pageContent;
     let enhancedWithAI = false;

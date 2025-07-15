@@ -141,7 +141,11 @@ export interface OpenAIEnhancement {
 export interface ProcessingResult {
   success: boolean;
   todoistTaskId?: string;
+  taskId?: string;  // Alias para todoistTaskId
   notionPageId?: string;
   enhancedWithAI?: boolean;
+  action?: 'created' | 'updated' | 'completed';
+  title?: string;
+  message?: string;
   error?: string;
 }

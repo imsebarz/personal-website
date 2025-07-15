@@ -49,6 +49,8 @@ export async function getNotionPageContent(pageId: string): Promise<NotionPageCo
     let assignee: string | undefined;
     let tags: string[] = [];
 
+    // Extraer propiedades de la página
+
     // Procesar propiedades de la página
     if ('properties' in page && page.properties) {
       // Extraer título (puede estar en diferentes propiedades dependiendo de la configuración)
@@ -240,5 +242,31 @@ export async function isUserMentioned(pageId: string, userId: string): Promise<b
     return false;
   } catch (_error) {
     return false;
+  }
+}
+
+export async function getNotionPageStatus(pageId: string): Promise<string | null> {
+  try {
+    const page = await notion.pages.retrieve({ page_id: pageId });
+    
+    if ('properties' in page) {
+      // Buscar propiedades de estado comunes
+      const statusProperties = ['Status', 'Estado', 'state', 'status'];
+      
+      for (const propName of statusProperties) {
+        const property = page.properties[propName];
+        if (property && property.type === 'status') {
+          return property.status?.name || null;
+        }
+        if (property && property.type === 'select') {
+          return property.select?.name || null;
+        }
+      }
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error obteniendo estado de página de Notion:', error);
+    return null;
   }
 }

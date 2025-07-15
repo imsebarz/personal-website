@@ -108,6 +108,23 @@ const realPayloads = {
       parent: { id: "1f61ad4d-650d-80e0-b231-d9b12ffea832", type: "database" },
       updated_properties: ["Vun%7C"]
     }
+  },
+
+  pageStatusCompleted: {
+    id: "44284e6c-c6fd-5087-a7fc-9f8b5f952521",
+    timestamp: "2025-07-15T22:30:00.000Z",
+    workspace_id: "bcd7dac8-d5d8-4726-ad5a-f6a0e1ad9ef1",
+    workspace_name: "Corabella Pets",
+    subscription_id: "231d872b-594c-8122-963e-0099eb119522",
+    integration_id: "230d872b-594c-8060-8665-0037427fe4f8",
+    authors: [{ id: "79d3b102-9821-4d8e-bf2b-1e94a65d5120", type: "person" }],
+    attempt_number: 1,
+    entity: { id: "3311ad4d-650d-805f-9580-e604ff9f8f96", type: "page" },
+    type: "page.properties_updated",
+    data: {
+      parent: { id: "1f61ad4d-650d-80e0-b231-d9b12ffea832", type: "database" },
+      updated_properties: ["Status"]
+    }
   }
 };
 
@@ -333,6 +350,36 @@ async function testUpdateSequence() {
   }
 }
 
+async function testTaskCompletion() {
+  log('✅ Testeando completado automático de tareas...', colors.cyan);
+  
+  try {
+    // Simular cambio de estado a completado
+    const response = await makeRequest(WEBHOOK_URL, {
+      method: 'POST',
+      body: realPayloads.pageStatusCompleted
+    });
+
+    if (response.status === 200) {
+      log('✅ Evento de completado procesado correctamente', colors.green);
+      log(`   📄 Página: ${realPayloads.pageStatusCompleted.entity.id}`);
+      log(`   🔄 Tipo: ${realPayloads.pageStatusCompleted.type}`);
+      log(`   ⏰ Debounce: ${response.data.debounceTimeMs || 60000}ms`);
+      
+      // En el webhook real, aquí se completaría la tarea en Todoist
+      // El test verifica que el evento se procese correctamente
+      return true;
+    } else {
+      log(`❌ Error procesando evento de completado: ${response.status}`, colors.red);
+      console.log('Response:', response.data);
+      return false;
+    }
+  } catch (error) {
+    log(`❌ Error en test de completado: ${error.message}`, colors.red);
+    return false;
+  }
+}
+
 async function testSequenceScenario() {
   log('📝 Testeando secuencia real de eventos (content_updated -> page.created)...', colors.cyan);
   
@@ -401,6 +448,7 @@ async function runRealScenarioTests() {
     { name: 'Protección duplicados', fn: testDuplicateProtection },
     { name: 'Propiedades actualizadas', fn: testPagePropertiesUpdated },
     { name: 'Secuencia creación/actualización', fn: testUpdateSequence },
+    { name: 'Completado automático de tareas', fn: testTaskCompletion },
     { name: 'Secuencia de eventos', fn: testSequenceScenario }
   ];
 
