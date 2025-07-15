@@ -403,31 +403,6 @@ async function showStats() {
   }
 }
 
-async function listScenarios() {
-  log('📋 Scenarios de testing disponibles:', colors.cyan);
-  
-  try {
-    const response = await makeRequest(`${LOGS_URL}?action=test-scenarios`);
-    
-    if (response.status === 200) {
-      const { scenarios } = response.data;
-      
-      scenarios.forEach(scenario => {
-        log(`\n🧪 ${scenario.name}`, colors.bold);
-        log(`   Descripción: ${scenario.description}`);
-        log(`   Outcome esperado: ${scenario.expectedOutcome}`, colors.blue);
-        if (scenario.expectedSkipReason) {
-          log(`   Razón de skip: ${scenario.expectedSkipReason}`, colors.yellow);
-        }
-      });
-    } else {
-      log(`❌ Error obteniendo scenarios: ${response.status}`, colors.red);
-    }
-  } catch (error) {
-    log(`❌ Error obteniendo scenarios: ${error.message}`, colors.red);
-  }
-}
-
 async function main() {
   const args = process.argv.slice(2);
   
