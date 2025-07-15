@@ -135,6 +135,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ message: 'Evento ignorado - procesado recientemente' });
     }
 
+    // Marcar como procesado INMEDIATAMENTE para prevenir duplicados
+    recentlyProcessed.set(pageId, now);
+
     // Limpiar cache viejo (mantener solo últimos 10 minutos)
     const entriesToDelete: string[] = [];
     recentlyProcessed.forEach((timestamp, id) => {
@@ -163,10 +166,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Procesar la página
     const result = await processNotionPage(pageId, payload.workspace_name);
 
-    // Si el procesamiento fue exitoso, actualizar el cache y logging
+    // Logging del resultado (el cache ya se actualizó arriba)
     if (result.success) {
-      recentlyProcessed.set(pageId, now);
-      console.log(`✅ Página ${pageId} procesada exitosamente y marcada en cache`);
+      console.log(`✅ Página ${pageId} procesada exitosamente`);
       
       const duration = Date.now() - processingStartTime;
       logWebhookSuccess(requestId, duration, pageId, payload.type);
