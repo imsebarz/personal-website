@@ -1,5 +1,5 @@
 /** @type {import('jest').Config} */
-export default {
+const config = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testMatch: [
@@ -9,8 +9,11 @@ export default {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest'
+  extensionsToTreatAsEsm: ['.jsx'],
+  globals: {
+    'ts-jest': {
+      useESM: true
+    }
   },
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
@@ -21,3 +24,5 @@ export default {
   coverageReporters: ['text', 'lcov', 'html'],
   testTimeout: 10000
 };
+
+export default config;
