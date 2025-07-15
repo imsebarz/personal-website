@@ -3,11 +3,21 @@ import { NotionWebhookPayload, ProcessingResult } from '@/types/notion-todoist';
 import { getNotionPageContent, isUserMentioned } from '@/utils/notion-client';
 import { createTodoistTask, formatDateForTodoist } from '@/utils/todoist-client';
 import { enhanceTaskWithAI } from '@/utils/openai-client';
+import { 
+  validateNotionWebhookSignature, 
+  isValidNotionWebhook, 
+  shouldProcessEvent 
+} from '@/utils/notion-webhook-validator';
+import { createWorkspaceTag, combineTagsWithWorkspace } from '@/utils/tag-helpers';
 
 // Configuración
 const NOTION_USER_ID = process.env.NOTION_USER_ID; // Tu ID de usuario en Notion
 const TODOIST_PROJECT_ID = process.env.TODOIST_PROJECT_ID; // ID del proyecto por defecto en Todoist
 const ENABLE_AI_ENHANCEMENT = process.env.ENABLE_AI_ENHANCEMENT === 'true';
+
+// Cache para prevenir duplicados
+const recentlyProcessed = new Map<string, number>();
+const DEBOUNCE_TIME = 60000; // 60 segundos
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
@@ -28,15 +38,36 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }, { status: 200 });
     }
 
-    // Verificar que el webhook provenga de Notion (solo para eventos reales)
-    const notionVersion = request.headers.get('notion-version');
-    if (!notionVersion) {
-      console.log('⚠️ Webhook sin header notion-version - rechazando evento real');
+    // Log headers para debugging
+    console.log('📋 Headers recibidos:', {
+      'notion-version': request.headers.get('notion-version'),
+      'user-agent': request.headers.get('user-agent'),
+      'content-type': request.headers.get('content-type'),
+      'x-notion-signature': request.headers.get('x-notion-signature'),
+    });
+
+    // Verificar que el webhook provenga de Notion
+    const userAgent = request.headers.get('user-agent');
+    const hasNotionSignature = !!request.headers.get('x-notion-signature');
+    
+    if (!isValidNotionWebhook(userAgent, hasNotionSignature)) {
+      console.log('⚠️ Webhook no válido - no proviene de Notion');
       return NextResponse.json(
-        { error: 'Webhook no válido - falta encabezado Notion' },
+        { error: 'Webhook no válido - no proviene de Notion' },
         { status: 400 }
       );
     }
+
+    // TODO: Habilitar validación de firma en producción
+    // const webhookSecret = process.env.NOTION_WEBHOOK_SECRET;
+    // if (webhookSecret) {
+    //   const rawBody = JSON.stringify(payload);
+    //   const signature = request.headers.get('x-notion-signature');
+    //   if (!validateNotionWebhookSignature(signature, rawBody, webhookSecret)) {
+    //     console.log('🔒 Firma de webhook inválida');
+    //     return NextResponse.json({ error: 'Firma inválida' }, { status: 401 });
+    //   }
+    // }
 
     // TODO: Implementar validación de firma (recomendado para producción)
     // const rawBody = await request.text();
@@ -47,14 +78,49 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Log para debugging de eventos reales
     console.log('📥 Webhook recibido:', JSON.stringify(payload, null, 2));
 
-    // Verificar que es un evento de página (nuevo formato usa entity)
+    // Verificar que es un evento de página
     const pageId = payload.entity?.id || payload.page?.id;
-    if (!pageId || (payload.entity?.object !== 'page' && !payload.page)) {
+    if (!pageId || (payload.entity?.type !== 'page' && !payload.page)) {
       return NextResponse.json(
         { message: 'Evento ignorado - no es una página' },
         { status: 200 }
       );
     }
+
+    // Verificar si el evento debe ser procesado
+    if (!shouldProcessEvent(payload.type)) {
+      if (payload.type === 'page.deleted') {
+        console.log(`🗑️ Página ${pageId} fue eliminada - ignorando evento`);
+        return NextResponse.json(
+          { message: 'Evento ignorado - página eliminada' },
+          { status: 200 }
+        );
+      } else {
+        console.log(`📭 Evento ${payload.type} ignorado - no relevante para crear tareas`);
+        return NextResponse.json(
+          { message: `Evento ${payload.type} ignorado` },
+          { status: 200 }
+        );
+      }
+    }
+
+    // Verificar si ya procesamos esta página recientemente (prevenir duplicados)
+    const now = Date.now();
+    const lastProcessed = recentlyProcessed.get(pageId);
+    
+    if (lastProcessed && (now - lastProcessed) < DEBOUNCE_TIME) {
+      console.log(`⏳ Página ${pageId} procesada recientemente hace ${Math.round((now - lastProcessed) / 1000)}s, ignorando evento ${payload.type}`);
+      return NextResponse.json({ message: 'Evento ignorado - procesado recientemente' });
+    }
+
+    // Limpiar cache viejo (mantener solo últimos 10 minutos)
+    const entriesToDelete: string[] = [];
+    recentlyProcessed.forEach((timestamp, id) => {
+      if (now - timestamp > 600000) { // 10 minutos
+        entriesToDelete.push(id);
+      }
+    });
+    entriesToDelete.forEach(id => recentlyProcessed.delete(id));
 
     // Verificar si el usuario está mencionado (si se configuró)
     if (NOTION_USER_ID) {
@@ -69,7 +135,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     // Procesar la página
-    const result = await processNotionPage(pageId);
+    const result = await processNotionPage(pageId, payload.workspace_name);
+
+    // Si el procesamiento fue exitoso, actualizar el cache
+    if (result.success) {
+      recentlyProcessed.set(pageId, now);
+      console.log(`✅ Página ${pageId} procesada exitosamente y marcada en cache`);
+    }
 
     return NextResponse.json(result, { status: result.success ? 200 : 500 });
   } catch (error) {
@@ -84,7 +156,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 }
 
-async function processNotionPage(pageId: string): Promise<ProcessingResult> {
+async function processNotionPage(pageId: string, workspaceName?: string): Promise<ProcessingResult> {
   try {
     // 1. Obtener contenido de Notion
     console.log('Obteniendo contenido de Notion para página:', pageId);
@@ -117,12 +189,22 @@ async function processNotionPage(pageId: string): Promise<ProcessingResult> {
 
     // 3. Crear tarea en Todoist
     console.log('Creando tarea en Todoist...');
+    
+    // Preparar etiquetas incluyendo el workspace
+    const baseTags = finalContent.tags || ['notion'];
+    const workspaceTag = workspaceName ? createWorkspaceTag(workspaceName) : '';
+    const allTags = workspaceTag 
+      ? combineTagsWithWorkspace(baseTags, workspaceTag)
+      : baseTags;
+    
+    console.log(`🏷️ Etiquetas para la tarea: ${allTags.join(', ')}${workspaceName ? ` (workspace: ${workspaceName})` : ''}`);
+    
     const todoistTask = {
       content: finalContent.title,
-      description: `${finalContent.content}\n\n🔗 Ver en Notion: ${finalContent.url}`,
+      description: `${finalContent.content}\n\n🔗 Ver en Notion: ${finalContent.url}${workspaceName ? `\n📁 Workspace: ${workspaceName}` : ''}`,
       project_id: TODOIST_PROJECT_ID,
       priority: finalContent.priority || 2,
-      labels: finalContent.tags || ['notion'],
+      labels: allTags,
       ...(finalContent.dueDate && {
         due_date: formatDateForTodoist(finalContent.dueDate),
       }),
@@ -157,11 +239,19 @@ export async function GET(): Promise<NextResponse> {
       webhook: 'POST /api/notion-webhook',
       health: 'GET /api/notion-webhook',
     },
+    features: {
+      duplicatePrevention: 'Debounce system (30s window)',
+      aiEnhancement: 'OpenAI task improvement',
+      workspaceTags: 'Automatic workspace labeling',
+      mentionDetection: 'User-specific filtering',
+    },
     configuration: {
       notionUserIdConfigured: !!NOTION_USER_ID,
       todoistProjectIdConfigured: !!TODOIST_PROJECT_ID,
       aiEnhancementEnabled: ENABLE_AI_ENHANCEMENT,
       openaiConfigured: !!process.env.OPENAI_API_KEY,
+      debounceTimeSeconds: DEBOUNCE_TIME / 1000,
+      currentlyTrackedPages: recentlyProcessed.size,
     },
   });
 }

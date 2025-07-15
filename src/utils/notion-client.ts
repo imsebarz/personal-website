@@ -1,6 +1,32 @@
 import { Client } from '@notionhq/client';
 import { NotionPageContent } from '@/types/notion-todoist';
 
+// Interfaces para tipos de Notion
+interface NotionRichText {
+  type: string;
+  mention?: {
+    type: string;
+    user: {
+      id: string;
+    };
+  };
+}
+
+interface NotionPeopleProperty {
+  type: 'people';
+  people: Array<{ id: string; type: string }>;
+}
+
+interface NotionRichTextProperty {
+  type: 'rich_text';
+  rich_text: NotionRichText[];
+}
+
+interface NotionTitleProperty {
+  type: 'title';
+  title: NotionRichText[];
+}
+
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
@@ -126,12 +152,54 @@ export async function getNotionPageContent(pageId: string): Promise<NotionPageCo
 
 export async function isUserMentioned(pageId: string, userId: string): Promise<boolean> {
   try {
+    // 1. Verificar menciones en las propiedades de la página
+    const page = await notion.pages.retrieve({ page_id: pageId });
+    
+    if ('properties' in page && page.properties) {
+      // Buscar menciones en las propiedades de la página
+      const hasMentionInProperties = Object.values(page.properties).some((property) => {
+        // Verificar propiedades de tipo "people"
+        if (property.type === 'people' && property.people.length > 0) {
+          return property.people.some(person => person.id === userId);
+        }
+        
+        // Verificar propiedades de texto rico que pueden contener menciones
+        if (property.type === 'rich_text' && property.rich_text.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return property.rich_text.some((text: any) => {
+            if (text.type === 'mention' && text.mention?.type === 'user' && text.mention?.user?.id) {
+              return text.mention.user.id === userId;
+            }
+            return false;
+          });
+        }
+        
+        // Verificar propiedades de título que pueden contener menciones
+        if (property.type === 'title' && property.title.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return property.title.some((text: any) => {
+            if (text.type === 'mention' && text.mention?.type === 'user' && text.mention?.user?.id) {
+              return text.mention.user.id === userId;
+            }
+            return false;
+          });
+        }
+        
+        return false;
+      });
+      
+      if (hasMentionInProperties) {
+        console.log('✅ Usuario mencionado en propiedades de la página');
+        return true;
+      }
+    }
+
+    // 2. Verificar menciones en el contenido de bloques (método original)
     const blocks = await notion.blocks.children.list({
       block_id: pageId,
     });
 
-    // Buscar menciones en el contenido
-    const hasMention = blocks.results.some((block) => {
+    const hasMentionInContent = blocks.results.some((block) => {
       if ('type' in block) {
         const checkRichText = (richTextArray: unknown[]) => {
           return richTextArray.some((text: unknown) => {
@@ -167,7 +235,13 @@ export async function isUserMentioned(pageId: string, userId: string): Promise<b
       return false;
     });
 
-    return hasMention;
+    if (hasMentionInContent) {
+      console.log('✅ Usuario mencionado en contenido de la página');
+      return true;
+    }
+
+    console.log('❌ Usuario no encontrado en menciones');
+    return false;
   } catch (error) {
     console.error('Error al verificar menciones:', error);
     return false;

@@ -4,46 +4,20 @@ export interface NotionWebhookPayload {
   // Campos de verificación
   verification_token?: string;  // Para verificación inicial del endpoint
   
-  // Campos de eventos reales (formato actual de la documentación)
-  id?: string;                  // ID único del evento
-  timestamp?: string;           // Timestamp del evento
-  workspace_id?: string;        // ID del workspace
-  workspace_name?: string;      // Nombre del workspace
+  // Campos de eventos reales
+  object?: string;              // "page", "database", "comment", etc.
+  event_ts?: string;            // Timestamp del evento
+  event_id?: string;            // ID único del evento
+  event_type?: string;          // Tipo de evento (page.content_updated, etc.)
   subscription_id?: string;     // ID de la suscripción
-  integration_id?: string;      // ID de la integración
-  type?: string;               // Tipo de evento (page.created, page.content_updated, etc.)
-  attempt_number?: number;      // Número de intento de entrega
-  
-  // Autores del cambio
-  authors?: Array<{
-    id: string;
-    type: string;
-  }>;
+  user_id?: string;            // ID del usuario que causó el evento
+  workspace_id?: string;       // ID del workspace
   
   // Entidad afectada (página, base de datos, etc.)
   entity?: {
+    object: string;
     id: string;
-    type: string;  // "page", "database", "comment", etc.
   };
-  
-  // Datos adicionales del evento
-  data?: {
-    parent?: {
-      id: string;
-      type: string;
-    };
-    updated_blocks?: Array<{
-      id: string;
-      type: string;
-    }>;
-  };
-  
-  // Campos legacy para retrocompatibilidad
-  object?: string;              
-  event_ts?: string;            
-  event_id?: string;            
-  event_type?: string;          
-  user_id?: string;            
   
   // Para retrocompatibilidad con formatos anteriores
   page?: {
