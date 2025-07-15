@@ -13,22 +13,27 @@
     "type-check:watch": "tsc --noEmit --watch",
     "clean": "rm -rf .next out",
     "analyze": "ANALYZE=true npm run build",
-    "preview": "npm run build && npm run start"
+    "preview": "npm run build && npm run start",
+    "test:webhook": "node scripts/test-webhook.js",
+    "test:direct": "node scripts/test-webhook.js --direct"
   },
   "dependencies": {
+    "@notionhq/client": "^4.0.1",
+    "axios": "^1.10.0",
+    "framer-motion": "^12.23.5",
     "next": "^15.3.5",
+    "openai": "^5.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "framer-motion": "^12.23.5",
     "react-intersection-observer": "^9.16.0",
     "sass": "^1.89.2"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
+    "@types/node": "^24.0.13",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@types/node": "^24.0.13",
     "eslint": "^8.57.1",
-    "eslint-config-next": "^15.3.5"
+    "eslint-config-next": "^15.3.5",
+    "typescript": "^5.8.3"
   }
 }
