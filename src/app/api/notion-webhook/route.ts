@@ -14,6 +14,11 @@ const TODOIST_PROJECT_ID = process.env.TODOIST_PROJECT_ID;
 const ENABLE_AI_ENHANCEMENT = process.env.ENABLE_AI_ENHANCEMENT === 'true';
 
 const recentlyProcessed = new Map<string, number>();
+const pendingEvents = new Map<string, { 
+  payload: NotionWebhookPayload, 
+  workspaceName?: string, 
+  timeoutId: NodeJS.Timeout 
+}>();
 const DEBOUNCE_TIME = 60000; // 60 segundos
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -85,44 +90,84 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
     }
 
-    // Verificar si ya procesamos esta página recientemente (prevenir duplicados)
+    // Implementar debounce que procesa el último evento (no el primero)
     const now = Date.now();
     const lastProcessed = recentlyProcessed.get(pageId);
     
-    if (lastProcessed && (now - lastProcessed) < DEBOUNCE_TIME) {
-      console.log(`⏳ Página ${pageId} procesada recientemente hace ${Math.round((now - lastProcessed) / 1000)}s, ignorando evento ${payload.type}`);
-            
-      return NextResponse.json({ message: 'Evento ignorado - procesado recientemente' });
+    // Si ya existe un evento pendiente para esta página, cancelar el timeout anterior
+    const existingPendingEvent = pendingEvents.get(pageId);
+    if (existingPendingEvent) {
+      clearTimeout(existingPendingEvent.timeoutId);
+      console.log(`⏳ Cancelando evento anterior para página ${pageId}, actualizando con evento más reciente`);
     }
-    recentlyProcessed.set(pageId, now);
-
+    
+    // Si la página fue procesada recientemente, solo actualizar el evento pendiente
+    if (lastProcessed && (now - lastProcessed) < DEBOUNCE_TIME) {
+      console.log(`⏳ Página ${pageId} procesada hace ${Math.round((now - lastProcessed) / 1000)}s, programando procesamiento del evento más reciente`);
+    } else {
+      console.log(`⏳ Programando procesamiento para página ${pageId} en ${DEBOUNCE_TIME / 1000}s`);
+    }
+    
+    // Crear nuevo timeout para procesar este evento (el más reciente)
+    const timeoutId = setTimeout(async () => {
+      try {
+        console.log(`🔄 Procesando evento final para página ${pageId}`);
+        
+        // Remover de eventos pendientes
+        if (pageId) {
+          pendingEvents.delete(pageId);
+          
+          // Marcar como procesado
+          recentlyProcessed.set(pageId, Date.now());
+          
+          // Verificar si el usuario está mencionado (si se configuró)
+          if (NOTION_USER_ID) {
+            const isMentioned = await isUserMentioned(pageId, NOTION_USER_ID);
+            if (!isMentioned) {
+              console.log('Usuario no mencionado en la página');
+              return;
+            }
+          }
+          
+          // Procesar la página
+          const result = await processNotionPage(pageId, payload?.workspace_name);
+          
+          if (result.success) {
+            console.log(`✅ Página ${pageId} procesada exitosamente (evento final)`);
+          } else {
+            console.error(`❌ Error procesando página ${pageId}:`, result.error);
+          }
+        }
+      } catch (error) {
+        console.error(`❌ Error en procesamiento diferido para página ${pageId}:`, error);
+        if (pageId) {
+          pendingEvents.delete(pageId);
+        }
+      }
+    }, DEBOUNCE_TIME);
+    
+    // Guardar el evento pendiente
+    pendingEvents.set(pageId, {
+      payload,
+      workspaceName: payload.workspace_name,
+      timeoutId
+    });
+    
+    // Limpiar entradas antiguas de recentlyProcessed
     const entriesToDelete: string[] = [];
     recentlyProcessed.forEach((timestamp, id) => {
-      if (now - timestamp > 60000) { 
+      if (now - timestamp > DEBOUNCE_TIME * 2) { // Mantener por más tiempo para evitar procesamiento múltiple
         entriesToDelete.push(id);
       }
     });
     entriesToDelete.forEach(id => recentlyProcessed.delete(id));
-
-    // Verificar si el usuario está mencionado (si se configuró)
-    if (NOTION_USER_ID) {
-      const isMentioned = await isUserMentioned(pageId, NOTION_USER_ID);
-      if (!isMentioned) {
-        console.log('Usuario no mencionado en la página');
-            
-        return NextResponse.json(
-          { message: 'Usuario no mencionado - tarea no creada' },
-          { status: 200 }
-        );
-      }
-    }
-
-    const result = await processNotionPage(pageId, payload.workspace_name);
-
-    if (result.success) {
-      console.log(`✅ Página ${pageId} procesada exitosamente`);
-    } 
-    return NextResponse.json(result, { status: result.success ? 200 : 500 });
+    
+    // Retornar respuesta inmediata indicando que el evento será procesado
+    return NextResponse.json({ 
+      message: 'Evento programado para procesamiento (se procesará el más reciente)',
+      pageId,
+      debounceTimeMs: DEBOUNCE_TIME
+    });
   } catch (error) {
     console.error('Error procesando webhook:', error);
     
@@ -217,7 +262,7 @@ export async function GET(): Promise<NextResponse> {
       health: 'GET /api/notion-webhook',
     },
     features: {
-      duplicatePrevention: 'Debounce system (30s window)',
+      duplicatePrevention: 'Latest-event debounce system (60s window)',
       aiEnhancement: 'OpenAI task improvement',
       workspaceTags: 'Automatic workspace labeling',
       mentionDetection: 'User-specific filtering',
@@ -229,6 +274,7 @@ export async function GET(): Promise<NextResponse> {
       openaiConfigured: !!process.env.OPENAI_API_KEY,
       debounceTimeSeconds: DEBOUNCE_TIME / 1000,
       currentlyTrackedPages: recentlyProcessed.size,
+      pendingEvents: pendingEvents.size,
     },
   });
 }

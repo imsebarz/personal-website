@@ -3,10 +3,11 @@
  * Enfoque: Simple, atómico y fiel a los casos de uso reales
  */
 
-// Mock del webhook handler - simulamos la lógica principal
+// Mock del webhook handler - simulamos la nueva lógica que procesa el último evento
 const createMockWebhookHandler = () => {
   const recentlyProcessed = new Map();
-  const DEBOUNCE_TIME = 60000;
+  const pendingEvents = new Map();
+  const DEBOUNCE_TIME = 1000; // Reducido para tests más rápidos
 
   return async (request) => {
     const payload = await request.json();
@@ -47,28 +48,39 @@ const createMockWebhookHandler = () => {
       };
     }
 
-    // Verificar duplicados
+    // Nueva lógica de debounce: procesar el último evento
     const now = Date.now();
-    const lastProcessed = recentlyProcessed.get(pageId);
     
-    if (lastProcessed && (now - lastProcessed) < DEBOUNCE_TIME) {
-      return {
-        status: 200,
-        data: { message: 'Evento ignorado - procesado recientemente' }
-      };
+    // Si ya existe un evento pendiente, cancelarlo
+    const existingPendingEvent = pendingEvents.get(pageId);
+    if (existingPendingEvent) {
+      clearTimeout(existingPendingEvent.timeoutId);
     }
+    
+    // Crear nuevo timeout para procesar este evento (el más reciente)
+    const timeoutId = setTimeout(async () => {
+      // Simular procesamiento exitoso del evento final
+      pendingEvents.delete(pageId);
+      recentlyProcessed.set(pageId, Date.now());
+      
+      // En un test real, aquí se procesaría la página
+      console.log(`Procesando evento final para página ${pageId}`);
+    }, DEBOUNCE_TIME);
+    
+    // Guardar el evento pendiente
+    pendingEvents.set(pageId, {
+      payload,
+      timeoutId,
+      timestamp: now
+    });
 
-    // Marcar como procesado
-    recentlyProcessed.set(pageId, now);
-
-    // Simular procesamiento exitoso
+    // Retornar respuesta inmediata
     return {
       status: 200,
       data: { 
-        success: true,
-        todoistTaskId: '123456',
-        notionPageId: pageId,
-        enhancedWithAI: true
+        message: 'Evento programado para procesamiento (se procesará el más reciente)',
+        pageId,
+        debounceTimeMs: DEBOUNCE_TIME
       }
     };
   };
@@ -208,21 +220,26 @@ describe('Notion Webhook - Escenarios Reales', () => {
     });
   });
 
-  describe('Prevención de duplicados', () => {
-    it('debe procesar el primer evento y rechazar duplicados', async () => {
-      // Primer request - debe procesarse
+  describe('Prevención de duplicados - Procesa último evento', () => {
+    it('debe programar el primer evento y reprogramar con eventos posteriores', async () => {
+      // Primer request - debe programarse
       mockRequest.json.mockResolvedValueOnce(realPayloads.pageContentUpdated);
       const firstResponse = await webhookHandler(mockRequest);
       
       expect(firstResponse.status).toBe(200);
-      expect(firstResponse.data.success).toBe(true);
+      expect(firstResponse.data.message).toContain('programado para procesamiento');
+      expect(firstResponse.data.pageId).toBe('2311ad4d-650d-8034-a3bf-c882d00b435a');
 
-      // Segundo request inmediato - debe ser rechazado por debounce
-      mockRequest.json.mockResolvedValueOnce(realPayloads.pageCreated);
+      // Segundo request inmediato - debe cancelar el anterior y programar este
+      mockRequest.json.mockResolvedValueOnce({
+        ...realPayloads.pageCreated,
+        entity: { id: '2311ad4d-650d-8034-a3bf-c882d00b435a', type: 'page' } // Same pageId
+      });
       const secondResponse = await webhookHandler(mockRequest);
       
       expect(secondResponse.status).toBe(200);
-      expect(secondResponse.data.message).toContain('procesado recientemente');
+      expect(secondResponse.data.message).toContain('programado para procesamiento');
+      expect(secondResponse.data.pageId).toBe('2311ad4d-650d-8034-a3bf-c882d00b435a');
     });
   });
 
@@ -288,14 +305,14 @@ describe('Notion Webhook - Escenarios Reales', () => {
       mockRequest.json.mockResolvedValueOnce(realPayloads.pageContentUpdated);
       const firstResponse = await webhookHandler(mockRequest);
       
-      // Luego el segundo evento (page.created) - debe ser rechazado por debounce
+      // Luego el segundo evento (page.created) - debe reprogramar el procesamiento
       mockRequest.json.mockResolvedValueOnce(realPayloads.pageCreated);
       const secondResponse = await webhookHandler(mockRequest);
 
       expect(firstResponse.status).toBe(200);
-      expect(firstResponse.data.success).toBe(true);
+      expect(firstResponse.data.message).toContain('programado para procesamiento');
       expect(secondResponse.status).toBe(200);
-      expect(secondResponse.data.message).toContain('procesado recientemente');
+      expect(secondResponse.data.message).toContain('programado para procesamiento');
     });
   });
 });
