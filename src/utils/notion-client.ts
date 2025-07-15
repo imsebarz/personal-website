@@ -12,17 +12,17 @@ interface NotionRichText {
   };
 }
 
-interface NotionPeopleProperty {
+interface _NotionPeopleProperty {
   type: 'people';
   people: Array<{ id: string; type: string }>;
 }
 
-interface NotionRichTextProperty {
+interface _NotionRichTextProperty {
   type: 'rich_text';
   rich_text: NotionRichText[];
 }
 
-interface NotionTitleProperty {
+interface _NotionTitleProperty {
   type: 'title';
   title: NotionRichText[];
 }

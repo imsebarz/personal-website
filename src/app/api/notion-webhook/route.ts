@@ -4,7 +4,6 @@ import { getNotionPageContent, isUserMentioned } from '@/utils/notion-client';
 import { createTodoistTask, formatDateForTodoist } from '@/utils/todoist-client';
 import { enhanceTaskWithAI } from '@/utils/openai-client';
 import { 
-  validateNotionWebhookSignature, 
   isValidNotionWebhook, 
   shouldProcessEvent 
 } from '@/utils/notion-webhook-validator';
