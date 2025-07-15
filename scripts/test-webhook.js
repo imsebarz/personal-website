@@ -18,7 +18,6 @@ import http from 'http';
 
 const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 const WEBHOOK_URL = `${BASE_URL}/api/notion-webhook`;
-const LOGS_URL = `${BASE_URL}/api/webhook-logs`;
 
 // Colores para output
 const colors = {
@@ -482,74 +481,6 @@ async function runRealScenarioTests() {
   });
   
   return passed === total;
-}
-
-async function showLogs() {
-  log('📋 Obteniendo logs recientes...', colors.cyan);
-  
-  try {
-    const response = await makeRequest(`${LOGS_URL}?action=logs`);
-    
-    if (response.status === 200) {
-      const { logs, total } = response.data;
-      
-      log(`📊 Últimos ${logs.length} logs (total: ${total}):`, colors.bold);
-      
-      logs.slice(0, 10).forEach(logEntry => {
-        const status = logEntry.processing.success ? '✅' : '❌';
-        const timestamp = new Date(logEntry.timestamp).toLocaleString();
-        const eventType = logEntry.payload?.type || 'unknown';
-        const pageId = logEntry.payload?.entity?.id || logEntry.payload?.page?.id || 'none';
-        
-        log(`${status} ${timestamp} | ${eventType} | ${pageId} | ${logEntry.processing.duration}ms`);
-        
-        if (!logEntry.processing.success && logEntry.processing.error) {
-          log(`     └─ Error: ${logEntry.processing.error}`, colors.red);
-        }
-        
-        if (logEntry.processing.skipReason) {
-          log(`     └─ Skipped: ${logEntry.processing.skipReason}`, colors.yellow);
-        }
-      });
-    } else {
-      log(`❌ Error obteniendo logs: ${response.status}`, colors.red);
-    }
-  } catch (error) {
-    log(`❌ Error obteniendo logs: ${error.message}`, colors.red);
-  }
-}
-
-async function showStats() {
-  log('📊 Obteniendo estadísticas...', colors.cyan);
-  
-  try {
-    const response = await makeRequest(`${LOGS_URL}?action=stats`);
-    
-    if (response.status === 200) {
-      const { stats } = response.data;
-      
-      log(`📈 Estadísticas del Webhook:`, colors.bold);
-      log(`   Total de requests: ${stats.total}`);
-      log(`   Exitosos: ${stats.successful}`, colors.green);
-      log(`   Fallidos: ${stats.failed}`, colors.red);
-      log(`   Tasa de éxito: ${stats.successRate}`, colors.blue);
-      log(`   Tiempo promedio: ${stats.averageProcessingTime}ms`);
-      
-      log(`\n📋 Tipos de eventos:`, colors.blue);
-      Object.entries(stats.eventTypes).forEach(([type, count]) => {
-        log(`   ${type}: ${count}`);
-      });
-      
-      log(`\n🤖 User Agents:`, colors.blue);
-      Object.entries(stats.userAgents).forEach(([ua, count]) => {
-        log(`   ${ua}: ${count}`);
-      });
-    } else {
-      log(`❌ Error obteniendo estadísticas: ${response.status}`, colors.red);
-    }
-  } catch (error) {
-    log(`❌ Error obteniendo estadísticas: ${error.message}`, colors.red);
-  }
 }
 
 async function main() {
