@@ -16,12 +16,7 @@
     "preview": "npm run build && npm run start",
     "test:webhook": "node scripts/test-webhook.js",
     "test:direct": "node scripts/test-webhook.js --direct",
-    "test:webhook:advanced": "node scripts/test-webhook-advanced.js",
-    "test:webhook:all": "node scripts/test-webhook-advanced.js --all",
-    "test:webhook:load": "node scripts/test-webhook-advanced.js --load",
-    "test:webhook:logs": "node scripts/test-webhook-advanced.js --logs",
-    "test:webhook:stats": "node scripts/test-webhook-advanced.js --stats",
-    "analyze:webhook:logs": "node scripts/analyze-webhook-logs.js"
+    "test:webhook:all": "node scripts/test-webhook.js --all"
   },
   "dependencies": {
     "@notionhq/client": "^4.0.1",
