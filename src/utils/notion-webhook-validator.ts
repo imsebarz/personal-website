@@ -47,6 +47,8 @@ export function isValidNotionWebhook(
   userAgent: string | null,
   hasSignature: boolean
 ): boolean {
+  // Basado en logs reales: Notion usa 'notion-api' como user-agent
+  // También permitimos requests con signature válida
   return userAgent === 'notion-api' || hasSignature;
 }
 
@@ -58,8 +60,9 @@ export function isValidNotionWebhook(
 export function shouldProcessEvent(eventType: string | undefined): boolean {
   const relevantEvents = [
     'page.created',
-    'page.content_updated', 
-    'page.property_updated'
+    'page.updated',           // Evento tradicional de actualización
+    'page.content_updated',   // Evento real encontrado en logs
+    'page.property_updated'   // Actualizaciones de propiedades
   ];
   
   return relevantEvents.includes(eventType || '');

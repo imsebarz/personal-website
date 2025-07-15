@@ -37,10 +37,12 @@ build/
 .Trashes
 ehthumbs.db
 Thumbs.db
+*.csv
 
 # Logs
 logs/
 *.log
+webhook-logs/
 
 # Coverage directory
 coverage/

@@ -11,88 +11,31 @@ import axios from 'axios';
 const API_URL = process.env.APP_URL || 'http://localhost:3000';
 const WEBHOOK_ENDPOINT = `${API_URL}/api/notion-webhook`;
 
-// Datos de prueba simulando un webhook de Notion
+// Datos de prueba con formato real de Notion (basado en logs)
 const mockWebhookPayload = {
-  object: "page",
-  event_ts: new Date().toISOString(),
-  event_id: "test-event-" + Date.now(),
-  event_type: "page.property_updated",
-  subscription_id: "test-subscription",
-  user_id: "test-user",
-  workspace_id: "test-workspace",
-  page: {
-    id: "test-page-id-" + Date.now(),
-    created_time: new Date().toISOString(),
-    last_edited_time: new Date().toISOString(),
-    created_by: {
-      object: "user",
-      id: "test-user-id"
-    },
-    last_edited_by: {
-      object: "user", 
-      id: "test-user-id"
-    },
+  id: `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+  timestamp: new Date().toISOString(),
+  workspace_id: 'bcd7dac8-d5d8-4726-ad5a-f6a0e1ad9ef1',
+  workspace_name: 'Test Workspace',
+  subscription_id: '231d872b-594c-8122-963e-0099eb119522',
+  integration_id: '230d872b-594c-8060-8665-0037427fe4f8',
+  authors: [
+    {
+      id: '79d3b102-9821-4d8e-bf2b-1e94a65d5120',
+      type: 'person'
+    }
+  ],
+  attempt_number: 1,
+  entity: {
+    id: `test-page-${Date.now()}`,
+    type: 'page'
+  },
+  type: 'page.created',
+  data: {
     parent: {
-      type: "database_id",
-      database_id: "test-database-id"
-    },
-    archived: false,
-    properties: {
-      "Title": {
-        type: "title",
-        title: [
-          {
-            type: "text",
-            text: {
-              content: "Tarea de prueba desde Notion",
-              link: null
-            },
-            plain_text: "Tarea de prueba desde Notion"
-          }
-        ]
-      },
-      "Status": {
-        type: "select",
-        select: {
-          id: "test-status-id",
-          name: "To Do",
-          color: "red"
-        }
-      },
-      "Priority": {
-        type: "select",
-        select: {
-          id: "test-priority-id",
-          name: "High",
-          color: "red"
-        }
-      },
-      "Due Date": {
-        type: "date",
-        date: {
-          start: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          end: null,
-          time_zone: null
-        }
-      },
-      "Tags": {
-        type: "multi_select",
-        multi_select: [
-          {
-            id: "test-tag-1",
-            name: "importante",
-            color: "red"
-          },
-          {
-            id: "test-tag-2", 
-            name: "desarrollo",
-            color: "blue"
-          }
-        ]
-      }
-    },
-    url: "https://www.notion.so/test-page-url",
-    public_url: null
+      id: '1f61ad4d-650d-80e0-b231-d9b12ffea832',
+      type: 'database'
+    }
   }
 };
 
@@ -116,7 +59,9 @@ async function testWebhook() {
     const webhookResponse = await axios.post(WEBHOOK_ENDPOINT, mockWebhookPayload, {
       headers: {
         'Content-Type': 'application/json',
-        'notion-version': '2022-06-28'
+        'notion-version': '2022-06-28',
+        'user-agent': 'notion-api',
+        'x-notion-signature': 'test-signature-123'
       }
     });
 
