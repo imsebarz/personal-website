@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { NotionWebhookPayload, ProcessingResult } from '@/types/notion-todoist';
+import { NotionWebhookPayload, ProcessingResult, TodoistCreateTaskResponse } from '@/types/notion-todoist';
 import { getNotionPageContent, isUserMentioned, getNotionPageStatus } from '@/utils/notion-client';
 import { createTodoistTask, updateTodoistTask, findTaskByNotionUrl, formatDateForTodoist, completeTodoistTask } from '@/utils/todoist-client';
 import { enhanceTaskWithAI } from '@/utils/openai-client';
@@ -271,7 +271,7 @@ async function processNotionPage(pageId: string, workspaceName?: string, action:
   }
 }
 
-async function updateExistingTask(existingTask: any, pageId: string, workspaceName?: string): Promise<ProcessingResult> {
+async function updateExistingTask(existingTask: TodoistCreateTaskResponse, pageId: string, workspaceName?: string): Promise<ProcessingResult> {
   try {
     console.log('Obteniendo contenido actualizado de Notion para página:', pageId);
     const pageContent = await getNotionPageContent(pageId);
