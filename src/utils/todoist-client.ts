@@ -18,7 +18,6 @@ export async function createTodoistTask(task: TodoistTask): Promise<TodoistCreat
 
     return response.data;
   } catch (error) {
-    console.error('Error al crear tarea en Todoist:', error);
     if (axios.isAxiosError(error)) {
       throw new Error(`Error de Todoist: ${error.response?.status} - ${error.response?.data}`);
     }
@@ -38,8 +37,7 @@ export async function getProjects(): Promise<Array<{ id: string; name: string }>
       id: project.id,
       name: project.name,
     }));
-  } catch (error) {
-    console.error('Error al obtener proyectos de Todoist:', error);
+  } catch (_error) {
     return [];
   }
 }

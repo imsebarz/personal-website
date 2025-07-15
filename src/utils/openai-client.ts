@@ -56,17 +56,15 @@ Responde en formato JSON con la siguiente estructura:
 
     return parseOpenAIResponse(content, pageContent);
   } catch (error: unknown) {
-    console.error('Error al enriquecer con IA:', error);
-    
     // Mostrar mensaje específico según el tipo de error
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errorObj = error as any;
     if (errorObj?.status === 429) {
-      console.log('⚠️  Cuota de OpenAI excedida - usando contenido original');
+      // Cuota de OpenAI excedida - usando contenido original
     } else if (errorObj?.status === 401) {
-      console.log('⚠️  Token de OpenAI inválido - usando contenido original');
+      // Token de OpenAI inválido - usando contenido original
     } else {
-      console.log('⚠️  Error de OpenAI - usando contenido original');
+      // Error de OpenAI - usando contenido original
     }
     
     // Fallback si falla OpenAI
@@ -90,8 +88,7 @@ function parseOpenAIResponse(content: string, pageContent: NotionPageContent): O
       suggestedLabels: Array.isArray(parsed.suggestedLabels) ? parsed.suggestedLabels : pageContent.tags || [],
       suggestedDueDate: parsed.suggestedDueDate === 'null' ? undefined : parsed.suggestedDueDate,
     };
-  } catch (parseError) {
-    console.error('Error al parsear respuesta de OpenAI:', parseError);
+  } catch (_parseError) {
     // Fallback con los datos originales
     return {
       enhancedTitle: pageContent.title,

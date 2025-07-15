@@ -62,19 +62,6 @@ class WebhookLogger {
     };
 
     this.addLog(logEntry);
-    
-    // Log detallado en consola para desarrollo
-    console.log('🔍 WEBHOOK LOG:', {
-      requestId,
-      timestamp,
-      method: request.method,
-      userAgent: logEntry.userAgent,
-      hasNotionSignature: !!logEntry.notionSignature,
-      notionVersion: logEntry.notionVersion,
-      payloadType: (payload as NotionWebhookPayload)?.type || 'unknown',
-      pageId: (payload as NotionWebhookPayload)?.entity?.id || 
-               (payload as NotionWebhookPayload)?.page?.id || 'none'
-    });
 
     return requestId;
   }
@@ -225,7 +212,6 @@ class WebhookLogger {
     );
     
     const removedCount = initialCount - this.logs.length;
-    console.log(`🧹 Limpieza de logs: ${removedCount} logs eliminados (más antiguos que ${olderThanHours}h)`);
     
     return removedCount;
   }

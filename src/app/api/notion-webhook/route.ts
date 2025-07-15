@@ -8,55 +8,37 @@ import {
   shouldProcessEvent 
 } from '@/utils/notion-webhook-validator';
 import { createWorkspaceTag, combineTagsWithWorkspace } from '@/utils/tag-helpers';
-import { 
-  logWebhookStart, 
-  logWebhookSuccess, 
-  logWebhookSkipped, 
-  logWebhookError 
-} from '@/utils/webhook-logger';
 
-// Configuración
-const NOTION_USER_ID = process.env.NOTION_USER_ID; // Tu ID de usuario en Notion
-const TODOIST_PROJECT_ID = process.env.TODOIST_PROJECT_ID; // ID del proyecto por defecto en Todoist
+const NOTION_USER_ID = process.env.NOTION_USER_ID;
+const TODOIST_PROJECT_ID = process.env.TODOIST_PROJECT_ID; 
 const ENABLE_AI_ENHANCEMENT = process.env.ENABLE_AI_ENHANCEMENT === 'true';
 
-// Cache para prevenir duplicados
 const recentlyProcessed = new Map<string, number>();
 const DEBOUNCE_TIME = 60000; // 60 segundos
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const processingStartTime = Date.now();
-  let requestId: string | undefined;
+  const _processingStartTime = Date.now();
+  let _requestId: string | undefined;
   let payload: NotionWebhookPayload | undefined;
   let pageId: string | undefined;
   
   try {
-    // Parsear el payload del webhook primero
     payload = await request.json();
     
     if (!payload) {
       throw new Error('Payload vacío o inválido');
     }
     
-    // 📊 INICIAR LOGGING
-    requestId = await logWebhookStart(request, payload);
-    console.log(`🚀 Procesando request ${requestId}`);
-
-    // 🔐 MANEJO DE VERIFICACIÓN DE NOTION
-    // Según la documentación oficial, Notion envía verification_token para verificar el endpoint
     if ('verification_token' in payload) {
       console.log('🔍 Verificación de Notion recibida:', payload.verification_token);
       
-      // Guardar el token para validación posterior (opcional pero recomendado)
       console.log('� Token de verificación para validación de firmas:', payload.verification_token);
       
-      // Responder con el mismo payload para completar la verificación
       return NextResponse.json({
         verification_token: payload.verification_token
       }, { status: 200 });
     }
 
-    // Log headers para debugging
     console.log('📋 Headers recibidos:', {
       'notion-version': request.headers.get('notion-version'),
       'user-agent': request.headers.get('user-agent'),
@@ -64,7 +46,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       'x-notion-signature': request.headers.get('x-notion-signature'),
     });
 
-    // Verificar que el webhook provenga de Notion
     const userAgent = request.headers.get('user-agent');
     const hasNotionSignature = !!request.headers.get('x-notion-signature');
     
@@ -76,24 +57,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // TODO: Habilitar validación de firma en producción
-    // const webhookSecret = process.env.NOTION_WEBHOOK_SECRET;
-    // if (webhookSecret) {
-    //   const rawBody = JSON.stringify(payload);
-    //   const signature = request.headers.get('x-notion-signature');
-    //   if (!validateNotionWebhookSignature(signature, rawBody, webhookSecret)) {
-    //     console.log('🔒 Firma de webhook inválida');
-    //     return NextResponse.json({ error: 'Firma inválida' }, { status: 401 });
-    //   }
-    // }
-
-    // TODO: Implementar validación de firma (recomendado para producción)
-    // const rawBody = await request.text();
-    // if (!validateNotionWebhook(request, rawBody)) {
-    //   return NextResponse.json({ error: 'Firma inválida' }, { status: 401 });
-    // }
-    
-    // Log para debugging de eventos reales
     console.log('📥 Webhook recibido:', JSON.stringify(payload, null, 2));
 
     // Verificar que es un evento de página
@@ -128,20 +91,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     
     if (lastProcessed && (now - lastProcessed) < DEBOUNCE_TIME) {
       console.log(`⏳ Página ${pageId} procesada recientemente hace ${Math.round((now - lastProcessed) / 1000)}s, ignorando evento ${payload.type}`);
-      
-      const duration = Date.now() - processingStartTime;
-      logWebhookSkipped(requestId, duration, 'procesado recientemente', pageId, payload.type);
-      
+            
       return NextResponse.json({ message: 'Evento ignorado - procesado recientemente' });
     }
-
-    // Marcar como procesado INMEDIATAMENTE para prevenir duplicados
     recentlyProcessed.set(pageId, now);
 
-    // Limpiar cache viejo (mantener solo últimos 10 minutos)
     const entriesToDelete: string[] = [];
     recentlyProcessed.forEach((timestamp, id) => {
-      if (now - timestamp > 600000) { // 10 minutos
+      if (now - timestamp > 60000) { 
         entriesToDelete.push(id);
       }
     });
@@ -152,10 +109,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       const isMentioned = await isUserMentioned(pageId, NOTION_USER_ID);
       if (!isMentioned) {
         console.log('Usuario no mencionado en la página');
-        
-        const duration = Date.now() - processingStartTime;
-        logWebhookSkipped(requestId, duration, 'usuario no mencionado', pageId, payload.type);
-        
+            
         return NextResponse.json(
           { message: 'Usuario no mencionado - tarea no creada' },
           { status: 200 }
@@ -163,33 +117,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
     }
 
-    // Procesar la página
     const result = await processNotionPage(pageId, payload.workspace_name);
 
-    // Logging del resultado (el cache ya se actualizó arriba)
     if (result.success) {
       console.log(`✅ Página ${pageId} procesada exitosamente`);
-      
-      const duration = Date.now() - processingStartTime;
-      logWebhookSuccess(requestId, duration, pageId, payload.type);
-    } else {
-      const duration = Date.now() - processingStartTime;
-      logWebhookError(requestId, duration, result.error || 'Error desconocido', pageId, payload.type);
-    }
-
+    } 
     return NextResponse.json(result, { status: result.success ? 200 : 500 });
   } catch (error) {
     console.error('Error procesando webhook:', error);
     
-    const duration = Date.now() - processingStartTime;
     const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-    
-    // Solo hacer logging si tenemos requestId
-    if (requestId!) {
-      const errorPageId = payload?.entity?.id || payload?.page?.id;
-      logWebhookError(requestId, duration, errorMessage, errorPageId, payload?.type);
-    }
-    
     return NextResponse.json(
       { 
         error: 'Error interno del servidor',
@@ -202,11 +139,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
 async function processNotionPage(pageId: string, workspaceName?: string): Promise<ProcessingResult> {
   try {
-    // 1. Obtener contenido de Notion
     console.log('Obteniendo contenido de Notion para página:', pageId);
     const pageContent = await getNotionPageContent(pageId);
 
-    // 2. Enriquecer con IA si está habilitado
     let finalContent = pageContent;
     let enhancedWithAI = false;
 
@@ -231,10 +166,8 @@ async function processNotionPage(pageId: string, workspaceName?: string): Promis
       }
     }
 
-    // 3. Crear tarea en Todoist
     console.log('Creando tarea en Todoist...');
     
-    // Preparar etiquetas incluyendo el workspace
     const baseTags = finalContent.tags || ['notion'];
     const workspaceTag = workspaceName ? createWorkspaceTag(workspaceName) : '';
     const allTags = workspaceTag 

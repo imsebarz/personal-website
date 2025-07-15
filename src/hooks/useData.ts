@@ -11,9 +11,8 @@ export const useProjects = () => {
       try {
         const response = await import('@/data/projects.json')
         setProjects(response.projects)
-      } catch (err) {
+      } catch (_err) {
         setError('Error loading projects')
-        console.error('Error loading projects:', err)
       } finally {
         setLoading(false)
       }
@@ -35,9 +34,8 @@ export const usePersonalInfo = () => {
       try {
         const response = await import('@/data/aboutme.json')
         setPersonalInfo(response.default)
-      } catch (err) {
+      } catch (_err) {
         setError('Error loading personal info')
-        console.error('Error loading personal info:', err)
       } finally {
         setLoading(false)
       }
@@ -59,9 +57,8 @@ export const useNavigation = () => {
       try {
         const response = await import('@/data/nav.json')
         setNavigation(response.default)
-      } catch (err) {
+      } catch (_err) {
         setError('Error loading navigation')
-        console.error('Error loading navigation:', err)
       } finally {
         setLoading(false)
       }
@@ -83,9 +80,8 @@ export const useContact = () => {
       try {
         const response = await import('@/data/contact.json')
         setContact(response.default)
-      } catch (err) {
+      } catch (_err) {
         setError('Error loading contact info')
-        console.error('Error loading contact info:', err)
       } finally {
         setLoading(false)
       }

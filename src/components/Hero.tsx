@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
     const hero = document.querySelector('.hero') as HTMLElement
     function handleResize() {
       if (hero) {
-        console.log(hero.clientHeight)
+        // Height is handled by CSS
       }
     }
     setTimeout(() => {

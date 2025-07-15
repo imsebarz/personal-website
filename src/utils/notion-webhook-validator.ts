@@ -31,8 +31,7 @@ export function validateNotionWebhookSignature(
       Buffer.from(cleanSignature, 'hex'),
       Buffer.from(expectedSignature, 'hex')
     );
-  } catch (error) {
-    console.error('Error validating webhook signature:', error);
+  } catch (_error) {
     return false;
   }
 }

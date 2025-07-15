@@ -144,8 +144,7 @@ export async function getNotionPageContent(pageId: string): Promise<NotionPageCo
       assignee,
       tags,
     };
-  } catch (error) {
-    console.error('Error al obtener contenido de Notion:', error);
+  } catch (_error) {
     throw new Error('No se pudo obtener el contenido de la página de Notion');
   }
 }
@@ -189,7 +188,6 @@ export async function isUserMentioned(pageId: string, userId: string): Promise<b
       });
       
       if (hasMentionInProperties) {
-        console.log('✅ Usuario mencionado en propiedades de la página');
         return true;
       }
     }
@@ -236,14 +234,11 @@ export async function isUserMentioned(pageId: string, userId: string): Promise<b
     });
 
     if (hasMentionInContent) {
-      console.log('✅ Usuario mencionado en contenido de la página');
       return true;
     }
 
-    console.log('❌ Usuario no encontrado en menciones');
     return false;
-  } catch (error) {
-    console.error('Error al verificar menciones:', error);
+  } catch (_error) {
     return false;
   }
 }
