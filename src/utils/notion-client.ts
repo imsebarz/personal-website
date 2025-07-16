@@ -395,7 +395,7 @@ function findBestStatusMatch(requestedStatus: string, availableOptions: string[]
   // Determinar la categoría del estado solicitado
   let targetCategory: string[] = [];
   
-  for (const [category, statuses] of Object.entries(statusMaps)) {
+  for (const [_category, statuses] of Object.entries(statusMaps)) {
     if (statuses.some(s => s.toLowerCase() === requestedStatus.toLowerCase())) {
       targetCategory = statuses;
       break;
