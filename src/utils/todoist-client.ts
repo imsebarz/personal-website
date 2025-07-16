@@ -65,6 +65,24 @@ export async function completeTodoistTask(taskId: string): Promise<void> {
   }
 }
 
+export async function deleteTodoistTask(taskId: string): Promise<void> {
+  try {
+    await axios.delete(
+      `${TODOIST_API_URL}/tasks/${taskId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.TODOIST_API_TOKEN}`,
+        },
+      }
+    );
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(`Error eliminando tarea en Todoist: ${error.response?.status} - ${error.response?.data}`);
+    }
+    throw new Error('Error desconocido al eliminar tarea en Todoist');
+  }
+}
+
 export async function findTaskByNotionUrl(notionPageId: string, projectId?: string): Promise<TodoistCreateTaskResponse | null> {
   try {
     const params: Record<string, string> = {};

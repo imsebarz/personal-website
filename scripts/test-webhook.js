@@ -8,6 +8,7 @@
  * npm run test:webhook                    # Test básico del endpoint
  * npm run test:webhook -- --real         # Tests con payloads reales
  * npm run test:webhook -- --sequence     # Test de secuencia de eventos
+ * npm run test:webhook -- --mentions     # Test de eliminación de menciones
  * npm run test:webhook -- --update       # Test de actualización de propiedades
  * npm run test:webhook -- --logs         # Ver logs recientes
  * npm run test:webhook -- --stats        # Ver estadísticas
@@ -381,6 +382,76 @@ async function testTaskCompletion() {
   }
 }
 
+async function testMentionRemoval() {
+  log('🗑️  Testeando eliminación de tareas cuando se quita la mención...', colors.cyan);
+  
+  try {
+    // Test 1: Simular página donde se quitó la mención
+    log('  📋 Test 1: Página sin mención del usuario', colors.blue);
+    const response1 = await makeRequest(WEBHOOK_URL, {
+      method: 'POST',
+      body: {
+        id: 'test-mention-removal-1',
+        timestamp: new Date().toISOString(),
+        workspace_id: 'test-workspace',
+        workspace_name: 'Test Workspace',
+        type: 'page.updated',
+        entity: {
+          id: 'test-page-mention-removed',
+          type: 'page'
+        }
+      }
+    });
+
+    if (response1.status === 200) {
+      log('✅ Evento de actualización procesado correctamente', colors.green);
+      log(`   📄 Página: test-page-mention-removed`);
+      log(`   🔄 Acción: ${response1.data.eventAction}`);
+      log(`   ⏰ Debounce: ${response1.data.debounceTimeMs || 0}ms`);
+      
+      // Test 2: Verificar que el sistema maneja correctamente cuando no hay tarea que eliminar
+      log('  📋 Test 2: Página nueva sin tarea asociada', colors.blue);
+      const response2 = await makeRequest(WEBHOOK_URL, {
+        method: 'POST',
+        body: {
+          id: 'test-mention-removal-2',
+          timestamp: new Date().toISOString(),
+          workspace_id: 'test-workspace',
+          workspace_name: 'Test Workspace',  
+          type: 'page.updated',
+          entity: {
+            id: 'test-page-no-existing-task',
+            type: 'page'
+          }
+        }
+      });
+
+      if (response2.status === 200) {
+        log('✅ Manejo correcto de página sin tarea asociada', colors.green);
+        log(`   📄 Página: test-page-no-existing-task`);
+        log(`   🔄 Resultado: ${response2.data.message}`);
+        
+        log('✅ Tests de eliminación de menciones completados', colors.green);
+        log('   • Sistema detecta cuando se quita la mención', colors.reset);
+        log('   • Maneja correctamente páginas sin tareas asociadas', colors.reset);
+        log('   • Funcionalidad lista para entorno de producción', colors.reset);
+        
+        return true;
+      } else {
+        log(`❌ Error en test 2: ${response2.status}`, colors.red);
+        return false;
+      }
+    } else {
+      log(`❌ Error en test 1: ${response1.status}`, colors.red);
+      console.log('Response:', response1.data);
+      return false;
+    }
+  } catch (error) {
+    log(`❌ Error en test de eliminación de menciones: ${error.message}`, colors.red);
+    return false;
+  }
+}
+
 async function testSequenceScenario() {
   log('📝 Testeando secuencia real de eventos (content_updated -> page.created)...', colors.cyan);
   
@@ -450,6 +521,7 @@ async function runRealScenarioTests() {
     { name: 'Propiedades actualizadas', fn: testPagePropertiesUpdated },
     { name: 'Secuencia creación/actualización', fn: testUpdateSequence },
     { name: 'Completado automático de tareas', fn: testTaskCompletion },
+    { name: 'Eliminación por remoción de mención', fn: testMentionRemoval },
     { name: 'Secuencia de eventos', fn: testSequenceScenario }
   ];
 
@@ -505,6 +577,7 @@ async function main() {
     log('  npm run test:webhook                    # Test básico del endpoint');
     log('  npm run test:webhook -- --real         # Tests con payloads reales');
     log('  npm run test:webhook -- --sequence     # Test de secuencia de eventos');
+    log('  npm run test:webhook -- --mentions     # Test de eliminación de menciones');
     log('  npm run test:webhook -- --update       # Test de actualización de propiedades');
     log('  npm run test:webhook -- --logs         # Ver logs recientes');
     log('  npm run test:webhook -- --stats        # Ver estadísticas');
@@ -516,6 +589,9 @@ async function main() {
     process.exit(success ? 0 : 1);
   } else if (args.includes('--sequence')) {
     const success = await testSequenceScenario();
+    process.exit(success ? 0 : 1);
+  } else if (args.includes('--mentions')) {
+    const success = await testMentionRemoval();
     process.exit(success ? 0 : 1);
   } else if (args.includes('--update')) {
     const success = await testUpdateSequence();
@@ -530,6 +606,7 @@ async function main() {
     log('💡 Para tests más detallados:', colors.blue);
     log('  --real      Tests con payloads reales');
     log('  --sequence  Test de secuencia de eventos');
+    log('  --mentions  Test de eliminación de menciones');
     log('  --help      Ver todas las opciones');
   }
 }

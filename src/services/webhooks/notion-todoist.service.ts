@@ -11,13 +11,59 @@ import {
   updateTodoistTask, 
   findTaskByNotionUrl, 
   formatDateForTodoist, 
-  completeTodoistTask 
+  completeTodoistTask,
+  deleteTodoistTask 
 } from '@/utils/todoist-client';
 import { enhanceTaskWithAI } from '@/utils/openai-client';
 import { createWorkspaceTag, combineTagsWithWorkspace } from '@/utils/tag-helpers';
 
 export class NotionTodoistService {
   
+  /**
+   * Maneja la eliminación de una tarea cuando se quita la mención del usuario
+   */
+  async handleMentionRemoval(pageId: string): Promise<{
+    taskDeleted: boolean;
+    taskId?: string;
+    error?: string;
+  }> {
+    try {
+      logger.info('Checking for existing Todoist task to delete', { pageId });
+      
+      // Buscar tarea existente en Todoist
+      const existingTask = await findTaskByNotionUrl(pageId, config.todoist.projectId);
+      
+      if (!existingTask) {
+        logger.info('No existing task found for mention removal', { pageId });
+        return { taskDeleted: false };
+      }
+      
+      logger.info('Found existing task, proceeding with deletion', { 
+        pageId,
+        taskId: existingTask.id 
+      });
+      
+      // Eliminar la tarea de Todoist
+      await deleteTodoistTask(existingTask.id);
+      
+      logger.info('Task successfully deleted from Todoist due to mention removal', { 
+        pageId,
+        taskId: existingTask.id 
+      });
+      
+      return { 
+        taskDeleted: true, 
+        taskId: existingTask.id 
+      };
+    } catch (error) {
+      logger.error('Error handling mention removal', error as Error, { pageId });
+      return {
+        taskDeleted: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
+
   /**
    * Procesa una página de Notion y crea/actualiza tarea en Todoist
    */

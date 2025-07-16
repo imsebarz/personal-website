@@ -223,7 +223,18 @@ export class NotionWebhookService {
       if (config.notion.userId) {
         const isMentioned = await isUserMentioned(pageId, config.notion.userId);
         if (!isMentioned) {
-          logger.info('User not mentioned in page', { pageId });
+          logger.info('User not mentioned in page - checking for existing task to remove', { pageId });
+          
+          // Verificar si existe una tarea en Todoist para esta página
+          const result = await this.notionTodoistService.handleMentionRemoval(pageId);
+          if (result.taskDeleted) {
+            logger.info('Task deleted from Todoist due to mention removal', { 
+              pageId, 
+              taskId: result.taskId 
+            });
+          } else {
+            logger.info('No existing task found to delete', { pageId });
+          }
           return;
         }
       }

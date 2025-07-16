@@ -21,6 +21,7 @@ jest.mock('@/utils/notion-client', () => ({
 jest.mock('@/services/webhooks/notion-todoist.service', () => ({
   NotionTodoistService: jest.fn().mockImplementation(() => ({
     processPage: jest.fn(),
+    handleMentionRemoval: jest.fn(),
   })),
 }));
 
@@ -175,6 +176,77 @@ describe('NotionWebhookService', () => {
       expect(stats).toHaveProperty('pendingEvents');
       expect(typeof stats.currentlyTrackedPages).toBe('number');
       expect(typeof stats.pendingEvents).toBe('number');
+    });
+  });
+
+  describe('Eliminación de tareas cuando se quita la mención', () => {
+    it('debe eliminar la tarea de Todoist cuando se quita la mención del usuario', async () => {
+      const { isUserMentioned } = jest.requireMock('@/utils/notion-client');
+      
+      // Mock que indica que el usuario NO está mencionado
+      (isUserMentioned as jest.Mock).mockResolvedValue(false);
+      (webhookValidator.isValidNotionWebhook as jest.Mock).mockReturnValue(true);
+      (webhookValidator.shouldProcessEvent as jest.Mock).mockReturnValue(true);
+      (webhookValidator.getEventAction as jest.Mock).mockReturnValue('update');
+      
+      // Mock del resultado de handleMentionRemoval directamente en el servicio
+      const mockHandleMentionRemoval = jest.fn().mockResolvedValue({
+        taskDeleted: true,
+        taskId: 'deleted-task-123'
+      });
+      
+      // Asignar el mock al servicio
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (service as any).notionTodoistService.handleMentionRemoval = mockHandleMentionRemoval;
+
+      const payload = {
+        entity: { id: 'test-page-remove-mention', type: 'page' },
+        type: 'page.updated'
+      };
+      const headers = { 'user-agent': 'notion-api', 'x-notion-signature': 'signature' };
+
+      const result = await service.processWebhook(payload, headers);
+
+      // Verificar que se llamó a handleMentionRemoval
+      expect(mockHandleMentionRemoval).toHaveBeenCalledWith('test-page-remove-mention');
+      
+      // Verificar el resultado
+      expect(result.message).toContain('Event processed successfully');
+      expect(result.pageId).toBe('test-page-remove-mention');
+    });
+
+    it('debe manejar correctamente cuando no hay tarea que eliminar', async () => {
+      const { isUserMentioned } = jest.requireMock('@/utils/notion-client');
+      
+      // Mock que indica que el usuario NO está mencionado
+      (isUserMentioned as jest.Mock).mockResolvedValue(false);
+      (webhookValidator.isValidNotionWebhook as jest.Mock).mockReturnValue(true);
+      (webhookValidator.shouldProcessEvent as jest.Mock).mockReturnValue(true);
+      (webhookValidator.getEventAction as jest.Mock).mockReturnValue('update');
+      
+      // Mock del resultado de handleMentionRemoval cuando no hay tarea
+      const mockHandleMentionRemoval = jest.fn().mockResolvedValue({
+        taskDeleted: false
+      });
+      
+      // Asignar el mock al servicio  
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (service as any).notionTodoistService.handleMentionRemoval = mockHandleMentionRemoval;
+
+      const payload = {
+        entity: { id: 'test-page-no-task', type: 'page' },
+        type: 'page.updated'
+      };
+      const headers = { 'user-agent': 'notion-api', 'x-notion-signature': 'signature' };
+
+      const result = await service.processWebhook(payload, headers);
+
+      // Verificar que se llamó a handleMentionRemoval
+      expect(mockHandleMentionRemoval).toHaveBeenCalledWith('test-page-no-task');
+      
+      // Verificar el resultado
+      expect(result.message).toContain('Event processed successfully');
+      expect(result.pageId).toBe('test-page-no-task');
     });
   });
 });
