@@ -58,7 +58,10 @@ export class NotionWebhookService {
     // 4. Validar evento
     this.validateEvent(payload, pageId);
 
-    // 5. Implementar debouncing
+    // 5. Procesar eventos pendientes antes de manejar el nuevo evento
+    await this.processPendingEventsIfNeeded();
+
+    // 6. Implementar debouncing mejorado para Vercel
     return this.handleEventWithDebounce(payload, pageId);
   }
 
@@ -125,17 +128,17 @@ export class NotionWebhookService {
   }
 
   /**
-   * Maneja el evento con debouncing
+   * Maneja el evento con debouncing adaptado para Vercel
    */
-  private handleEventWithDebounce(
+  private async handleEventWithDebounce(
     payload: NotionWebhookPayload,
     pageId: string
-  ): {
+  ): Promise<{
     message: string;
     pageId: string;
     eventAction: 'create' | 'update' | 'skip';
     debounceTimeMs: number;
-  } {
+  }> {
     const now = Date.now();
     const lastProcessed = recentlyProcessed.get(pageId);
     
@@ -146,44 +149,58 @@ export class NotionWebhookService {
       logger.info('Canceling previous event, updating with latest', { pageId });
     }
     
-    // Log debounce status
-    if (lastProcessed && (now - lastProcessed) < config.webhooks.debounceTime) {
+    // Verificar si necesitamos debounce o podemos procesar inmediatamente
+    const needsDebounce = lastProcessed && (now - lastProcessed) < config.webhooks.debounceTime;
+    
+    if (needsDebounce) {
       const timeSince = Math.round((now - lastProcessed) / 1000);
       logger.info('Page recently processed, scheduling latest event', { 
         pageId, 
         timeSinceLastProcess: timeSince 
       });
-    } else {
-      const debounceSeconds = config.webhooks.debounceTime / 1000;
-      logger.info('Scheduling page processing', { 
-        pageId, 
-        debounceSeconds 
+      
+      // En lugar de setTimeout, guardamos el evento para el próximo webhook
+      pendingEvents.set(pageId, {
+        payload,
+        workspaceName: payload.workspace_name,
+        timeoutId: setTimeout(() => {}, 0) // Placeholder
       });
+      
+      // Limpiar entradas antiguas
+      this.cleanupOldEntries(now);
+      
+      const eventAction = getEventAction(payload.type);
+      
+      return {
+        message: 'Event debounced - will be processed on next webhook or after cooldown',
+        pageId,
+        eventAction,
+        debounceTimeMs: config.webhooks.debounceTime,
+      };
+    } else {
+      // Procesar inmediatamente si no hay conflicto de debounce
+      logger.info('Processing event immediately - no recent processing detected', { pageId });
+      
+      // Marcar como procesado antes de procesar para evitar duplicados
+      recentlyProcessed.set(pageId, now);
+      
+      // Procesar el evento inmediatamente
+      try {
+        await this.processDeferredEvent(payload, pageId);
+        
+        const eventAction = getEventAction(payload.type);
+        return {
+          message: 'Event processed successfully',
+          pageId,
+          eventAction,
+          debounceTimeMs: 0,
+        };
+      } catch (error) {
+        // Si falla, remover de recentlyProcessed para permitir reintento
+        recentlyProcessed.delete(pageId);
+        throw error;
+      }
     }
-    
-    // Crear nuevo timeout para procesar el evento más reciente
-    const timeoutId = setTimeout(async () => {
-      await this.processDeferredEvent(payload, pageId);
-    }, config.webhooks.debounceTime);
-    
-    // Guardar evento pendiente
-    pendingEvents.set(pageId, {
-      payload,
-      workspaceName: payload.workspace_name,
-      timeoutId
-    });
-    
-    // Limpiar entradas antiguas
-    this.cleanupOldEntries(now);
-    
-    const eventAction = getEventAction(payload.type);
-    
-    return {
-      message: 'Event scheduled for processing (latest event will be processed)',
-      pageId,
-      eventAction,
-      debounceTimeMs: config.webhooks.debounceTime,
-    };
   }
 
   /**
@@ -235,15 +252,47 @@ export class NotionWebhookService {
   }
 
   /**
+   * Procesa eventos pendientes que han superado su tiempo de debounce
+   */
+  private async processPendingEventsIfNeeded(): Promise<void> {
+    const now = Date.now();
+    const eventsToProcess: Array<{ pageId: string; payload: NotionWebhookPayload }> = [];
+    
+    // Identificar eventos que ya pueden ser procesados
+    const pendingEntries = Array.from(pendingEvents.entries());
+    for (const [pageId, eventData] of pendingEntries) {
+      const lastProcessed = recentlyProcessed.get(pageId);
+      const timeSinceLastProcess = lastProcessed ? now - lastProcessed : Infinity;
+      
+      if (timeSinceLastProcess >= config.webhooks.debounceTime) {
+        eventsToProcess.push({ pageId, payload: eventData.payload });
+        clearTimeout(eventData.timeoutId);
+        pendingEvents.delete(pageId);
+      }
+    }
+    
+    // Procesar eventos pendientes
+    for (const { pageId, payload } of eventsToProcess) {
+      try {
+        logger.info('Processing pending event that exceeded debounce time', { pageId });
+        await this.processDeferredEvent(payload, pageId);
+      } catch (error) {
+        logger.error('Error processing pending event', error as Error, { pageId });
+      }
+    }
+  }
+
+  /**
    * Limpia entradas antiguas del mapa de procesamiento reciente
    */
   private cleanupOldEntries(now: number): void {
     const entriesToDelete: string[] = [];
-    recentlyProcessed.forEach((timestamp, id) => {
+    const recentEntries = Array.from(recentlyProcessed.entries());
+    for (const [id, timestamp] of recentEntries) {
       if (now - timestamp > config.webhooks.debounceTime * 2) {
         entriesToDelete.push(id);
       }
-    });
+    }
     entriesToDelete.forEach(id => recentlyProcessed.delete(id));
   }
 

@@ -20,7 +20,8 @@
     "test:coverage": "jest --coverage",
     "test:webhook": "node scripts/test-webhook.js",
     "test:webhook:real": "node scripts/test-webhook.js --real",
-    "test:webhook:sequence": "node scripts/test-webhook.js --sequence"
+    "test:webhook:sequence": "node scripts/test-webhook.js --sequence",
+    "test:webhook:vercel": "node scripts/test-vercel-webhook.js"
   },
   "dependencies": {
     "@notionhq/client": "^4.0.1",

@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "src/app/api/notion-webhook/route.ts": {
+      "maxDuration": 30
+    },
+    "src/app/api/todoist-webhook/route.ts": {
+      "maxDuration": 30
+    }
+  }
+}

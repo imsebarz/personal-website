@@ -27,7 +27,7 @@ export const config = {
   
   // Webhook configuration
   webhooks: {
-    debounceTime: 60000, // 60 seconds
+    debounceTime: 10000, // 10 seconds - reduced for serverless compatibility
     maxRetries: 3,
     retryDelay: 1000, // 1 second
   },

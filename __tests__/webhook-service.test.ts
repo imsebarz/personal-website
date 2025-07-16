@@ -64,7 +64,8 @@ describe('NotionWebhookService', () => {
 
       const result = await service.processWebhook(payload, headers);
       
-      expect(result.message).toContain('Event scheduled for processing');
+      // Con el nuevo comportamiento, se procesa inmediatamente si no hay conflicto de debounce
+      expect(result.message).toContain('Event processed successfully');
       expect(result.pageId).toBe('test-page');
       expect(result.eventAction).toBe('create');
     });
@@ -122,7 +123,7 @@ describe('NotionWebhookService', () => {
   });
 
   describe('Debouncing de eventos', () => {
-    it('debe programar evento para procesamiento con debounce', async () => {
+    it('debe procesar evento inmediatamente cuando no hay conflicto de debounce', async () => {
       (webhookValidator.isValidNotionWebhook as jest.Mock).mockReturnValue(true);
       (webhookValidator.shouldProcessEvent as jest.Mock).mockReturnValue(true);
       (webhookValidator.getEventAction as jest.Mock).mockReturnValue('update');
@@ -135,10 +136,34 @@ describe('NotionWebhookService', () => {
 
       const result = await service.processWebhook(payload, headers);
       
-      expect(result.message).toContain('Event scheduled for processing');
+      // Con el nuevo comportamiento, se procesa inmediatamente si no hay conflicto de debounce
+      expect(result.message).toContain('Event processed successfully');
       expect(result.pageId).toBe('test-page');
       expect(result.eventAction).toBe('update');
-      expect(result.debounceTimeMs).toBe(60000);
+      expect(result.debounceTimeMs).toBe(0);
+    });
+
+    it('debe aplicar debounce cuando hay procesamiento reciente', async () => {
+      (webhookValidator.isValidNotionWebhook as jest.Mock).mockReturnValue(true);
+      (webhookValidator.shouldProcessEvent as jest.Mock).mockReturnValue(true);
+      (webhookValidator.getEventAction as jest.Mock).mockReturnValue('update');
+
+      const payload = { 
+        entity: { id: 'test-page-debounce', type: 'page' },
+        type: 'page.updated'
+      };
+      const headers = { 'user-agent': 'notion-api', 'x-notion-signature': 'signature' };
+
+      // Procesar primer evento
+      await service.processWebhook(payload, headers);
+      
+      // Procesar segundo evento inmediatamente (debería aplicar debounce)
+      const result = await service.processWebhook(payload, headers);
+      
+      expect(result.message).toContain('debounced');
+      expect(result.pageId).toBe('test-page-debounce');
+      expect(result.eventAction).toBe('update');
+      expect(result.debounceTimeMs).toBe(10000); // Nuevo tiempo de debounce
     });
   });
 
