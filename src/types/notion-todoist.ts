@@ -78,6 +78,65 @@ export interface NotionWebhookPayload {
   };
 }
 
+// Interfaces para Todoist Webhooks
+export interface TodoistWebhookPayload {
+  event_name: string;           // Tipo de evento: item:completed, item:added, etc.
+  user_id: string;             // ID del usuario que ejecutó la acción
+  event_data: TodoistEventData; // Datos del evento específico
+  initiator: TodoistInitiator;  // Usuario que inició la acción
+  triggered_at: string;        // Timestamp del evento
+  version: string;             // Versión del webhook
+  event_data_extra?: {         // Información extra opcional
+    old_item?: TodoistEventData;
+    update_intent?: string;    // item_updated, item_completed, item_uncompleted
+  };
+}
+
+export interface TodoistEventData {
+  id: string;                  // ID de la tarea
+  content: string;             // Contenido/título de la tarea
+  description: string;         // Descripción de la tarea
+  project_id: string;          // ID del proyecto
+  section_id?: string | null;  // ID de la sección
+  parent_id?: string | null;   // ID de la tarea padre
+  order: number;               // Orden de la tarea
+  labels: string[];            // Labels/etiquetas
+  priority: number;            // Prioridad (1-4)
+  due?: {                      // Fecha de vencimiento
+    date: string;
+    timezone?: string;
+    string: string;
+    lang: string;
+    is_recurring: boolean;
+  } | null;
+  url: string;                 // URL de la tarea en Todoist
+  comment_count: number;       // Número de comentarios
+  created_at: string;          // Fecha de creación
+  creator_id: string;          // ID del creador
+  assignee_id?: string | null; // ID del asignado
+  assigner_id?: string | null; // ID del que asignó
+  is_completed: boolean;       // Si está completada
+  completed_at?: string | null;// Fecha de completado
+  added_at: string;           // Fecha de adición
+  added_by_uid: string;       // ID del usuario que agregó
+  assigned_by_uid?: string | null; // ID del usuario que asignó
+  responsible_uid?: string | null; // ID del responsable
+  checked: boolean;           // Si está marcada como completada
+  child_order: number;        // Orden entre tareas hijas
+  collapsed: boolean;         // Si está colapsada
+  deadline?: string | null;   // Fecha límite
+  is_deleted: boolean;        // Si está eliminada
+  user_id: string;           // ID del usuario
+}
+
+export interface TodoistInitiator {
+  email: string;              // Email del usuario
+  full_name: string;          // Nombre completo
+  id: string;                // ID del usuario
+  image_id?: string;         // ID de la imagen de perfil
+  is_premium: boolean;       // Si es usuario premium
+}
+
 export interface TodoistTask {
   content: string;
   description?: string;

@@ -79,7 +79,7 @@ export class NotionTodoistService {
         
         finalContent = {
           ...pageContent,
-          title: aiEnhancement.enhancedTitle,
+          title: pageContent.title, // Mantener título original, sin AI enhancement
           content: aiEnhancement.enhancedDescription,
           priority: aiEnhancement.suggestedPriority,
           tags: aiEnhancement.suggestedLabels,
@@ -87,7 +87,7 @@ export class NotionTodoistService {
         };
         
         enhancedWithAI = true;
-        logger.info('Task enhanced with AI successfully');
+        logger.info('Task enhanced with AI successfully (keeping original title)');
       } catch (aiError) {
         logger.warn('Error enhancing with AI, continuing without improvements', { 
           error: aiError 
@@ -215,7 +215,7 @@ export class NotionTodoistService {
         
         finalContent = {
           ...pageContent,
-          title: aiEnhancement.enhancedTitle,
+          title: pageContent.title, // Mantener título original, sin AI enhancement
           content: aiEnhancement.enhancedDescription,
           priority: aiEnhancement.suggestedPriority,
           tags: aiEnhancement.suggestedLabels,
@@ -223,7 +223,7 @@ export class NotionTodoistService {
         };
         
         enhancedWithAI = true;
-        logger.info('Task update enhanced with AI successfully');
+        logger.info('Task update enhanced with AI successfully (keeping original title)');
       } catch (aiError) {
         logger.warn('Error enhancing update with AI, continuing without improvements', {
           error: aiError

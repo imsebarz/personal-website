@@ -1,5 +1,6 @@
 import { Client } from '@notionhq/client';
 import { NotionPageContent } from '@/types/notion-todoist';
+import { logger } from '@/lib/logger';
 
 // Interfaces para tipos de Notion
 interface NotionRichText {
@@ -267,6 +268,192 @@ export async function getNotionPageStatus(pageId: string): Promise<string | null
     return null;
   } catch (error) {
     console.error('Error obteniendo estado de página de Notion:', error);
+    return null;
+  }
+}
+
+export async function updateNotionPageStatus(pageId: string, status: string): Promise<void> {
+  try {
+    const page = await notion.pages.retrieve({ page_id: pageId });
+    
+    if ('properties' in page) {
+      // Buscar propiedades de estado comunes
+      const statusProperties = ['Status', 'Estado', 'state', 'status'];
+      let statusPropertyName: string | null = null;
+      let statusPropertyType: string | null = null;
+      
+      for (const propName of statusProperties) {
+        const property = page.properties[propName];
+        if (property && (property.type === 'status' || property.type === 'select')) {
+          statusPropertyName = propName;
+          statusPropertyType = property.type;
+          break;
+        }
+      }
+      
+      if (statusPropertyName && statusPropertyType && 'parent' in page && page.parent.type === 'database_id') {
+        // Obtener el schema del database para conocer las opciones disponibles
+        const database = await notion.databases.retrieve({ database_id: page.parent.database_id });
+        const statusProperty = database.properties[statusPropertyName];
+        
+        let availableOptions: string[] = [];
+        
+        if (statusProperty && statusProperty.type === 'status' && 'status' in statusProperty) {
+          availableOptions = statusProperty.status.options.map(option => option.name);
+        } else if (statusProperty && statusProperty.type === 'select' && 'select' in statusProperty) {
+          availableOptions = statusProperty.select.options.map(option => option.name);
+        }
+        
+        logger.info('Available status options from database', {
+          pageId,
+          statusProperty: statusPropertyName,
+          availableOptions,
+          requestedStatus: status
+        });
+        
+        // Intentar primero con el estado solicitado
+        let targetStatus = status;
+        
+        // Si el estado solicitado no está disponible, buscar el más apropiado
+        if (!availableOptions.includes(status)) {
+          const bestMatch = findBestStatusMatch(status, availableOptions);
+          
+          if (!bestMatch) {
+            throw new Error(`No suitable status found. Requested: "${status}". Available options: ${availableOptions.join(', ')}`);
+          }
+          
+          targetStatus = bestMatch;
+          
+          logger.info(`Status "${status}" not available, using "${targetStatus}" instead`, {
+            pageId,
+            requestedStatus: status,
+            selectedStatus: targetStatus,
+            availableOptions
+          });
+        }
+        
+        const updatePayload = {
+          page_id: pageId,
+          properties: {} as Record<string, unknown>
+        };
+        
+        if (statusPropertyType === 'status') {
+          updatePayload.properties[statusPropertyName] = {
+            status: {
+              name: targetStatus
+            }
+          };
+        } else if (statusPropertyType === 'select') {
+          updatePayload.properties[statusPropertyName] = {
+            select: {
+              name: targetStatus
+            }
+          };
+        }
+        
+        // TypeScript assertion necesaria debido a los tipos complejos de Notion API
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await notion.pages.update(updatePayload as any);
+        
+        logger.info(`Successfully updated Notion page status`, {
+          pageId,
+          statusProperty: statusPropertyName,
+          propertyType: statusPropertyType,
+          newStatus: targetStatus
+        });
+      } else {
+        throw new Error('No se encontró una propiedad de estado en la página de Notion o la página no pertenece a una base de datos');
+      }
+    }
+  } catch (error) {
+    console.error('Error actualizando estado de página de Notion:', error);
+    throw new Error('No se pudo actualizar el estado de la página en Notion');
+  }
+}
+
+/**
+ * Encuentra el mejor estado coincidente de las opciones disponibles
+ */
+function findBestStatusMatch(requestedStatus: string, availableOptions: string[]): string | null {
+  // Mapas de estados por categorías
+  const statusMaps = {
+    completed: [
+      'Completado', 'Completed', 'Done', 'Finished', 'Complete', 
+      'Listo', 'Terminado', 'Finalizado', 'Cerrado', 'Closed'
+    ],
+    inProgress: [
+      'En progreso', 'In Progress', 'Todo', 'Doing', 'En curso', 
+      'Pendiente', 'Not started', 'Sin empezar', 'Open', 'Abierto', 
+      'Active', 'Working', 'Trabajando'
+    ],
+    pending: [
+      'Pendiente', 'Pending', 'Todo', 'To do', 'Sin empezar', 
+      'Not started', 'Backlog', 'Open', 'Abierto'
+    ]
+  };
+  
+  // Determinar la categoría del estado solicitado
+  let targetCategory: string[] = [];
+  
+  for (const [category, statuses] of Object.entries(statusMaps)) {
+    if (statuses.some(s => s.toLowerCase() === requestedStatus.toLowerCase())) {
+      targetCategory = statuses;
+      break;
+    }
+  }
+  
+  // Si no encontramos categoría, usar una búsqueda más amplia
+  if (targetCategory.length === 0) {
+    if (requestedStatus.toLowerCase().includes('complet') || 
+        requestedStatus.toLowerCase().includes('done') || 
+        requestedStatus.toLowerCase().includes('finish')) {
+      targetCategory = statusMaps.completed;
+    } else if (requestedStatus.toLowerCase().includes('progress') || 
+               requestedStatus.toLowerCase().includes('doing') || 
+               requestedStatus.toLowerCase().includes('curso')) {
+      targetCategory = statusMaps.inProgress;
+    } else {
+      targetCategory = statusMaps.pending;
+    }
+  }
+  
+  // Buscar la mejor coincidencia en las opciones disponibles
+  for (const possibleStatus of targetCategory) {
+    const match = availableOptions.find(option => 
+      option.toLowerCase() === possibleStatus.toLowerCase()
+    );
+    if (match) {
+      return match;
+    }
+  }
+  
+  // Si no hay coincidencia exacta, buscar coincidencias parciales
+  for (const possibleStatus of targetCategory) {
+    const match = availableOptions.find(option => 
+      option.toLowerCase().includes(possibleStatus.toLowerCase()) ||
+      possibleStatus.toLowerCase().includes(option.toLowerCase())
+    );
+    if (match) {
+      return match;
+    }
+  }
+  
+  // Como último recurso, devolver la primera opción disponible
+  return availableOptions.length > 0 ? availableOptions[0] : null;
+}
+
+export async function findNotionPageByTodoistTaskId(_todoistTaskId: string): Promise<string | null> {
+  try {
+    // Buscar en la base de datos usando la URL de la tarea de Todoist
+    // Nota: Esta función requiere que tengas acceso a una base de datos donde se almacenen las relaciones
+    // O que busques en las descripciones de las páginas el ID de la tarea de Todoist
+    
+    // Por ahora, implementaremos una búsqueda básica
+    // En una implementación más robusta, deberías mantener una base de datos de relaciones
+    
+    return null; // Placeholder - se implementará según la estructura específica de tu Notion
+  } catch (error) {
+    console.error('Error buscando página de Notion por ID de tarea de Todoist:', error);
     return null;
   }
 }

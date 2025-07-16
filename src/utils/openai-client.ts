@@ -19,19 +19,21 @@ Etiquetas: ${pageContent.tags?.join(', ') || 'Ninguna'}
 
 Por favor, proporciona:
 1. Un título mejorado y más claro para la tarea
-2. Una descripción enriquecida que incluya el contexto y los pasos de acción
+2. Una descripción CORTA Y CONCISA (máximo 2-3 líneas) que resuma lo esencial
 3. Una prioridad sugerida (1-4, donde 4 es la más alta)
 4. Etiquetas sugeridas relevantes (SOLO usa: nombre del proyecto, nombre de la tabla/base de datos, o etiquetas existentes en la respuesta original de Notion)
 5. Una fecha de vencimiento sugerida si no hay una (formato YYYY-MM-DD)
 
 IMPORTANTE: 
-- No inventes subtareas ni dividas la tarea principal. Mantén la tarea como una sola unidad de trabajo basada únicamente en el contenido proporcionado.
-- Para las etiquetas, ÚNICAMENTE usa información que ya existe en los datos de Notion proporcionados. No inventes etiquetas nuevas.
+- La descripción debe ser BREVE y DIRECTA, sin pasos detallados ni explicaciones extensas
+- Incluye únicamente el objetivo principal y contexto mínimo necesario
+- No inventes subtareas ni dividas la tarea principal
+- Para las etiquetas, ÚNICAMENTE usa información que ya existe en los datos de Notion proporcionados
 
 Responde en formato JSON con la siguiente estructura:
 {
   "enhancedTitle": "título mejorado",
-  "enhancedDescription": "descripción detallada con contexto y pasos de acción",
+  "enhancedDescription": "descripción breve y concisa (máximo 2-3 líneas)",
   "suggestedPriority": número_entre_1_y_4,
   "suggestedLabels": ["etiqueta1", "etiqueta2"],
   "suggestedDueDate": "YYYY-MM-DD o null si no es necesaria"
@@ -70,7 +72,7 @@ Responde en formato JSON con la siguiente estructura:
     // Fallback si falla OpenAI
     return {
       enhancedTitle: pageContent.title,
-      enhancedDescription: `${pageContent.content}\n\n🔗 Ver en Notion: ${pageContent.url}`,
+      enhancedDescription: `${pageContent.content.length > 100 ? pageContent.content.substring(0, 100) + '...' : pageContent.content}\n\n🔗 Ver en Notion: ${pageContent.url}`,
       suggestedPriority: pageContent.priority || 2,
       suggestedLabels: pageContent.tags && pageContent.tags.length > 0 ? pageContent.tags : ['notion'],
       suggestedDueDate: pageContent.dueDate,

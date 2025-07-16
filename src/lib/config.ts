@@ -14,6 +14,9 @@ export const config = {
     apiToken: process.env.TODOIST_API_TOKEN,
     projectId: process.env.TODOIST_PROJECT_ID,
     baseUrl: 'https://api.todoist.com/rest/v2',
+    webhookSecret: process.env.TODOIST_WEBHOOK_SECRET,
+    clientId: process.env.TODOIST_CLIENT_ID,
+    clientSecret: process.env.TODOIST_CLIENT_SECRET,
   },
   
   // OpenAI configuration
