@@ -22,7 +22,9 @@
     "test:webhook:real": "node scripts/test-webhook.js --real",
     "test:webhook:sequence": "node scripts/test-webhook.js --sequence",
     "test:webhook:mentions": "node scripts/test-webhook.js --mentions",
-    "test:webhook:vercel": "node scripts/test-vercel-webhook.js"
+    "test:webhook:vercel": "node scripts/test-vercel-webhook.js",
+    "test:projects": "node scripts/test-dynamic-projects.js",
+    "test:projects:cleanup": "node scripts/test-dynamic-projects.js --cleanup"
   },
   "dependencies": {
     "@notionhq/client": "^4.0.1",

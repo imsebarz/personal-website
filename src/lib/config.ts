@@ -12,7 +12,7 @@ export const config = {
   // Todoist configuration
   todoist: {
     apiToken: process.env.TODOIST_API_TOKEN,
-    projectId: process.env.TODOIST_PROJECT_ID,
+    projectId: process.env.TODOIST_PROJECT_ID, // Optional: fallback project when workspace-specific project creation fails
     baseUrl: 'https://api.todoist.com/rest/v2',
     webhookSecret: process.env.TODOIST_WEBHOOK_SECRET,
     clientId: process.env.TODOIST_CLIENT_ID,

@@ -27,18 +27,19 @@ export class HealthCheckService {
         webhook: 'POST /api/notion-webhook',
         health: 'GET /api/notion-webhook',
       },
+      configuration: {
+        notionUserIdConfigured: !!config.notion.userId,
+        todoistProjectIdConfigured: !!config.todoist.projectId, // Optional: used as fallback when dynamic project creation fails
+        aiEnhancementEnabled: config.openai.enabled,
+        openaiConfigured: !!config.openai.apiKey,
+      },
       features: {
         duplicatePrevention: 'Latest-event debounce system (60s window)',
         taskUpdates: 'Updates existing Todoist tasks for page property changes',
         aiEnhancement: config.openai.enabled ? 'Enabled' : 'Disabled',
         workspaceTags: 'Automatic workspace labeling',
         mentionDetection: 'User-specific filtering',
-      },
-      configuration: {
-        notionUserIdConfigured: !!config.notion.userId,
-        todoistProjectIdConfigured: !!config.todoist.projectId,
-        aiEnhancementEnabled: config.openai.enabled,
-        openaiConfigured: !!config.openai.apiKey,
+        dynamicProjectCreation: 'Creates projects per workspace automatically',
       },
     };
   }

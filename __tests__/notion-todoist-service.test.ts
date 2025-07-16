@@ -13,6 +13,7 @@ jest.mock('@/utils/todoist-client', () => ({
   updateTodoistTask: jest.fn(),
   completeTodoistTask: jest.fn(),
   formatDateForTodoist: jest.fn(),
+  findOrCreateProjectByWorkspace: jest.fn(),
 }));
 
 jest.mock('@/utils/notion-client', () => ({
@@ -55,7 +56,7 @@ describe('NotionTodoistService - handleMentionRemoval', () => {
 
       const result = await service.handleMentionRemoval(pageId);
 
-      expect(todoistClient.findTaskByNotionUrl).toHaveBeenCalledWith(pageId, 'test-project-id');
+      expect(todoistClient.findTaskByNotionUrl).toHaveBeenCalledWith(pageId);
       expect(todoistClient.deleteTodoistTask).toHaveBeenCalledWith('task-456');
       expect(result).toEqual({
         taskDeleted: true,
@@ -71,7 +72,7 @@ describe('NotionTodoistService - handleMentionRemoval', () => {
 
       const result = await service.handleMentionRemoval(pageId);
 
-      expect(todoistClient.findTaskByNotionUrl).toHaveBeenCalledWith(pageId, 'test-project-id');
+      expect(todoistClient.findTaskByNotionUrl).toHaveBeenCalledWith(pageId);
       expect(todoistClient.deleteTodoistTask).not.toHaveBeenCalled();
       expect(result).toEqual({
         taskDeleted: false
@@ -107,7 +108,7 @@ describe('NotionTodoistService - handleMentionRemoval', () => {
 
       const result = await service.handleMentionRemoval(pageId);
 
-      expect(todoistClient.findTaskByNotionUrl).toHaveBeenCalledWith(pageId, 'test-project-id');
+      expect(todoistClient.findTaskByNotionUrl).toHaveBeenCalledWith(pageId);
       expect(todoistClient.deleteTodoistTask).toHaveBeenCalledWith('task-error');
       expect(result).toEqual({
         taskDeleted: false,

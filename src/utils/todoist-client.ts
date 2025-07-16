@@ -144,6 +144,61 @@ export async function getProjects(): Promise<Array<{ id: string; name: string }>
   }
 }
 
+/**
+ * Encuentra o crea un proyecto de Todoist basado en el nombre del workspace
+ */
+export async function findOrCreateProjectByWorkspace(workspaceName: string): Promise<string> {
+  try {
+    // Usar el nombre del workspace directamente como nombre de proyecto
+    
+    // Buscar proyecto existente
+    const projects = await getProjects();
+    const existingProject = projects.find(project => 
+      project.name.toLowerCase() === workspaceName.toLowerCase()
+    );
+    
+    if (existingProject) {
+      return existingProject.id;
+    }
+    
+    // Crear nuevo proyecto si no existe
+    const newProject = await createTodoistProject(workspaceName);
+    return newProject.id;
+  } catch (error) {
+    console.warn('Error managing Todoist project, falling back to default:', error);
+    // Si hay error, usar el proyecto por defecto si está configurado
+    return process.env.TODOIST_PROJECT_ID || '';
+  }
+}
+
+/**
+ * Crea un nuevo proyecto en Todoist
+ */
+export async function createTodoistProject(name: string): Promise<{ id: string; name: string }> {
+  try {
+    const response = await axios.post(
+      `${TODOIST_API_URL}/projects`,
+      { name },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.TODOIST_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    return {
+      id: response.data.id,
+      name: response.data.name,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(`Error creando proyecto en Todoist: ${error.response?.status} - ${error.response?.data}`);
+    }
+    throw new Error('Error desconocido al crear proyecto en Todoist');
+  }
+}
+
 export function formatDateForTodoist(date: string): string {
   // Convierte fecha ISO a formato que entiende Todoist
   const dateObj = new Date(date);

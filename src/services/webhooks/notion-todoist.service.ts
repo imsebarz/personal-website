@@ -12,7 +12,8 @@ import {
   findTaskByNotionUrl, 
   formatDateForTodoist, 
   completeTodoistTask,
-  deleteTodoistTask 
+  deleteTodoistTask,
+  findOrCreateProjectByWorkspace
 } from '@/utils/todoist-client';
 import { enhanceTaskWithAI } from '@/utils/openai-client';
 import { createWorkspaceTag, combineTagsWithWorkspace } from '@/utils/tag-helpers';
@@ -30,8 +31,8 @@ export class NotionTodoistService {
     try {
       logger.info('Checking for existing Todoist task to delete', { pageId });
       
-      // Buscar tarea existente en Todoist
-      const existingTask = await findTaskByNotionUrl(pageId, config.todoist.projectId);
+      // Buscar tarea existente en Todoist (sin filtrar por proyecto específico)
+      const existingTask = await findTaskByNotionUrl(pageId);
       
       if (!existingTask) {
         logger.info('No existing task found for mention removal', { pageId });
@@ -81,7 +82,8 @@ export class NotionTodoistService {
       
       // Si es una actualización, buscar tarea existente
       if (action === 'update') {
-        const existingTask = await findTaskByNotionUrl(pageId, config.todoist.projectId);
+        // Buscar en todos los proyectos, no solo en el configurado
+        const existingTask = await findTaskByNotionUrl(pageId);
         if (existingTask) {
           logger.info('Existing task found', { taskId: existingTask.id, pageId });
           return await this.updateExistingTask(existingTask, pageId, workspaceName);
@@ -150,10 +152,31 @@ export class NotionTodoistService {
       workspace: workspaceTag || 'none' 
     });
     
+    // Determinar el proyecto de destino
+    let projectId = config.todoist.projectId; // Fallback al proyecto por defecto
+    
+    if (workspaceName) {
+      try {
+        logger.info('Finding or creating project for workspace', { workspaceName });
+        projectId = await findOrCreateProjectByWorkspace(workspaceName);
+        logger.info('Using project for workspace', { 
+          workspaceName, 
+          projectId,
+          isDefault: projectId === config.todoist.projectId 
+        });
+      } catch (error) {
+        logger.warn('Failed to create workspace project, using default', { 
+          workspaceName, 
+          error: error instanceof Error ? error.message : 'Unknown error',
+          fallbackProjectId: config.todoist.projectId 
+        });
+      }
+    }
+    
     const todoistTask = {
       content: finalContent.title,
       description: this.createTaskDescription(finalContent, workspaceName),
-      project_id: config.todoist.projectId,
+      project_id: projectId,
       priority: finalContent.priority || 2,
       labels: allTags,
       ...(finalContent.dueDate && {

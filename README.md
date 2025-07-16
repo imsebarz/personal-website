@@ -116,6 +116,44 @@ Create a `.env.local` file for environment-specific configurations:
 NEXT_PUBLIC_SITE_URL=https://yourdomain.com
 ```
 
+## 🔗 Notion-Todoist Integration
+
+This project includes a powerful integration between Notion and Todoist with the following features:
+
+### ✨ Key Features
+- **Dynamic Project Creation**: Automatically creates Todoist projects based on Notion workspace names
+- **Webhook Processing**: Handles Notion webhooks for real-time task synchronization
+- **AI Enhancement**: Optional OpenAI integration for task content improvement
+- **Bidirectional Sync**: Task completion sync between Notion and Todoist
+- **Workspace Organization**: Tasks are organized by workspace with automatic tagging
+
+### 🚀 Dynamic Project Creation (New Feature)
+Instead of using a hardcoded `TODOIST_PROJECT_ID`, the system now:
+1. Detects the workspace name from Notion webhooks
+2. Creates/finds projects using the workspace name directly
+3. Falls back to default project if creation fails
+4. Automatically organizes tasks by workspace
+
+### 📋 Required Environment Variables
+```env
+# Notion Configuration
+NOTION_TOKEN=your_notion_token
+NOTION_VERIFICATION_TOKEN=your_verification_token
+NOTION_USER_ID=your_user_id
+
+# Todoist Configuration  
+TODOIST_API_TOKEN=your_todoist_api_token
+TODOIST_PROJECT_ID=your_fallback_project_id  # Optional: used as fallback
+
+# Optional: OpenAI Enhancement
+OPENAI_API_KEY=your_openai_api_key
+ENABLE_AI_ENHANCEMENT=true
+```
+
+### 📚 Documentation
+- [Dynamic Project Creation Guide](./docs/dynamic-project-creation.md)
+- [Webhook Configuration](./docs/webhook-vercel-fix.md)
+
 ### Customization
 - **Colors**: Edit `src/styles/colors.scss`
 - **Fonts**: Update font imports in `src/app/layout.tsx`
