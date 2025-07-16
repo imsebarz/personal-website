@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import '@/styles/hero.scss'
-import { ContainerVariants } from '@/utils/animation'
+import { ContainerVariants } from '@/lib/animation'
 import strings from '@/data/aboutme.json'
 
 const Hero: React.FC = () => {

@@ -224,7 +224,9 @@ async function testPageDeleted() {
       body: realPayloads.pageDeleted
     });
 
-    if (response.status === 200 && response.data.message?.includes('eliminada')) {
+    // La nueva API devuelve 400 para eventos no válidos con formato estandarizado
+    if (response.status === 400 && 
+        response.data.error?.message?.includes('page deleted')) {
       log('✅ Página eliminada ignorada correctamente', colors.green);
       return true;
     } else {
@@ -257,8 +259,8 @@ async function testDuplicateProtection() {
     // Con el nuevo sistema de debounce, ambos eventos deberían devolver 200
     // y el mensaje debería indicar que están programados para procesamiento
     if (response1.status === 200 && response2.status === 200 && 
-        response1.data.message?.includes('programado para procesamiento') &&
-        response2.data.message?.includes('programado para procesamiento')) {
+        response1.data.message?.includes('Event scheduled for processing') &&
+        response2.data.message?.includes('Event scheduled for processing')) {
       log('✅ Protección contra duplicados funcionando (sistema de debounce)', colors.green);
       return true;
     } else {
@@ -282,7 +284,7 @@ async function testPagePropertiesUpdated() {
       body: realPayloads.pagePropertiesUpdated
     });
 
-    if (response.status === 200 && response.data.message?.includes('programado para procesamiento')) {
+    if (response.status === 200 && response.data.message?.includes('Event scheduled for processing')) {
       log('✅ Evento de propiedades actualizadas procesado correctamente', colors.green);
       log(`   📄 Página: ${response.data.pageId}`, colors.blue);
       log(`   ⏰ Debounce: ${response.data.debounceTimeMs}ms`, colors.blue);
@@ -334,7 +336,7 @@ async function testUpdateSequence() {
     });
 
     // Verificar que ambos eventos fueron programados para procesamiento
-    const allProcessed = results.every(r => r.status === 200 && r.message?.includes('programado'));
+    const allProcessed = results.every(r => r.status === 200 && r.message?.includes('Event scheduled for processing'));
 
     if (allProcessed) {
       log('✅ Secuencia de creación -> actualización manejada correctamente', colors.green);
@@ -422,8 +424,8 @@ async function testSequenceScenario() {
     // Verificar que la secuencia es correcta (ambos eventos son programados para procesamiento)
     const expectedPattern = results[0].status === 200 && 
                            results[1].status === 200 && 
-                           results[0].message?.includes('programado para procesamiento') &&
-                           results[1].message?.includes('programado para procesamiento');
+                           results[0].message?.includes('Event scheduled for processing') &&
+                           results[1].message?.includes('Event scheduled for processing');
 
     if (expectedPattern) {
       log('✅ Secuencia de eventos manejada correctamente', colors.green);

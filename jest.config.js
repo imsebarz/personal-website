@@ -3,17 +3,17 @@ const config = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testMatch: [
-    '**/__tests__/**/*.js',
-    '**/?(*.)+(spec|test).js'
+    '**/__tests__/**/*.{js,ts}',
+    '**/?(*.)+(spec|test).{js,ts}'
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   extensionsToTreatAsEsm: ['.jsx'],
-  globals: {
-    'ts-jest': {
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
       useESM: true
-    }
+    }]
   },
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
@@ -22,7 +22,9 @@ const config = {
     '!src/**/*.config.{js,ts}',
   ],
   coverageReporters: ['text', 'lcov', 'html'],
-  testTimeout: 10000
+  testTimeout: 10000,
+  forceExit: true,
+  detectOpenHandles: true
 };
 
 export default config;

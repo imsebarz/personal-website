@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer'
 import { motion, useAnimation } from 'framer-motion'
 import Image from 'next/image'
 import '@/styles/aboutme.scss'
-import { ContainerVariants } from '@/utils/animation'
+import { ContainerVariants } from '@/lib/animation'
 import strings from '@/data/aboutme.json'
 
 const AboutMe: React.FC = () => {

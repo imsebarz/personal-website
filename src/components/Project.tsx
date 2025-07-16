@@ -4,7 +4,7 @@ import { motion, useAnimation } from 'framer-motion'
 import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import '@/styles/project.scss'
-import { ContainerVariants } from '@/utils/animation'
+import { ContainerVariants } from '@/lib/animation'
 import type { Project as ProjectType } from '@/types'
 
 const Project: React.FC<ProjectType> = ({ name, description, tags, githubRepo, demo }) => {

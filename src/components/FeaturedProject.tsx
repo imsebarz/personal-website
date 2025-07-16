@@ -5,7 +5,7 @@ import Image from 'next/image'
 import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import '@/styles/featuredproject.scss'
-import { ContainerVariants } from '@/utils/animation'
+import { ContainerVariants } from '@/lib/animation'
 import type { Project } from '@/types'
 
 interface FeaturedProjectProps extends Project {

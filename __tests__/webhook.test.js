@@ -170,6 +170,17 @@ const createMockWebhookHandler = () => {
   handler.getTasks = () => Array.from(mockTodoistTasks.values());
   handler.getTaskByPageId = (pageId) => mockTodoistTasks.get(pageId);
   handler.clearTasks = () => mockTodoistTasks.clear();
+  handler.cleanup = () => {
+    // Limpiar timeouts pendientes
+    pendingEvents.forEach(event => {
+      if (event.timeoutId) {
+        clearTimeout(event.timeoutId);
+      }
+    });
+    pendingEvents.clear();
+    recentlyProcessed.clear();
+    mockTodoistTasks.clear();
+  };
 
   return handler;
 };
@@ -310,6 +321,13 @@ describe('Notion Webhook - Escenarios Reales', () => {
   beforeEach(() => {
     webhookHandler = createMockWebhookHandler();
     mockRequest = createMockRequest();
+  });
+
+  afterEach(() => {
+    // Limpiar timeouts pendientes para evitar warnings de Jest
+    if (webhookHandler && webhookHandler.cleanup) {
+      webhookHandler.cleanup();
+    }
   });
 
   describe('Verificación de endpoint', () => {
