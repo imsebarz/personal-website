@@ -114,7 +114,7 @@ export class NotionTodoistService {
     workspaceName?: string
   ): Promise<ProcessingResult> {
     logger.info('Getting Notion page content', { pageId });
-    const pageContent = await getNotionPageContent(pageId);
+    const pageContent = await getNotionPageContent(pageId, workspaceName);
 
     let finalContent = pageContent;
     let enhancedWithAI = false;
@@ -208,17 +208,17 @@ export class NotionTodoistService {
     workspaceName?: string
   ): Promise<ProcessingResult> {
     logger.info('Getting updated Notion page content', { pageId });
-    const pageContent = await getNotionPageContent(pageId);
+    const pageContent = await getNotionPageContent(pageId, workspaceName);
     
     // Verificar el estado de la página
     logger.info('Checking page status');
-    const pageStatus = await getNotionPageStatus(pageId);
+    const pageStatus = await getNotionPageStatus(pageId, workspaceName);
     logger.info('Page status retrieved', { status: pageStatus });
     
     // Si el estado indica completado, completar la tarea en Todoist
     const completedStatuses = ['Listo', 'Done', 'Completed', 'Completado', 'Terminado', 'Finished'];
     if (pageStatus && completedStatuses.includes(pageStatus)) {
-      return await this.completeTask(existingTask, pageId, pageStatus, pageContent);
+      return await this.completeTask(existingTask, pageId, pageStatus, pageContent, workspaceName);
     }
 
     // Actualizar tarea normal
@@ -232,7 +232,8 @@ export class NotionTodoistService {
     existingTask: TodoistCreateTaskResponse,
     pageId: string,
     pageStatus: string,
-    pageContent: { title: string }
+    pageContent: { title: string },
+    workspaceName?: string
   ): Promise<ProcessingResult> {
     logger.info(`Page marked as "${pageStatus}" - completing task in Todoist`, {
       pageId,
@@ -259,8 +260,8 @@ export class NotionTodoistService {
         pageId
       });
       // Continuar con actualización normal si no se puede completar
-      const fullPageContent = await getNotionPageContent(pageId);
-      return await this.updateTaskContent(existingTask, pageId, fullPageContent);
+      const fullPageContent = await getNotionPageContent(pageId, workspaceName);
+      return await this.updateTaskContent(existingTask, pageId, fullPageContent, workspaceName);
     }
   }
 

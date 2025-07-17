@@ -221,7 +221,7 @@ export class NotionWebhookService {
       
       // Verificar mención de usuario si está configurado
       if (config.notion.userId) {
-        const isMentioned = await isUserMentioned(pageId, config.notion.userId);
+        const isMentioned = await isUserMentioned(pageId, config.notion.userId, payload.workspace_name);
         if (!isMentioned) {
           logger.info('User not mentioned in page - checking for existing task to remove', { pageId });
           

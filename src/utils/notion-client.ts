@@ -28,17 +28,43 @@ interface _NotionTitleProperty {
   title: NotionRichText[];
 }
 
-const notion = new Client({
-  auth: process.env.NOTION_TOKEN,
-});
+// Multiple workspace support
+const getNotionClient = (workspaceName?: string): Client => {
+  // If workspace name is provided, try to get workspace-specific token
+  if (workspaceName) {
+    const workspaceTokenKey = `NOTION_TOKEN_${workspaceName.toUpperCase().replace(/[\s-]/g, '_')}`;
+    const workspaceToken = process.env[workspaceTokenKey];
+    
+    if (workspaceToken) {
+      logger.info(`Using workspace-specific token for ${workspaceName}`, { workspaceTokenKey });
+      return new Client({ auth: workspaceToken });
+    } else {
+      logger.warn(`No workspace-specific token found for ${workspaceName}, using default`, { 
+        workspaceTokenKey,
+        workspaceName 
+      });
+    }
+  }
+  
+  // Fallback to default token
+  return new Client({
+    auth: process.env.NOTION_TOKEN,
+  });
+};
 
-export async function getNotionPageContent(pageId: string): Promise<NotionPageContent> {
+// Keep original client for backward compatibility (commented out since not used)
+// const notion = getNotionClient();
+
+export async function getNotionPageContent(pageId: string, workspaceName?: string): Promise<NotionPageContent> {
   try {
+    // Get workspace-specific client
+    const notionClient = getNotionClient(workspaceName);
+    
     // Obtener información de la página
-    const page = await notion.pages.retrieve({ page_id: pageId });
+    const page = await notionClient.pages.retrieve({ page_id: pageId });
     
     // Obtener el contenido de la página
-    const blocks = await notion.blocks.children.list({
+    const blocks = await notionClient.blocks.children.list({
       block_id: pageId,
     });
 
@@ -152,10 +178,13 @@ export async function getNotionPageContent(pageId: string): Promise<NotionPageCo
   }
 }
 
-export async function isUserMentioned(pageId: string, userId: string): Promise<boolean> {
+export async function isUserMentioned(pageId: string, userId: string, workspaceName?: string): Promise<boolean> {
   try {
+    // Get workspace-specific client
+    const notionClient = getNotionClient(workspaceName);
+    
     // 1. Verificar menciones en las propiedades de la página
-    const page = await notion.pages.retrieve({ page_id: pageId });
+    const page = await notionClient.pages.retrieve({ page_id: pageId });
     
     if ('properties' in page && page.properties) {
       // Buscar menciones en las propiedades de la página
@@ -196,7 +225,7 @@ export async function isUserMentioned(pageId: string, userId: string): Promise<b
     }
 
     // 2. Verificar menciones en el contenido de bloques (método original)
-    const blocks = await notion.blocks.children.list({
+    const blocks = await notionClient.blocks.children.list({
       block_id: pageId,
     });
 
@@ -246,9 +275,10 @@ export async function isUserMentioned(pageId: string, userId: string): Promise<b
   }
 }
 
-export async function getNotionPageStatus(pageId: string): Promise<string | null> {
+export async function getNotionPageStatus(pageId: string, workspaceName?: string): Promise<string | null> {
   try {
-    const page = await notion.pages.retrieve({ page_id: pageId });
+    const notionClient = getNotionClient(workspaceName);
+    const page = await notionClient.pages.retrieve({ page_id: pageId });
     
     if ('properties' in page) {
       // Buscar propiedades de estado comunes
@@ -272,9 +302,10 @@ export async function getNotionPageStatus(pageId: string): Promise<string | null
   }
 }
 
-export async function updateNotionPageStatus(pageId: string, status: string): Promise<void> {
+export async function updateNotionPageStatus(pageId: string, status: string, workspaceName?: string): Promise<void> {
   try {
-    const page = await notion.pages.retrieve({ page_id: pageId });
+    const notionClient = getNotionClient(workspaceName);
+    const page = await notionClient.pages.retrieve({ page_id: pageId });
     
     if ('properties' in page) {
       // Buscar propiedades de estado comunes
@@ -293,7 +324,7 @@ export async function updateNotionPageStatus(pageId: string, status: string): Pr
       
       if (statusPropertyName && statusPropertyType && 'parent' in page && page.parent.type === 'database_id') {
         // Obtener el schema del database para conocer las opciones disponibles
-        const database = await notion.databases.retrieve({ database_id: page.parent.database_id });
+        const database = await notionClient.databases.retrieve({ database_id: page.parent.database_id });
         const statusProperty = database.properties[statusPropertyName];
         
         let availableOptions: string[] = [];
@@ -353,7 +384,7 @@ export async function updateNotionPageStatus(pageId: string, status: string): Pr
         
         // TypeScript assertion necesaria debido a los tipos complejos de Notion API
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await notion.pages.update(updatePayload as any);
+        await notionClient.pages.update(updatePayload as any);
         
         logger.info(`Successfully updated Notion page status`, {
           pageId,

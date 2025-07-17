@@ -137,9 +137,14 @@ Instead of using a hardcoded `TODOIST_PROJECT_ID`, the system now:
 ### 📋 Required Environment Variables
 ```env
 # Notion Configuration
-NOTION_TOKEN=your_notion_token
+NOTION_TOKEN=your_default_notion_token
 NOTION_VERIFICATION_TOKEN=your_verification_token
 NOTION_USER_ID=your_user_id
+
+# Multi-Workspace Support
+# Format: NOTION_TOKEN_[WORKSPACE_NAME_UPPERCASE_WITH_UNDERSCORES]
+NOTION_TOKEN_PERSONAL=your_personal_workspace_token
+NOTION_TOKEN_MY_COMPANY=your_company_workspace_token
 
 # Todoist Configuration  
 TODOIST_API_TOKEN=your_todoist_api_token
@@ -150,7 +155,24 @@ OPENAI_API_KEY=your_openai_api_key
 ENABLE_AI_ENHANCEMENT=true
 ```
 
+### 🏢 Multi-Workspace Support (New Feature!)
+The integration now supports **multiple Notion workspaces** automatically:
+
+1. **Automatic Workspace Detection**: Each webhook includes the workspace name
+2. **Workspace-Specific Tokens**: Use different integration tokens per workspace
+3. **Project Organization**: Each workspace gets its own Todoist project
+4. **Backward Compatibility**: Works with existing single-workspace setups
+
+#### Setup for Multiple Workspaces:
+1. Create separate Notion integrations for each workspace
+2. Set environment variables following the pattern: `NOTION_TOKEN_[WORKSPACE_NAME]`
+3. Share pages with the workspace-specific integration
+4. Webhooks will automatically use the correct token based on workspace name
+
+**Example**: For workspace "Corabella Pets", set `NOTION_TOKEN_CORABELLA_PETS=your_token`
+
 ### 📚 Documentation
+- [Multi-Workspace Setup Guide](./docs/multiple-workspaces-setup.md) ⭐ **New!**
 - [Dynamic Project Creation Guide](./docs/dynamic-project-creation.md)
 - [Webhook Configuration](./docs/webhook-vercel-fix.md)
 
