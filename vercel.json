@@ -5,6 +5,15 @@
     },
     "src/app/api/todoist-webhook/route.ts": {
       "maxDuration": 30
+    },
+    "src/app/api/daily-tasks/route.ts": {
+      "maxDuration": 30
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/daily-tasks",
+      "schedule": "0 6 * * *"
+    }
+  ]
 }
