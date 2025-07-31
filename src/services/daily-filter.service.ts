@@ -82,7 +82,7 @@ export class DailyFilterService {
     const projectInfo = await this.getProjectInfo();
     const projectName = projectInfo?.name || '';
     // El filtro debe ser #proyecto & /Seccion
-    const filterQuery = `#${projectName} & /${sectionName}`;
+    const filterQuery = `#${projectName} & /${sectionName} & !subtask`;
     const syncUrl = 'https://api.todoist.com/sync/v9/sync';
     // 1. Obtener todos los filtros
     const getRes = await fetch(syncUrl, {
