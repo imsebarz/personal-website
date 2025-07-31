@@ -85,7 +85,7 @@ export class MealPlanService {
   private filterMealPlanTasks(tasks: TodoistTask[]): TodoistTask[] {
     return tasks.filter(task => 
       !task.is_completed && 
-      task.labels.some(label => label.toLowerCase().includes('mealplan'))
+      task.labels.some(label => label.toLowerCase().includes('mealprep'))
     );
   }
 
@@ -99,8 +99,8 @@ export class MealPlanService {
     const projectInfo = await this.getProjectInfo();
     const projectName = projectInfo?.name || '';
     
-    // El filtro debe ser #proyecto & /Seccion & @mealplan
-    const filterQuery = `#${projectName} & /${sectionName} & @mealplan`;
+    // El filtro debe ser #proyecto & /Seccion & @mealprep
+    const filterQuery = `#${projectName} & /${sectionName} & @mealprep`;
     const syncUrl = 'https://api.todoist.com/sync/v9/sync';
 
     // 1. Obtener todos los filtros

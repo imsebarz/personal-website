@@ -92,7 +92,7 @@ describe('MealPlanService', () => {
         section_id: 'section-2',
         project_id: 'test-project-id',
         is_completed: false,
-        labels: ['mealplan', 'breakfast']
+        labels: ['mealprep', 'breakfast']
       },
       {
         id: 'task-2',
@@ -101,7 +101,7 @@ describe('MealPlanService', () => {
         section_id: 'section-2',
         project_id: 'test-project-id',
         is_completed: false,
-        labels: ['mealplan', 'lunch']
+        labels: ['mealprep', 'lunch']
       },
       {
         id: 'task-3',
@@ -119,7 +119,7 @@ describe('MealPlanService', () => {
         section_id: 'section-2',
         project_id: 'test-project-id',
         is_completed: true,
-        labels: ['mealplan', 'dinner']
+        labels: ['mealprep', 'dinner']
       }
     ];
 
@@ -132,7 +132,7 @@ describe('MealPlanService', () => {
       {
         id: 'filter-1',
         name: 'Test Meal Plan Filter',
-        query: '#Alimentación & /Martes & @mealplan & !subtask',
+        query: '#Alimentación & /Martes & @mealprep & !subtask',
         color: 'green',
         favorite: true
       }
@@ -165,10 +165,10 @@ describe('MealPlanService', () => {
       const result = await service.processMealPlan();
 
       expect(result.success).toBe(true);
-      expect(result.tasksCount).toBe(2); // Solo las tareas con mealplan que no están completadas
+      expect(result.tasksCount).toBe(2); // Solo las tareas con mealprep que no están completadas
       expect(result.tasks).toHaveLength(2);
-      expect(result.tasks[0].labels).toContain('mealplan');
-      expect(result.tasks[1].labels).toContain('mealplan');
+      expect(result.tasks[0].labels).toContain('mealprep');
+      expect(result.tasks[1].labels).toContain('mealprep');
       
       expect(logger.info).toHaveBeenCalledWith('Processing meal plan for next day', expect.objectContaining({
         projectId: 'test-project-id'
@@ -189,7 +189,7 @@ describe('MealPlanService', () => {
       expect(logger.warn).toHaveBeenCalled();
     });
 
-    it('should filter tasks correctly (only mealplan and not completed)', async () => {
+    it('should filter tasks correctly (only mealprep and not completed)', async () => {
       // Mock básico
       mockFetch
         .mockResolvedValueOnce({
@@ -218,9 +218,9 @@ describe('MealPlanService', () => {
       expect(result.success).toBe(true);
       expect(result.tasksCount).toBe(2);
       
-      // Verificar que todas las tareas retornadas tienen la etiqueta mealplan y no están completadas
+      // Verificar que todas las tareas retornadas tienen la etiqueta mealprep y no están completadas
       result.tasks.forEach(task => {
-        expect(task.labels).toContain('mealplan');
+        expect(task.labels).toContain('mealprep');
         expect(task.is_completed).toBe(false);
       });
     });
@@ -327,7 +327,7 @@ describe('MealPlanService', () => {
           section_id: 'section-7',
           project_id: 'test-project-id',
           is_completed: false,
-          labels: ['mealplan', 'brunch']
+          labels: ['mealprep', 'brunch']
         }
       ];
 
