@@ -99,7 +99,14 @@ export class DailyFilterService {
     if (!getRes.ok) throw new Error('No se pudo obtener filtros (Sync v1)');
     const getData = await getRes.json();
     const filters = getData.filters || [];
-    const existing = filters.find((f: any) => f.name === filterName);
+    interface TodoistFilter {
+      id: string;
+      name: string;
+      query: string;
+      color?: string;
+      favorite?: boolean;
+    }
+    const existing = filters.find((f: TodoistFilter) => f.name === filterName);
     if (existing) {
       if (existing.query === filterQuery) {
         return { filterId: existing.id, filterQuery, updated: false };
@@ -169,7 +176,7 @@ export class DailyFilterService {
         })
       });
       const getData2 = await getRes2.json();
-      const created = (getData2.filters || []).find((f: any) => f.name === filterName && f.query === filterQuery);
+      const created = (getData2.filters || []).find((f: TodoistFilter) => f.name === filterName && f.query === filterQuery);
       return { filterId: created?.id || '', filterQuery, updated: true };
     }
   }
