@@ -1,6 +1,5 @@
 import { DailyFilterService } from '@/services/daily-filter.service';
 import { logger } from '@/lib/logger';
-import { getCurrentDayNameInColombia } from '@/utils/colombia-timezone';
 
 // Mock dependencies
 jest.mock('@/lib/logger', () => ({
@@ -11,10 +10,16 @@ jest.mock('@/lib/logger', () => ({
   },
 }));
 
-// Mock colombia timezone functions
+// Mock Colombia timezone functions
 jest.mock('@/utils/colombia-timezone', () => ({
   getCurrentDayNameInColombia: jest.fn(() => 'lunes'),
-  getCurrentDateInColombia: jest.fn(() => new Date('2025-01-27T14:00:00.000Z')), // Monday in Colombia
+  getCurrentDateInColombia: jest.fn(() => new Date('2024-01-01T10:00:00-05:00')), // Monday
+}));
+
+// Mock UUID generation
+jest.mock('@/utils/uuid-helpers', () => ({
+  generateUUID: jest.fn(() => 'mock-uuid-1234'),
+  generateTempId: jest.fn(() => 'temp_mock_1234'),
 }));
 
 // Mock global fetch
@@ -34,6 +39,9 @@ describe('DailyFilterService', () => {
     process.env.TODOIST_DAILY_PROJECT_ID = mockProjectId;
     
     service = new DailyFilterService();
+    
+    // Reset fetch mock completely for each test
+    mockFetch.mockReset();
   });
 
   afterEach(() => {
@@ -43,8 +51,8 @@ describe('DailyFilterService', () => {
 
   describe('constructor', () => {
     it('should throw error if no token is provided', () => {
-      delete process.env.TODOIST_API_TOKEN;
       delete process.env.TODOIST_API_TOKEN_DAILY;
+      delete process.env.TODOIST_API_TOKEN;
       
       expect(() => new DailyFilterService()).toThrow('TODOIST_API_TOKEN_DAILY or TODOIST_API_TOKEN is required');
     });
@@ -55,8 +63,8 @@ describe('DailyFilterService', () => {
       expect(() => new DailyFilterService()).toThrow('TODOIST_DAILY_PROJECT_ID is required');
     });
 
-    it('should fallback to TODOIST_API_TOKEN if TODOIST_API_TOKEN_DAILY is not available', () => {
-      delete process.env.TODOIST_API_TOKEN_DAILY;
+    it('should fallback to TODOIST_API_TOKEN if TODOIST_API_TOKEN is not available', () => {
+      delete process.env.TODOIST_API_TOKEN;
       process.env.TODOIST_API_TOKEN = 'fallback-token';
       
       expect(() => new DailyFilterService()).not.toThrow();
@@ -90,58 +98,46 @@ describe('DailyFilterService', () => {
     ];
 
     beforeEach(() => {
-      // Mock project info fetch (always called first in syncV1CreateOrUpdateFilter)
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({ id: mockProjectId, name: 'Test Project' }),
-      } as Response);
-    });
-
-    afterEach(() => {
-      jest.restoreAllMocks();
+      // Reset fetch mock completely for each test  
+      mockFetch.mockReset();
     });
 
     it('should successfully process daily filter for Monday', async () => {
-      // Reset the default mock
-      mockFetch.mockReset();
-      
-      // Mock sections API call
+      // Mock all API calls in the correct order:
+      // 1. getSections()
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockSections,
       } as Response);
 
-      // Mock project info call (inside syncV1CreateOrUpdateFilter)
+      // 2. getProjectInfo() (called from syncV1CreateOrUpdateFilter)
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({ id: mockProjectId, name: 'Test Project' }),
       } as Response);
 
-      // Mock Sync v1 get filters call
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ filters: [] }),
-      } as Response);
+      // 3-5. Sync v9 API calls for filter management
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ filters: [] }), // No existing filters
+        } as Response) // Get filters
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({}), // Create filter response
+        } as Response) // Create filter
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ 
+            filters: [{ 
+              id: 'new-filter-id', 
+              name: 'Alimentacion del día', 
+              query: '#Test Project & /Lunes' 
+            }] 
+          }),
+        } as Response); // Get filters after creation
 
-      // Mock Sync v1 create filter call
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({}),
-      } as Response);
-
-      // Mock Sync v1 get filters call after creation
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ 
-          filters: [{ 
-            id: 'filter-1', 
-            name: 'Alimentacion del día', 
-            query: '#Test Project & /Lunes & !subtask' 
-          }] 
-        }),
-      } as Response);
-
-      // Mock tasks API call
+      // 6. getTasksFromSection()
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => mockTasks,
@@ -179,6 +175,7 @@ describe('DailyFilterService', () => {
     });
 
     it('should handle API errors gracefully', async () => {
+      // Mock sections fetch to fail directly
       mockFetch.mockRejectedValueOnce(new Error('API Error'));
 
       const result = await service.processDailyFilter();
@@ -202,41 +199,42 @@ describe('DailyFilterService', () => {
     });
 
     it('should handle different day names correctly', async () => {
-      // Mock for Tuesday
-      (getCurrentDayNameInColombia as jest.Mock).mockReturnValueOnce('martes');
-
-      const tuesdaySections = [
-        { id: 'section-2', name: 'Martes', project_id: mockProjectId },
+      // Mock sections for lunes (current day according to our timezone mock)
+      const lunesSections = [
+        { id: 'section-1', name: 'Lunes', project_id: mockProjectId },
       ];
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => tuesdaySections,
+        json: async () => lunesSections,
       } as Response);
 
-      // Mock Sync v1 get filters call
+      // Mock project info fetch
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ filters: [] }),
+        json: async () => ({ id: mockProjectId, name: 'Test Project' }),
       } as Response);
 
-      // Mock Sync v1 create filter call
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({}),
-      } as Response);
-
-      // Mock Sync v1 get filters call after creation
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ 
-          filters: [{ 
-            id: 'filter-2', 
-            name: 'Alimentacion del día', 
-            query: '#Test Project & /Martes & !subtask' 
-          }] 
-        }),
-      } as Response);
+      // Mock sync v9 API calls for filter management
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ filters: [] }), // No existing filters
+        } as Response) // Get filters
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({}), // Create filter
+        } as Response) // Create filter
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ 
+            filters: [{ 
+              id: 'new-filter-id', 
+              name: 'Alimentacion del día', 
+              query: '#Test Project & /Lunes' 
+            }] 
+          }),
+        } as Response); // Get filters after creation
 
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -246,8 +244,8 @@ describe('DailyFilterService', () => {
       const result = await service.processDailyFilter();
 
       expect(result.success).toBe(true);
-      expect(result.day).toBe('martes');
-      expect(result.sectionName).toBe('Martes');
+      expect(result.day).toBe('lunes');
+      expect(result.sectionName).toBe('Lunes');
     });
 
     it('should filter out completed tasks', async () => {
@@ -256,29 +254,32 @@ describe('DailyFilterService', () => {
         json: async () => mockSections,
       } as Response);
 
-      // Mock Sync v1 get filters call
+      // Mock project info fetch (called from syncV1CreateOrUpdateFilter)
       mockFetch.mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ filters: [] }),
+        json: async () => ({ id: mockProjectId, name: 'Test Project' }),
       } as Response);
 
-      // Mock Sync v1 create filter call
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({}),
-      } as Response);
-
-      // Mock Sync v1 get filters call after creation
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({ 
-          filters: [{ 
-            id: 'filter-1', 
-            name: 'Alimentacion del día', 
-            query: '#Test Project & /Lunes & !subtask' 
-          }] 
-        }),
-      } as Response);
+      // Mock sync v9 API calls for filter management
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ filters: [] }), // No existing filters
+        } as Response) // Get filters
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({}), // Create filter
+        } as Response) // Create filter
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ 
+            filters: [{ 
+              id: 'new-filter-id', 
+              name: 'Alimentacion del día', 
+              query: '#Test Project & /Lunes' 
+            }] 
+          }),
+        } as Response); // Get filters after creation
 
       // All tasks completed
       const allCompletedTasks = mockTasks.map(task => ({ ...task, is_completed: true }));

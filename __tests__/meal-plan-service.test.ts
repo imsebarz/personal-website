@@ -10,6 +10,23 @@ jest.mock('@/lib/logger', () => ({
   },
 }));
 
+// Mock Colombia timezone functions
+jest.mock('@/utils/colombia-timezone', () => ({
+  getCurrentDayNameInColombia: jest.fn(() => 'lunes'),
+  getNextDayNameInColombia: jest.fn(() => 'martes'),
+  getCurrentDateInColombia: jest.fn(() => new Date('2024-01-01T10:00:00-05:00')), // Monday
+  getNextDateInColombia: jest.fn(() => new Date('2024-01-02T10:00:00-05:00')), // Tuesday
+}));
+
+// Mock de dependencias
+jest.mock('@/lib/logger', () => ({
+  logger: {
+    info: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+  },
+}));
+
 // Mock de fetch global
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
@@ -169,6 +186,7 @@ describe('MealPlanService', () => {
       expect(result.tasks).toHaveLength(2);
       expect(result.tasks[0].labels).toContain('mealprep');
       expect(result.tasks[1].labels).toContain('mealprep');
+      expect(result.filterUpdated).toBeDefined();
       
       expect(logger.info).toHaveBeenCalledWith('Processing meal plan for next day', expect.objectContaining({
         projectId: 'test-project-id'
@@ -235,6 +253,119 @@ describe('MealPlanService', () => {
       expect(logger.error).toHaveBeenCalledWith('Error processing meal plan', expect.objectContaining({
         error: expect.any(Error)
       }));
+    });
+
+    it('should update filter when query changes', async () => {
+      const existingFilter = {
+        id: 'filter-1',
+        name: 'Test Meal Plan Filter',
+        query: '#Alimentación & /Lunes & @mealprep', // Different day
+        color: 'green',
+        favorite: true
+      };
+
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockSections),
+        }) // getSections
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockProjectInfo),
+        }) // getProjectInfo
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({ filters: [existingFilter] }),
+        }) // get filters (sync)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({}),
+        }) // update filter
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockTasks),
+        }); // getTasksFromSection
+
+      const result = await service.processMealPlan();
+
+      expect(result.success).toBe(true);
+      expect(result.filterUpdated).toBe(true);
+      expect(result.filterQuery).toContain('Martes'); // Should be updated to next day
+    });
+
+    it('should not update filter when query is already correct', async () => {
+      const correctFilter = {
+        id: 'filter-1',
+        name: 'Test Meal Plan Filter',
+        query: '#Alimentación & /Martes & @mealprep', // Correct for next day
+        color: 'green',
+        favorite: true
+      };
+
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockSections),
+        }) // getSections
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockProjectInfo),
+        }) // getProjectInfo
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({ filters: [correctFilter] }),
+        }) // get filters (sync) - no update call should be made
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockTasks),
+        }); // getTasksFromSection
+
+      const result = await service.processMealPlan();
+
+      expect(result.success).toBe(true);
+      expect(result.filterUpdated).toBe(false);
+      expect(result.filterQuery).toBe('#Alimentación & /Martes & @mealprep');
+    });
+
+    it('should create new filter when none exists', async () => {
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockSections),
+        }) // getSections
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockProjectInfo),
+        }) // getProjectInfo
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({ filters: [] }), // No existing filters
+        }) // get filters (sync)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({}),
+        }) // create filter
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({ 
+            filters: [{ 
+              id: 'new-filter-id', 
+              name: 'Test Meal Plan Filter', 
+              query: '#Alimentación & /Martes & @mealprep' 
+            }] 
+          }),
+        }) // get filters again after creation
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve(mockTasks),
+        }); // getTasksFromSection
+
+      const result = await service.processMealPlan();
+
+      expect(result.success).toBe(true);
+      expect(result.filterUpdated).toBe(true); // Should be true for new filter
+      expect(result.filterId).toBe('new-filter-id');
+      expect(result.filterQuery).toBe('#Alimentación & /Martes & @mealprep');
     });
 
     it('should handle fetch errors for sections', async () => {
