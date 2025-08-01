@@ -1,4 +1,6 @@
 import { logger } from '@/lib/logger';
+import { getCurrentDayNameInColombia, getNextDayNameInColombia, getCurrentDateInColombia, getNextDateInColombia } from '@/utils/colombia-timezone';
+import { generateUUID, generateTempId } from '@/utils/uuid-helpers';
 
 interface TodoistSection {
   id: string;
@@ -46,20 +48,23 @@ export class MealPlanService {
     this.projectId = process.env.TODOIST_MEAL_PLAN_PROJECT_ID || process.env.TODOIST_DAILY_PROJECT_ID || '';
     this.filterName = process.env.TODOIST_MEAL_PLAN_FILTER_NAME || 'Meal Plan del día siguiente';
     
+    logger.info('MealPlanService constructor', {
+      hasToken: !!this.token,
+      hasProjectId: !!this.projectId,
+      filterName: this.filterName,
+      tokenSource: process.env.TODOIST_API_TOKEN_MEAL_PLAN ? 'MEAL_PLAN' : 'DEFAULT'
+    });
+    
     if (!this.token) throw new Error('TODOIST_API_TOKEN_MEAL_PLAN or TODOIST_API_TOKEN is required');
     if (!this.projectId) throw new Error('TODOIST_MEAL_PLAN_PROJECT_ID or TODOIST_DAILY_PROJECT_ID is required');
   }
 
   private getCurrentDayName(): string {
-    const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-    return days[new Date().getDay()];
+    return getCurrentDayNameInColombia();
   }
 
   private getNextDayName(): string {
-    const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return days[tomorrow.getDay()];
+    return getNextDayNameInColombia();
   }
 
   private async getSections(): Promise<TodoistSection[]> {
@@ -147,7 +152,7 @@ export class MealPlanService {
           commands: [
             {
               type: 'filter_update',
-              uuid: (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)),
+              uuid: generateUUID(),
               args: {
                 id: existing.id,
                 name: filterName,
@@ -175,8 +180,8 @@ export class MealPlanService {
           commands: [
             {
               type: 'filter_add',
-              uuid: (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)),
-              temp_id: (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)),
+              uuid: generateUUID(),
+              temp_id: generateTempId(),
               args: {
                 name: filterName,
                 query: filterQuery,
@@ -217,7 +222,10 @@ export class MealPlanService {
       logger.info('Processing meal plan for next day', { 
         currentDay, 
         nextDay, 
-        projectId: this.projectId 
+        projectId: this.projectId,
+        utcTime: new Date().toISOString(),
+        colombiaTime: getCurrentDateInColombia().toISOString(),
+        nextDayColombia: getNextDateInColombia().toISOString()
       });
 
       const sections = await this.getSections();

@@ -1,5 +1,7 @@
 
 import { logger } from '@/lib/logger';
+import { generateUUID, generateTempId } from '@/utils/uuid-helpers';
+import { getCurrentDayNameInColombia, getCurrentDateInColombia } from '@/utils/colombia-timezone';
 
 interface TodoistSection {
   id: string;
@@ -44,13 +46,20 @@ export class DailyFilterService {
     this.token = process.env.TODOIST_API_TOKEN_DAILY || process.env.TODOIST_API_TOKEN || '';
     this.projectId = process.env.TODOIST_DAILY_PROJECT_ID || '';
     this.filterName = process.env.TODOIST_DAILY_FILTER_NAME || 'Alimentacion del día';
-    if (!this.token) throw new Error('TODOIST_API_TOKEN or TODOIST_API_TOKEN is required');
+    
+    logger.info('DailyFilterService constructor', {
+      hasToken: !!this.token,
+      hasProjectId: !!this.projectId,
+      filterName: this.filterName,
+      tokenSource: process.env.TODOIST_API_TOKEN_DAILY ? 'DAILY' : 'DEFAULT'
+    });
+    
+    if (!this.token) throw new Error('TODOIST_API_TOKEN_DAILY or TODOIST_API_TOKEN is required');
     if (!this.projectId) throw new Error('TODOIST_DAILY_PROJECT_ID is required');
   }
 
   private getCurrentDayName(): string {
-    const days = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-    return days[new Date().getDay()];
+    return getCurrentDayNameInColombia();
   }
 
   private async getSections(): Promise<TodoistSection[]> {
@@ -123,7 +132,7 @@ export class DailyFilterService {
           commands: [
             {
               type: 'filter_update',
-              uuid: (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)),
+              uuid: generateUUID(),
               args: {
                 id: existing.id,
                 name: filterName,
@@ -150,8 +159,8 @@ export class DailyFilterService {
           commands: [
             {
               type: 'filter_add',
-              uuid: (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)),
-              temp_id: (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)),
+              uuid: generateUUID(),
+              temp_id: generateTempId(),
               args: {
                 name: filterName,
                 query: filterQuery,
@@ -184,7 +193,12 @@ export class DailyFilterService {
   async processDailyFilter(): Promise<DailyFilterResult> {
     try {
       const currentDay = this.getCurrentDayName();
-      logger.info('Processing daily filter', { day: currentDay, projectId: this.projectId });
+      logger.info('Processing daily filter', { 
+        day: currentDay, 
+        projectId: this.projectId,
+        utcTime: new Date().toISOString(),
+        colombiaTime: getCurrentDateInColombia().toISOString()
+      });
       const sections = await this.getSections();
       logger.info('Sections found', { sectionsCount: sections.length, sections: sections.map(s => s.name) });
       const daySection = this.findSectionByDay(sections, currentDay);
