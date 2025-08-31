@@ -17,21 +17,11 @@
     "preview": "npm run build && npm run start",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:webhook": "node scripts/test-webhook.js",
-    "test:webhook:real": "node scripts/test-webhook.js --real",
-    "test:webhook:sequence": "node scripts/test-webhook.js --sequence",
-    "test:webhook:mentions": "node scripts/test-webhook.js --mentions",
-    "test:webhook:vercel": "node scripts/test-vercel-webhook.js",
-    "test:projects": "node scripts/test-dynamic-projects.js",
-    "test:projects:cleanup": "node scripts/test-dynamic-projects.js --cleanup"
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@notionhq/client": "^4.0.1",
-    "axios": "^1.10.0",
     "framer-motion": "^12.23.5",
     "next": "^15.3.5",
-    "openai": "^5.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-intersection-observer": "^9.16.0",
