@@ -6,6 +6,7 @@ import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import '@/styles/featuredproject.scss'
 import { ContainerVariants } from '@/lib/animation'
+import { buildAccessibleAlt } from '@/lib/seo'
 import type { Project } from '@/types'
 
 interface FeaturedProjectProps extends Project {
@@ -44,9 +45,9 @@ const FeaturedProject: React.FC<FeaturedProjectProps> = ({
     >
       <div className="ftProject-image">
         <a href={demo} target="_blank" rel="noopener noreferrer">
-          <Image 
-            src={`/images/${img}`} 
-            alt={name}
+          <Image
+            src={`/images/${img}`}
+            alt={buildAccessibleAlt(name, description)}
             width={600}
             height={400}
             style={{ objectFit: 'cover' }}

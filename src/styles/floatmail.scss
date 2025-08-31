@@ -21,3 +21,7 @@
     text-decoration: none;
   }
 }
+
+@media screen and (max-width: 905px) {
+  .floating-mail { display: none; }
+}

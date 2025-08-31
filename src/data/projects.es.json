@@ -1,0 +1,94 @@
+{
+  "projects": [
+    {
+      "id": 0,
+      "name": "🎮 Manikins Arena",
+      "description": "Landing interactiva en ReactJS para un videojuego online. Página creada para Life is The Game S.A.S",
+      "tags": ["ReactJS", "Javascript", "Sass", "React Router", "Web3JS"],
+      "img": "manikins.webp",
+      "githubRepo": "https://github.com/imsebarz/manikins",
+      "demo": "https://manikins.io",
+      "featured": true
+    },
+    {
+      "id": 1,
+      "name": "🛒 Petit Store",
+      "description": "E-commerce responsive para pequeños negocios hecho con ReactJS, usando React Router, Sass y el Context API.",
+      "tags": ["ReactJS", "Javascript", "Sass", "React Router", "Responsive"],
+      "img": "petit.webp",
+      "githubRepo": "https://github.com/imsebarz/petit-website",
+      "demo": "https://petit-website.web.app/",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "name": "📷 Photolalaphy Portfolio",
+      "description": "Portafolio creativo de fotografía responsive construido en Javascript usando GSAP para animaciones y transiciones.",
+      "tags": ["Javascript", "Sass", "GSAP", "Responsive"],
+      "img": "lala.webp",
+      "githubRepo": "https://github.com/imsebarz/lalaphoto",
+      "demo": "https://imsebarz.github.io/lalaphoto/",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "name": "🔠 Analizador Léxico",
+      "description": "Analizador léxico para un lenguaje de programación basado en la sintaxis de Javascript. Aplicación Fullstack con backend en Python y frontend en Javascript.",
+      "tags": ["Fullstack", "Javascript", "API", "ReactJS", "Python"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/analizador-lexico",
+      "demo": "https://analizador-lexico.netlify.app/",
+      "featured": false
+    },
+    {
+      "id": 4,
+      "name": "🎬 MediaPlayer",
+      "description": "Reproductor multimedia extensible. Implementa plugins para Autoplay, AutoPause y Ads. Construido con TypeScript, POO y patrones de diseño.",
+      "tags": ["Typescript", "Javascript", "OOP", "Plugins"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/mediaplayer",
+      "demo": "https://imsebarz.github.io/lalaphoto/",
+      "featured": false
+    },
+    {
+      "id": 5,
+      "name": "🤖 FRIDAY Clone",
+      "description": "Clon de Friday (Iron Man). Aplicación web Vanilla Javascript usando Web Speech Recognition y APIs de Speech To Text.",
+      "tags": ["Javascript", "Speech to text", "Speech Recognition", "svg animation"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/FRIDAY",
+      "demo": "https://imsebarz.github.io/FRIDAY/",
+      "featured": false
+    },
+    {
+      "id": 6,
+      "name": "👩 Personal Cards",
+      "description": "Sitio que obtiene datos de usuarios aleatorios y muestra una tarjeta de presentación. Construido con Webpack para mejorar performance y optimización.",
+      "tags": ["Javascript", "Webpack", "Sass", "HTML"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/webpack-project",
+      "demo": "",
+      "featured": false
+    },
+    {
+      "id": 7,
+      "name": "💰 Batatabit Landing page",
+      "description": "Landing page Mobile-First para una empresa de criptomonedas. Construida solo con HTML y CSS.",
+      "tags": ["HTML", "CSS", "Mobile-First", "Responsive"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/mobile-first",
+      "demo": "https://imsebarz.github.io/mobile-first/",
+      "featured": false
+    },
+    {
+      "id": 8,
+      "name": "📺 PlatziVideo",
+      "description": "Homepage de plataforma de streaming de video. Construido en ReactJS y empaquetado con Parcel.",
+      "tags": ["Javascript", "Sass", "ReactJS", "Parcel", "API"],
+      "img": "",
+      "githubRepo": "https://github.com/imsebarz/platzivideo",
+      "demo": "",
+      "featured": false
+    }
+  ]
+}

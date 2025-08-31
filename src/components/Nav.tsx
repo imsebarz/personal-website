@@ -2,8 +2,11 @@
 
 import React, { useState } from 'react'
 import '@/styles/nav.scss'
-import navStrings from '@/data/nav.json'
-import socialStrings from '@/data/contact.json'
+import navEn from '@/data/nav.json'
+import navEs from '@/data/nav.es.json'
+import contactEn from '@/data/contact.json'
+import contactEs from '@/data/contact.es.json'
+import { useLocale } from '@/contexts/LocaleContext'
 
 const Nav: React.FC = () => {
   const [sideDisplay, setSideDisplay] = useState<string>('-100%')
@@ -19,6 +22,11 @@ const Nav: React.FC = () => {
     }
   }
 
+  const { locale } = useLocale()
+  type NavStrings = typeof navEn & typeof navEs
+  type ContactStrings = typeof contactEn & typeof contactEs
+  const navStrings = (locale === 'es' ? navEs : navEn) as NavStrings
+  const socialStrings = (locale === 'es' ? contactEs : contactEn) as ContactStrings
   return (
     <nav className="nav">
       <a href="#">

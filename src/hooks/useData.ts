@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import type { Project, PersonalInfo, NavigationLinks, ContactInfo } from '@/types'
+import type { Project, PersonalInfo, NavigationLinks, ContactInfo, Sections } from '@/types'
+import { getLocale } from '@/lib/locale'
 
 export const useProjects = () => {
   const [projects, setProjects] = useState<Project[]>([])
@@ -9,8 +10,11 @@ export const useProjects = () => {
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const response = await import('@/data/projects.json')
-        setProjects(response.projects)
+        const locale = getLocale()
+        const response = await (locale === 'es'
+          ? import('@/data/projects.es.json')
+          : import('@/data/projects.json'))
+        setProjects(response.projects || response.default?.projects || [])
       } catch (_err) {
         setError('Error loading projects')
       } finally {
@@ -32,7 +36,10 @@ export const usePersonalInfo = () => {
   useEffect(() => {
     const loadPersonalInfo = async () => {
       try {
-        const response = await import('@/data/aboutme.json')
+        const locale = getLocale()
+        const response = await (locale === 'es'
+          ? import('@/data/aboutme.es.json')
+          : import('@/data/aboutme.json'))
         setPersonalInfo(response.default)
       } catch (_err) {
         setError('Error loading personal info')
@@ -55,7 +62,10 @@ export const useNavigation = () => {
   useEffect(() => {
     const loadNavigation = async () => {
       try {
-        const response = await import('@/data/nav.json')
+        const locale = getLocale()
+        const response = await (locale === 'es'
+          ? import('@/data/nav.es.json')
+          : import('@/data/nav.json'))
         setNavigation(response.default)
       } catch (_err) {
         setError('Error loading navigation')
@@ -78,7 +88,10 @@ export const useContact = () => {
   useEffect(() => {
     const loadContact = async () => {
       try {
-        const response = await import('@/data/contact.json')
+        const locale = getLocale()
+        const response = await (locale === 'es'
+          ? import('@/data/contact.es.json')
+          : import('@/data/contact.json'))
         setContact(response.default)
       } catch (_err) {
         setError('Error loading contact info')
@@ -91,4 +104,27 @@ export const useContact = () => {
   }, [])
 
   return { contact, loading, error }
+}
+
+export const useSections = () => {
+  const [sections, setSections] = useState<Sections | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const locale = getLocale()
+        const data = await (locale === 'es'
+          ? import('@/data/sections.es.json')
+          : import('@/data/sections.en.json'))
+        setSections(data.default)
+      } catch (_err) {
+        setError('Error loading sections')
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
+  return { sections, loading, error }
 }

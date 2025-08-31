@@ -82,3 +82,12 @@ export interface ProjectComponentProps extends BaseComponentProps {
   project: Project
   isReversed?: boolean
 }
+
+export interface I18nBundle {
+  sections: Sections
+}
+
+export interface Sections {
+  featuredProjects: string
+  otherWork: string
+}

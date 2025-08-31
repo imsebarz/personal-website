@@ -1,7 +1,12 @@
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import '../styles/globals.scss'
+import StructuredData from '@/components/StructuredData'
+import LanguageSwitch from '@/components/LanguageSwitch'
+import { buildBaseMetadata } from '@/lib/seo'
+import { LocaleProvider } from '@/contexts/LocaleContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,51 +16,21 @@ const recoleta = localFont({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: 'Sebarz | Web Developer',
-  description: 'Sebastian Ruiz - Full Stack Web Developer Portfolio',
-  keywords: ['web developer', 'full stack', 'react', 'javascript', 'portfolio'],
-  authors: [{ name: 'Sebastian Ruiz' }],
-  creator: 'Sebastian Ruiz',
-  metadataBase: new URL('https://imsebarz.vercel.app'),
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://imsebarz.vercel.app',
-    title: 'Sebarz | Web Developer',
-    description: 'Sebastian Ruiz - Full Stack Web Developer Portfolio',
-    siteName: 'Sebarz Portfolio',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Sebarz | Web Developer',
-    description: 'Sebastian Ruiz - Full Stack Web Developer Portfolio',
-  },
-  icons: {
-    icon: [
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
-    other: [
-      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
-    ],
-  },
-  manifest: '/site.webmanifest',
-}
+// We'll export base English metadata; locale segment adds its own.
+export const metadata: Metadata = buildBaseMetadata('en')
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const hdrs = await headers()
+  const headerLocale = hdrs.get('x-locale') === 'es' ? 'es' : 'en'
+  // Determine lang on server via pathname. In App Router we can read from headers only; simpler: infer from first segment in children tree via a data attribute we set on locale pages (future). For now, default 'en'; /es segment provides its own metadata & structured data uses getLocale client-side.
   return (
-    <html lang="en">
+    <html lang={headerLocale}>
       <body className={`${inter.className} ${recoleta.variable}`}>
-        {children}
+        <LocaleProvider initialLocale={headerLocale}>
+          <StructuredData locale={headerLocale} />
+          <LanguageSwitch initialLocale={headerLocale} />
+          {children}
+        </LocaleProvider>
       </body>
     </html>
   )

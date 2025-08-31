@@ -41,3 +41,7 @@
     background-color: colors.$green;
   }
 }
+
+@media screen and (max-width: 905px) {
+  .floating-social { display: none; }
+}

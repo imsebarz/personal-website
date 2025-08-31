@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import '@/styles/project.scss'
 import { ContainerVariants } from '@/lib/animation'
+import { buildAccessibleAlt } from '@/lib/seo'
 import type { Project as ProjectType } from '@/types'
 
 const Project: React.FC<ProjectType> = ({ name, description, tags, githubRepo, demo }) => {
@@ -98,7 +99,7 @@ const Project: React.FC<ProjectType> = ({ name, description, tags, githubRepo, d
           )}
         </div>
       </div>
-      <h3 className="project-title">{name}</h3>
+  <h3 className="project-title">{buildAccessibleAlt(name)}</h3>
       <p className="project-description">{description}</p>
       <ul className="project-tags">
         {tags.map((tag, index) => (

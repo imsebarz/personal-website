@@ -1,0 +1,36 @@
+{
+  "hero": {
+    "greeting": "👋 Hola, mi nombre es",
+    "name": "Sebastian Ruiz",
+    "description": "Yo <del>rompo</del> construyo cosas para la web",
+    "buttonText": "Ver mis proyectos"
+  },
+  "aboutMeTitle": "Sobre mí",
+  "aboutMeText1": "Soy Sebastian Ruiz. Desarrollador web, aprendiz eterno y creativo. <strong>Tengo internet y tecnología en la sangre.</strong>",
+  "aboutMeText2": "Mi trabajo se enfoca en construir Aplicaciones Web (y todo lo que hay alrededor) usando tecnologías de vanguardia como <strong>React, Next.js, TypeScript, Node.js, Webpack, etc.</strong> Mi espíritu autodidacta me impulsa a no dejar de aprender.",
+  "aboutMeText3": "También tengo una gran pasión por <strong>compartir conocimiento</strong> y <strong>enseñar</strong> lo que aprendo. Por eso colaboro como <strong>mentor en comunidades locales</strong> para involucrar nuevas personas en el ecosistema y animarlas a crear cosas increíbles.",
+  "aboutMeText4": "Como complemento a mis habilidades en la Web he aprendido sobre <strong>tecnologías blockchain</strong> como <strong>Web3JS, HardHat y programación con Solidity</strong> para entregar DApps y Smart Contracts eficientes.",
+  "aboutMeText5": "Antes estudié <a href=\"https://www.behance.net/imsebarz\" target=\"_blank\">diseño</a>, fotografía y filmmaking. Habilidades que han sido muy útiles en mi carrera. El principio que guía todo lo que hago es: <strong>aprendo y luego enseño; enseñar es la manera en que aprendo.</strong>",
+  "someTechnologiesTitle": "Algunas tecnologías que uso",
+  "technologies": [
+    "JavaScript",
+    "TypeScript",
+    "ReactJS",
+    "NextJS",
+    "CSS",
+    "Sass",
+    "Styled Components",
+    "HTML",
+    "NodeJS",
+    "MongoDB",
+    "CI/CD",
+    "Git/GitHub",
+    "GitHub Actions",
+    "Webpack",
+    "Parcel",
+    "Solidity",
+    "Hardhat",
+    "Unit Testing",
+    "Microfrontends"
+  ]
+}

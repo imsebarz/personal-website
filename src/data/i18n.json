@@ -1,0 +1,14 @@
+{
+  "en": {
+    "sections": {
+      "featuredProjects": "Featured Projects",
+      "otherWork": "Some other work"
+    }
+  },
+  "es": {
+    "sections": {
+      "featuredProjects": "Proyectos destacados",
+      "otherWork": "Otros proyectos"
+    }
+  }
+}

@@ -6,7 +6,9 @@ import { motion, useAnimation } from 'framer-motion'
 import Image from 'next/image'
 import '@/styles/aboutme.scss'
 import { ContainerVariants } from '@/lib/animation'
-import strings from '@/data/aboutme.json'
+import stringsEn from '@/data/aboutme.json'
+import stringsEs from '@/data/aboutme.es.json'
+import { useLocale } from '@/contexts/LocaleContext'
 
 const AboutMe: React.FC = () => {
   const [ref, inView] = useInView()
@@ -20,6 +22,9 @@ const AboutMe: React.FC = () => {
     }
   }, [inView, animation])
 
+  const { locale } = useLocale()
+  type AboutStrings = typeof stringsEn & typeof stringsEs
+  const strings = (locale === 'es' ? stringsEs : stringsEn) as AboutStrings
   return (
     <motion.section className="aboutme" id="aboutme" ref={ref}>
       <motion.h1

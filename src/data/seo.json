@@ -1,0 +1,47 @@
+{
+  "siteName": "Sebastian Ruiz Portfolio",
+  "defaultTitle": "Sebastian Ruiz | Full Stack Web Developer",
+  "titleTemplate": "%s | Sebastian Ruiz",
+  "tagline": "Full Stack Web Developer specialized in React, TypeScript, Node.js & high-performance web apps.",
+  "taglineEs": "Desarrollador Full Stack especializado en React, TypeScript y Node.js.",
+  "description": "Discover the portfolio of Sebastian Ruiz, a Full Stack Web Developer crafting scalable, accessible and performant web applications with React, Next.js, TypeScript, Node.js and modern cloud workflows.",
+  "descriptionEs": "Portafolio de Sebastian Ruiz, Desarrollador Full Stack que crea aplicaciones web escalables, accesibles y de alto rendimiento con React, Next.js, TypeScript y Node.js desde Medellín, Colombia.",
+  "shortDescription": "Full Stack Web Developer (React, TypeScript, Node.js).",
+  "keywords": [
+    "Sebastian Ruiz",
+    "Sebarz",
+    "Full Stack Web Developer",
+    "React Developer",
+    "Next.js Developer",
+    "TypeScript Engineer",
+    "Frontend Developer Portfolio",
+    "Backend Developer",
+    "Node.js Developer",
+    "Web Performance",
+    "Software Engineer",
+    "Remote Web Developer",
+    "Desarrollador Web",
+    "Desarrollador Full Stack",
+    "Portafolio Desarrollador Web",
+    "React TypeScript Portfolio"
+  ],
+  "author": {
+    "name": "Sebastian Ruiz",
+    "url": "https://imsebarz.vercel.app",
+    "email": "sebastian@example.com",
+    "sameAs": [
+      "https://github.com/imsebarz",
+      "https://www.linkedin.com/in/imsebarz",
+      "https://twitter.com/imsebarz"
+    ]
+  },
+  "social": {
+    "github": "imsebarz",
+    "linkedin": "imsebarz",
+    "twitter": "imsebarz"
+  },
+  "language": "en",
+  "locale": "en_US",
+  "supportedLanguages": ["en","es"],
+  "defaultLanguage": "en"
+}

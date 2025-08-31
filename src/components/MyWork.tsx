@@ -2,16 +2,19 @@
 
 import React from 'react'
 import '@/styles/mywork.scss'
-import Projects from '@/data/projects.json'
-import type { Project as ProjectType } from '@/types'
+import { useProjects, useSections } from '@/hooks/useData'
+import { useLocale } from '@/contexts/LocaleContext'
 import Project from './Project'
 
-const { projects }: { projects: ProjectType[] } = Projects
-
 const MyWork: React.FC = () => {
+  const { projects } = useProjects()
+  const { sections } = useSections()
+  useLocale()
+  if (!sections) return null
+
   return (
     <section className="mywork" id="mywork">
-      <h1 className="title">Some other work</h1>
+  <h1 className="title">{sections.otherWork}</h1>
       <div className="mywork-container">
         {projects.map((item) => {
           if (!item.featured) {
