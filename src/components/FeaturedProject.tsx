@@ -44,15 +44,21 @@ const FeaturedProject: React.FC<FeaturedProjectProps> = ({
       animate={animation}
     >
       <div className="ftProject-image">
-        <a href={demo} target="_blank" rel="noopener noreferrer">
-          <Image
-            src={`/images/${img}`}
-            alt={buildAccessibleAlt(name, description)}
-            width={600}
-            height={400}
-            style={{ objectFit: 'cover' }}
-          />
-        </a>
+        {img ? (
+          <a href={demo || '#'} target="_blank" rel="noopener noreferrer">
+            <Image
+              src={`/images/${img}`}
+              alt={buildAccessibleAlt(name, description)}
+              width={600}
+              height={400}
+              style={{ objectFit: 'cover' }}
+            />
+          </a>
+        ) : (
+          <a href={demo || githubRepo || '#'} target="_blank" rel="noopener noreferrer" className="ftProject-placeholder">
+            <span className="ftProject-placeholder__emoji">{name.split(' ')[0]}</span>
+          </a>
+        )}
       </div>
       <div className="ftProject-content">
         <h1>{name}</h1>

@@ -31,6 +31,28 @@
   filter: brightness(0.9);
 }
 
+.ftProject-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 280px;
+  background: linear-gradient(135deg, colors.$green, darken(colors.$green, 12%));
+  border-radius: 5px;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.ftProject-placeholder__emoji {
+  font-size: 4rem;
+  filter: grayscale(0);
+}
+
 .ftProject-content {
   grid-column: 7 / -1;
   grid-row: 1 / 2;

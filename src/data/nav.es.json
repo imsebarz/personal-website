@@ -1,5 +1,11 @@
 {
   "name": "Sebarz",
-  "links": {"aboutMe": "Sobre mí","featuredProjects": "Destacados","projects": "Proyectos","contact": "Contacto","resume": "CV"},
-  "resumeLink": "#"
+  "links": {
+    "aboutMe": "Sobre mí",
+    "featuredProjects": "Destacados",
+    "projects": "Proyectos",
+    "contact": "Contacto",
+    "resume": "Currículum"
+  },
+  "resumeLink": "/resume.pdf"
 }

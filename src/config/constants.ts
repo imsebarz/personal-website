@@ -26,8 +26,8 @@ export const APP_CONFIG = {
   },
   
   CONTACT: {
-    EMAIL: 'sebastian@example.com',
-    RESUME_LINK: '#',
+    EMAIL: 'imsebarz@gmail.com',
+    RESUME_LINK: '/resume.pdf',
   },
 } as const
 export type SocialPlatform = keyof typeof APP_CONFIG.SOCIAL_LINKS
