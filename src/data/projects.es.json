@@ -12,21 +12,21 @@
     },
     {
       "id": 1,
+      "name": "📚 Memora",
+      "description": "Plataforma e-commerce de photobooks premium personalizados. Catálogo de destinos, flujo de subida de fotos, editor de libro y checkout. Producto completo de landing a fulfillment.",
+      "tags": ["Next.js", "TypeScript", "Supabase", "Tailwind CSS", "E-commerce", "Vercel"],
+      "img": "memora.png",
+      "githubRepo": "",
+      "demo": "https://memorabooks.co",
+      "featured": true
+    },
+    {
+      "id": 2,
       "name": "🔌 Evernote MCP Server",
       "description": "Servidor MCP open-source que permite a LLMs (Claude, GPT, etc.) consultar e interactuar con tus notas de Evernote. Publicado en npm y usado por la comunidad de IA.",
       "tags": ["TypeScript", "MCP Protocol", "Node.js", "Evernote API", "Open Source"],
       "img": "evernote-mcp.png",
       "githubRepo": "https://github.com/imsebarz/evernote-mcp-server",
-      "demo": "",
-      "featured": true
-    },
-    {
-      "id": 2,
-      "name": "🎓 Frontend School",
-      "description": "Landing page MVP para una escuela de programación por suscripción enfocada en Frontend y AI para ingenieros Frontend.",
-      "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Responsive", "Vercel"],
-      "img": "frontend-school.png",
-      "githubRepo": "https://github.com/imsebarz/frontend-school-landing",
       "demo": "",
       "featured": true
     },
@@ -42,6 +42,16 @@
     },
     {
       "id": 4,
+      "name": "🎓 Frontend School",
+      "description": "Landing page MVP para una escuela de programación por suscripción enfocada en Frontend y AI para ingenieros Frontend.",
+      "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Responsive", "Vercel"],
+      "img": "frontend-school.png",
+      "githubRepo": "https://github.com/imsebarz/frontend-school-landing",
+      "demo": "",
+      "featured": false
+    },
+    {
+      "id": 5,
       "name": "🎮 Manikins Arena",
       "description": "Landing interactiva para un videojuego online, creada para Life is The Game S.A.S con integración Web3.",
       "tags": ["React", "JavaScript", "Sass", "Web3JS"],
@@ -51,22 +61,12 @@
       "featured": false
     },
     {
-      "id": 5,
+      "id": 6,
       "name": "🔗 Sistema de Votación Blockchain",
       "description": "Sistema de votación descentralizado en la testnet Ethereum Sepolia usando smart contracts en Solidity y frontend en React.",
       "tags": ["Solidity", "React", "Ethereum", "HardHat", "Web3"],
       "img": "",
       "githubRepo": "https://github.com/imsebarz/voting-system",
-      "demo": "",
-      "featured": false
-    },
-    {
-      "id": 6,
-      "name": "🌐 Laboratorio Geo & Phishing",
-      "description": "Laboratorio de geo-localización y simulación de phishing para educación y práctica en ciberseguridad.",
-      "tags": ["JavaScript", "Security", "Geolocation API"],
-      "img": "",
-      "githubRepo": "https://github.com/imsebarz/geo-lab",
       "demo": "",
       "featured": false
     },
