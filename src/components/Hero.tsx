@@ -8,6 +8,7 @@ import { ContainerVariants } from '@/lib/animation'
 import stringsEn from '@/data/aboutme.json'
 import stringsEs from '@/data/aboutme.es.json'
 import { useLocale } from '@/contexts/LocaleContext'
+import HeroCanvas from './HeroCanvas'
 
 const Hero: React.FC = () => {
   useEffect(() => {
@@ -32,6 +33,7 @@ const Hero: React.FC = () => {
   const strings = (locale === 'es' ? stringsEs : stringsEn) as HeroStrings
   return (
     <section className="hero">
+      <HeroCanvas />
       <div className="hero-inner">
         <motion.div
           className="hero-info"
