@@ -7,9 +7,9 @@
   },
   "aboutMeTitle": "About Me",
   "aboutMeText1": "I'm Sebastian Ruiz — a <strong>Senior Frontend Developer</strong> with 5+ years of experience building scalable, high-performance web applications for enterprise clients.",
-  "aboutMeText2": "Currently at <strong>Globant</strong>, I lead frontend work on <strong>choicehotels.com</strong> — redesigning the booking flow, optimizing Core Web Vitals, and delivering features that serve millions of monthly users using <strong>React, TypeScript, and GraphQL</strong>.",
+  "aboutMeText2": "Currently at <strong>Globant</strong>, I'm part of the frontend team building <strong>choicehotels.com</strong> — working on the booking flow, optimizing Core Web Vitals, and delivering features that serve millions of monthly users using <strong>React, TypeScript, and GraphQL</strong>.",
   "aboutMeText3": "Beyond my day job, I build products. <strong>Brew Notes</strong> is my local-first knowledge management app with AI, and I've shipped open-source tools like an <strong>Evernote MCP Server</strong> for LLM integrations. I'm driven by the intersection of great UI and smart architecture.",
-  "aboutMeText4": "I care deeply about <strong>accessibility (WCAG)</strong>, <strong>performance optimization</strong>, and <strong>developer experience</strong>. I've led JS-to-TypeScript migrations, mentored junior developers, and built A/B testing integrations at scale.",
+  "aboutMeText4": "I care deeply about <strong>accessibility (WCAG)</strong>, <strong>performance optimization</strong>, and <strong>developer experience</strong>. I've worked on JS-to-TypeScript migrations, mentored junior developers, and built A/B testing integrations at scale.",
   "aboutMeText5": "Earlier in my career I explored <a href=\"https://www.behance.net/imsebarz\" target=\"_blank\">design</a>, blockchain development, and co-founded <strong>Web3ForU</strong> — a non-profit to onboard developers into Web3. I believe the best engineers never stop learning.",
   "someTechnologiesTitle": "Technologies I work with",
   "technologies": [

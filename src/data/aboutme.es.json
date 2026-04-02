@@ -7,9 +7,9 @@
   },
   "aboutMeTitle": "Sobre mí",
   "aboutMeText1": "Soy Sebastian Ruiz — <strong>Senior Frontend Developer</strong> con más de 5 años de experiencia construyendo aplicaciones web escalables y de alto rendimiento para clientes enterprise.",
-  "aboutMeText2": "Actualmente en <strong>Globant</strong>, lidero el frontend de <strong>choicehotels.com</strong> — rediseñando el flujo de reservas, optimizando Core Web Vitals y entregando features que sirven a millones de usuarios mensuales con <strong>React, TypeScript y GraphQL</strong>.",
+  "aboutMeText2": "Actualmente en <strong>Globant</strong>, soy parte del equipo frontend de <strong>choicehotels.com</strong> — trabajando en el flujo de reservas, optimizando Core Web Vitals y entregando features que sirven a millones de usuarios mensuales con <strong>React, TypeScript y GraphQL</strong>.",
   "aboutMeText3": "Más allá de mi trabajo, construyo productos. <strong>Brew Notes</strong> es mi app local-first de gestión de conocimiento con IA, y he publicado herramientas open-source como un <strong>Evernote MCP Server</strong> para integraciones con LLMs. Me mueve la intersección entre buena UI y arquitectura inteligente.",
-  "aboutMeText4": "Me importa profundamente la <strong>accesibilidad (WCAG)</strong>, la <strong>optimización de rendimiento</strong> y la <strong>experiencia de desarrollo</strong>. He liderado migraciones de JS a TypeScript, mentorado desarrolladores junior y construido integraciones de A/B testing a escala.",
+  "aboutMeText4": "Me importa profundamente la <strong>accesibilidad (WCAG)</strong>, la <strong>optimización de rendimiento</strong> y la <strong>experiencia de desarrollo</strong>. He trabajado en migraciones de JS a TypeScript, mentorado desarrolladores junior y construido integraciones de A/B testing a escala.",
   "aboutMeText5": "Antes en mi carrera exploré <a href=\"https://www.behance.net/imsebarz\" target=\"_blank\">diseño</a>, desarrollo blockchain y co-fundé <strong>Web3ForU</strong> — una iniciativa sin ánimo de lucro para introducir desarrolladores al ecosistema Web3. Creo que los mejores ingenieros nunca dejan de aprender.",
   "someTechnologiesTitle": "Tecnologías con las que trabajo",
   "technologies": [

@@ -33,17 +33,7 @@
       "featured": true,
       "badge": "Open Source"
     },
-    {
-      "id": 3,
-      "name": "🏨 Choice Hotels",
-      "description": "Enterprise frontend work at Globant — booking flow, property pages, rate filters, and performance optimization for choicehotels.com.",
-      "tags": ["React", "TypeScript", "GraphQL", "WCAG", "Performance"],
-      "img": "choicehotels.png",
-      "githubRepo": "",
-      "demo": "https://choicehotels.com",
-      "featured": false,
-      "badge": "Enterprise"
-    },
+
     {
       "id": 4,
       "name": "🎓 Frontend School",
