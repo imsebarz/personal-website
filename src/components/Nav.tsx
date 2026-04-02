@@ -37,10 +37,10 @@ const Nav: React.FC = () => {
           <a href="#aboutme">{navStrings.links.aboutMe}</a>
         </li>
         <li>
-          <a href="#featuredProjects">{navStrings.links.featuredProjects}</a>
+          <a href="#experience">{navStrings.links.experience}</a>
         </li>
         <li>
-          <a href="#mywork">{navStrings.links.projects}</a>
+          <a href="#featuredProjects">{navStrings.links.featuredProjects}</a>
         </li>
         <li>
           <a href="#contact">{navStrings.links.contact}</a>
@@ -89,10 +89,10 @@ const Nav: React.FC = () => {
             <a href="#aboutme" onClick={toggleSidebar}>{navStrings.links.aboutMe}</a>
           </li>
           <li>
-            <a href="#featuredProjects" onClick={toggleSidebar}>{navStrings.links.featuredProjects}</a>
+            <a href="#experience" onClick={toggleSidebar}>{navStrings.links.experience}</a>
           </li>
           <li>
-            <a href="#mywork" onClick={toggleSidebar}>{navStrings.links.projects}</a>
+            <a href="#featuredProjects" onClick={toggleSidebar}>{navStrings.links.featuredProjects}</a>
           </li>
           <li>
             <a href="#contact" onClick={toggleSidebar}>{navStrings.links.contact}</a>

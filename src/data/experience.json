@@ -1,0 +1,51 @@
+{
+  "sectionTitle": "Experience",
+  "positions": [
+    {
+      "id": 0,
+      "company": "Globant",
+      "role": "Senior Web UI Developer",
+      "client": "Choice Hotels International",
+      "period": "Dec 2022 – Present",
+      "location": "Medellín, Colombia",
+      "description": "Part of the frontend team building choicehotels.com — booking flow, property pages, rate filters, and responsive mobile components serving millions of monthly users.",
+      "highlights": [
+        "Optimized Rate Plans API integration, reducing page-load calls from 50 to 3–4",
+        "Conducted LCP performance spike analyzing SPA hydration gaps and preload strategies",
+        "Delivered Rate Type Filters with multi-select comparison and lowest-rate logic",
+        "Migrated JS components to TypeScript and resolved WCAG accessibility bugs",
+        "Implemented A/B testing integrations and mentored junior developers"
+      ],
+      "tags": ["React", "TypeScript", "GraphQL", "WCAG", "Jest", "GitHub Actions"]
+    },
+    {
+      "id": 1,
+      "company": "Life Is The Game S.A.S",
+      "role": "Web Developer",
+      "client": "",
+      "period": "Oct 2021 – Dec 2022",
+      "location": "Medellín, Colombia",
+      "description": "Built role-based admin dashboards, SPA landing pages, and CI/CD workflows.",
+      "highlights": [
+        "Built admin dashboards with React and MaterialUI for internal operations",
+        "Configured CI/CD workflows via GitHub Actions",
+        "Implemented unit testing suites with Jest and RTL"
+      ],
+      "tags": ["React", "JavaScript", "Jest", "CI/CD"]
+    },
+    {
+      "id": 2,
+      "company": "dotlabs()",
+      "role": "Frontend Tech Lead",
+      "client": "",
+      "period": "Apr 2022 – Oct 2022",
+      "location": "Medellín, Colombia · Part-time",
+      "description": "Led frontend development, architecture decisions, and code reviews.",
+      "highlights": [
+        "Led frontend architecture and coordinated with cross-functional teams",
+        "Conducted code reviews and mentored team members"
+      ],
+      "tags": ["React", "TypeScript", "Next.js", "Tailwind CSS"]
+    }
+  ]
+}

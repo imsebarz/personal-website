@@ -30,6 +30,7 @@ export interface NavigationLinks {
   name: string
   links: {
     aboutMe: string
+    experience: string
     featuredProjects: string
     projects: string
     contact: string

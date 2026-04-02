@@ -2,8 +2,9 @@
   "name": "Sebarz",
   "links": {
     "aboutMe": "Sobre mí",
-    "featuredProjects": "Destacados",
-    "projects": "Proyectos",
+    "experience": "Experiencia",
+    "featuredProjects": "Proyectos",
+    "projects": "Más",
     "contact": "Contacto",
     "resume": "Currículum"
   },

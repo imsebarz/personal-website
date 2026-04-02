@@ -1,0 +1,185 @@
+@use './colors.scss';
+
+.experience {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4em 2em;
+  gap: 3em;
+
+  .title {
+    text-align: center;
+    font-family: var(--font-recoleta);
+  }
+}
+
+.experience-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  width: 100%;
+}
+
+.experience-card {
+  padding: 1.75em;
+  border: 1.8px dotted colors.$green;
+  border-radius: 8px;
+  background: colors.$mint;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 71, 71, 0.1);
+  }
+}
+
+.experience-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.experience-card__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.experience-card__role {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: colors.$green;
+  margin: 0 0 0.2em;
+  font-family: var(--font-recoleta);
+}
+
+.experience-card__company {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: colors.$black;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.experience-card__client {
+  font-weight: 400;
+  color: colors.$pepper;
+}
+
+.experience-card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15em;
+  flex-shrink: 0;
+}
+
+.experience-card__period {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: colors.$green;
+  font-family: 'Roboto', sans-serif;
+  white-space: nowrap;
+}
+
+.experience-card__location {
+  font-size: 0.75rem;
+  color: colors.$pepper;
+  font-family: 'Roboto', sans-serif;
+  white-space: nowrap;
+}
+
+.experience-card__description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: colors.$pepper;
+  margin: 0 0 1em;
+  font-family: 'Roboto', sans-serif;
+}
+
+.experience-card__highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+
+  li {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: colors.$pepper;
+    font-family: 'Roboto', sans-serif;
+    padding-left: 1.2em;
+    position: relative;
+
+    &::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: colors.$green;
+      font-weight: 700;
+    }
+  }
+}
+
+.experience-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+
+.experience-tag {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: colors.$green;
+  background: rgba(0, 71, 71, 0.06);
+  border: 1px solid rgba(0, 71, 71, 0.15);
+  font-family: 'Roboto', sans-serif;
+}
+
+@media screen and (max-width: 900px) {
+  .experience {
+    padding: 3em 1.25em;
+    gap: 2em;
+  }
+
+  .experience-card {
+    padding: 1.25em;
+  }
+
+  .experience-card__header {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .experience-card__meta {
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 0.75em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .experience {
+    padding: 2em 1em;
+  }
+
+  .experience-card {
+    padding: 1em;
+  }
+
+  .experience-card__role {
+    font-size: 1.05rem;
+  }
+
+  .experience-card__company {
+    font-size: 0.9rem;
+  }
+}

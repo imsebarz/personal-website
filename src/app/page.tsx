@@ -3,6 +3,7 @@ import FloatSocial from '@/components/FloatSocial'
 import FloatMail from '@/components/FloatMail'
 import Hero from '@/components/Hero'
 import AboutMe from '@/components/AboutMe'
+import Experience from '@/components/Experience'
 import MyWork from '@/components/MyWork'
 import FeaturedProjects from '@/components/FeaturedProjects'
 import Footer from '@/components/Footer'
@@ -17,6 +18,7 @@ export default function Home() {
         <FloatMail />
         <Hero />
         <AboutMe />
+        <Experience />
         <FeaturedProjects />
         <MyWork />
         <Contact />

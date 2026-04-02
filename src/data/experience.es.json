@@ -1,0 +1,51 @@
+{
+  "sectionTitle": "Experiencia",
+  "positions": [
+    {
+      "id": 0,
+      "company": "Globant",
+      "role": "Senior Web UI Developer",
+      "client": "Choice Hotels International",
+      "period": "Dic 2022 – Presente",
+      "location": "Medellín, Colombia",
+      "description": "Parte del equipo frontend construyendo choicehotels.com — flujo de reservas, páginas de propiedad, filtros de tarifas y componentes mobile responsive para millones de usuarios mensuales.",
+      "highlights": [
+        "Optimicé integración del API de Rate Plans, reduciendo llamadas de 50 a 3–4",
+        "Analicé performance LCP investigando gaps de hydration SPA y estrategias de preload",
+        "Entregué filtros de tipo de tarifa con comparación multi-select y lógica de tarifa más baja",
+        "Migré componentes JS a TypeScript y resolví bugs de accesibilidad WCAG",
+        "Implementé integraciones de A/B testing y mentoré desarrolladores junior"
+      ],
+      "tags": ["React", "TypeScript", "GraphQL", "WCAG", "Jest", "GitHub Actions"]
+    },
+    {
+      "id": 1,
+      "company": "Life Is The Game S.A.S",
+      "role": "Web Developer",
+      "client": "",
+      "period": "Oct 2021 – Dic 2022",
+      "location": "Medellín, Colombia",
+      "description": "Construí dashboards admin con roles, landing pages SPA y workflows de CI/CD.",
+      "highlights": [
+        "Construí dashboards admin con React y MaterialUI para operaciones internas",
+        "Configuré workflows de CI/CD con GitHub Actions",
+        "Implementé suites de unit testing con Jest y RTL"
+      ],
+      "tags": ["React", "JavaScript", "Jest", "CI/CD"]
+    },
+    {
+      "id": 2,
+      "company": "dotlabs()",
+      "role": "Frontend Tech Lead",
+      "client": "",
+      "period": "Abr 2022 – Oct 2022",
+      "location": "Medellín, Colombia · Part-time",
+      "description": "Lideré desarrollo frontend, decisiones de arquitectura y code reviews.",
+      "highlights": [
+        "Lideré arquitectura frontend y coordiné con equipos cross-funcionales",
+        "Conduje code reviews y mentoré miembros del equipo"
+      ],
+      "tags": ["React", "TypeScript", "Next.js", "Tailwind CSS"]
+    }
+  ]
+}

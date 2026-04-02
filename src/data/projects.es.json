@@ -35,13 +35,13 @@
     },
     {
       "id": 3,
-      "name": "🏨 Choice Hotels (Globant)",
-      "description": "Parte del equipo frontend en Globant construyendo choicehotels.com — trabajé en flujo de reservas, páginas de propiedad, filtros de tarifas, optimización LCP, migración JS a TypeScript y cumplimiento WCAG para millones de usuarios mensuales.",
-      "tags": ["React", "TypeScript", "GraphQL", "WCAG", "Performance", "A/B Testing"],
+      "name": "🏨 Choice Hotels",
+      "description": "Trabajo frontend enterprise en Globant — flujo de reservas, páginas de propiedad, filtros de tarifas y optimización de performance para choicehotels.com.",
+      "tags": ["React", "TypeScript", "GraphQL", "WCAG", "Performance"],
       "img": "choicehotels.png",
       "githubRepo": "",
       "demo": "https://choicehotels.com",
-      "featured": true,
+      "featured": false,
       "badge": "Enterprise"
     },
     {
