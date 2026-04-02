@@ -5,7 +5,7 @@
       "name": "🧠 Brew Notes",
       "description": "A local-first, AI-powered knowledge management app with rich markdown editing, wiki-links, semantic search, and offline-first sync. Built as a full-stack product from zero.",
       "tags": ["Next.js 16", "TypeScript", "Supabase", "TipTap", "AI/LLMs", "PWA", "Tailwind CSS"],
-      "img": "",
+      "img": "brewnotes.png",
       "githubRepo": "",
       "demo": "https://brew.sebasruiz.com",
       "featured": true
@@ -15,7 +15,7 @@
       "name": "🔌 Evernote MCP Server",
       "description": "Open-source MCP server that lets LLMs (Claude, GPT, etc.) query and interact with your Evernote notes. Published on npm and used by the AI community.",
       "tags": ["TypeScript", "MCP Protocol", "Node.js", "Evernote API", "Open Source"],
-      "img": "",
+      "img": "evernote-mcp.png",
       "githubRepo": "https://github.com/imsebarz/evernote-mcp-server",
       "demo": "",
       "featured": true
@@ -25,7 +25,7 @@
       "name": "🎓 Frontend School",
       "description": "MVP landing page for a subscription-based programming school focused on Frontend development and AI for Frontend engineers.",
       "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Responsive", "Vercel"],
-      "img": "",
+      "img": "frontend-school.png",
       "githubRepo": "https://github.com/imsebarz/frontend-school-landing",
       "demo": "",
       "featured": true
@@ -35,7 +35,7 @@
       "name": "🏨 Choice Hotels (Globant)",
       "description": "Led frontend redesign of choicehotels.com booking flow, property pages, and rate filters serving millions of users. Optimized LCP, migrated JS to TypeScript, and delivered WCAG compliance.",
       "tags": ["React", "TypeScript", "GraphQL", "WCAG", "Performance", "A/B Testing"],
-      "img": "",
+      "img": "choicehotels.png",
       "githubRepo": "",
       "demo": "https://choicehotels.com",
       "featured": true

@@ -5,7 +5,7 @@
       "name": "🧠 Brew Notes",
       "description": "App local-first de gestión de conocimiento con IA, edición rich markdown, wiki-links, búsqueda semántica y sync offline. Producto full-stack construido desde cero.",
       "tags": ["Next.js 16", "TypeScript", "Supabase", "TipTap", "AI/LLMs", "PWA", "Tailwind CSS"],
-      "img": "",
+      "img": "brewnotes.png",
       "githubRepo": "",
       "demo": "https://brew.sebasruiz.com",
       "featured": true
@@ -15,7 +15,7 @@
       "name": "🔌 Evernote MCP Server",
       "description": "Servidor MCP open-source que permite a LLMs (Claude, GPT, etc.) consultar e interactuar con tus notas de Evernote. Publicado en npm y usado por la comunidad de IA.",
       "tags": ["TypeScript", "MCP Protocol", "Node.js", "Evernote API", "Open Source"],
-      "img": "",
+      "img": "evernote-mcp.png",
       "githubRepo": "https://github.com/imsebarz/evernote-mcp-server",
       "demo": "",
       "featured": true
@@ -25,7 +25,7 @@
       "name": "🎓 Frontend School",
       "description": "Landing page MVP para una escuela de programación por suscripción enfocada en Frontend y AI para ingenieros Frontend.",
       "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Responsive", "Vercel"],
-      "img": "",
+      "img": "frontend-school.png",
       "githubRepo": "https://github.com/imsebarz/frontend-school-landing",
       "demo": "",
       "featured": true
@@ -35,7 +35,7 @@
       "name": "🏨 Choice Hotels (Globant)",
       "description": "Lideré el rediseño frontend de choicehotels.com: flujo de reservas, páginas de propiedad y filtros de tarifas para millones de usuarios. Optimicé LCP, migré JS a TypeScript y entregué cumplimiento WCAG.",
       "tags": ["React", "TypeScript", "GraphQL", "WCAG", "Performance", "A/B Testing"],
-      "img": "",
+      "img": "choicehotels.png",
       "githubRepo": "",
       "demo": "https://choicehotels.com",
       "featured": true
