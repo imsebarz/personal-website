@@ -187,16 +187,28 @@ svg {
   }
   
   main {
-    padding: 0 var(--spacing-sm);
+    padding: 0;
+  }
+  
+  section {
+    margin: 2em 0;
+  }
+  
+  section.contact {
+    margin: 3em 0;
   }
   
   .title {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
   }
 }
 
 @media screen and (max-width: 600px) {
+  section {
+    margin: 1.5em 0;
+  }
+  
   .title {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 }

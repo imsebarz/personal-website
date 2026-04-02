@@ -15,5 +15,20 @@
 @media screen and (max-width: 905px) {
   .featuredProjects {
     margin: 0;
+    padding: 0 1em;
+    gap: 3em;
+  }
+  .featuredProjects-container {
+    gap: 2em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .featuredProjects {
+    padding: 0 0.75em;
+    gap: 2em;
+  }
+  .featuredProjects-container {
+    gap: 1.5em;
   }
 }
