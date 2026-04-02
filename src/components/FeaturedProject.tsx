@@ -25,6 +25,7 @@ const FeaturedProject: React.FC<FeaturedProjectProps> = ({
   const actualDirection = index % 2 === 0 ? 'left' : 'right'
   const badgeClass = badge === 'Enterprise' ? 'ftProject-badge--enterprise'
     : badge === 'Open Source' ? 'ftProject-badge--opensource'
+    : (badge === 'Production' || badge === 'En Producción') ? 'ftProject-badge--production'
     : 'ftProject-badge--personal'
 
   return (

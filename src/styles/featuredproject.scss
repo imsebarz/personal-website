@@ -85,6 +85,12 @@
   border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
+.ftProject-badge--production {
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
 .ftProject-content {
   grid-column: 7 / -1;
   grid-row: 1 / 2;
