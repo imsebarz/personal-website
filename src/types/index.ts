@@ -7,6 +7,7 @@ export interface Project {
   githubRepo?: string
   demo?: string
   featured?: boolean
+  badge?: string
 }
 
 export interface PersonalInfo {

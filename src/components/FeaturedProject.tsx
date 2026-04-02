@@ -20,8 +20,12 @@ const FeaturedProject: React.FC<FeaturedProjectProps> = ({
   demo,
   img,
   index,
+  badge,
 }) => {
   const actualDirection = index % 2 === 0 ? 'left' : 'right'
+  const badgeClass = badge === 'Enterprise' ? 'ftProject-badge--enterprise'
+    : badge === 'Open Source' ? 'ftProject-badge--opensource'
+    : 'ftProject-badge--personal'
 
   return (
     <motion.div
@@ -49,6 +53,7 @@ const FeaturedProject: React.FC<FeaturedProjectProps> = ({
         )}
       </div>
       <div className="ftProject-content">
+        {badge && <span className={`ftProject-badge ${badgeClass}`}>{badge}</span>}
         <h1>{name}</h1>
         <div className="desc">
           <p>{description}</p>

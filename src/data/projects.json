@@ -8,7 +8,8 @@
       "img": "brewnotes.png",
       "githubRepo": "",
       "demo": "https://brew.sebasruiz.com",
-      "featured": true
+      "featured": true,
+      "badge": "Personal Project"
     },
     {
       "id": 1,
@@ -18,7 +19,8 @@
       "img": "memora.png",
       "githubRepo": "",
       "demo": "https://memorabooks.co",
-      "featured": true
+      "featured": true,
+      "badge": "Personal Project"
     },
     {
       "id": 2,
@@ -28,17 +30,19 @@
       "img": "evernote-mcp.png",
       "githubRepo": "https://github.com/imsebarz/evernote-mcp-server",
       "demo": "",
-      "featured": true
+      "featured": true,
+      "badge": "Open Source"
     },
     {
       "id": 3,
       "name": "🏨 Choice Hotels (Globant)",
-      "description": "Led frontend redesign of choicehotels.com booking flow, property pages, and rate filters serving millions of users. Optimized LCP, migrated JS to TypeScript, and delivered WCAG compliance.",
+      "description": "Part of the frontend team at Globant building choicehotels.com — worked on booking flow, property pages, rate filters, LCP optimization, JS-to-TypeScript migration, and WCAG compliance for millions of monthly users.",
       "tags": ["React", "TypeScript", "GraphQL", "WCAG", "Performance", "A/B Testing"],
       "img": "choicehotels.png",
       "githubRepo": "",
       "demo": "https://choicehotels.com",
-      "featured": true
+      "featured": true,
+      "badge": "Enterprise"
     },
     {
       "id": 4,
@@ -48,7 +52,8 @@
       "img": "frontend-school.png",
       "githubRepo": "https://github.com/imsebarz/frontend-school-landing",
       "demo": "",
-      "featured": false
+      "featured": false,
+      "badge": "Personal Project"
     },
     {
       "id": 5,
@@ -58,7 +63,8 @@
       "img": "manikins.webp",
       "githubRepo": "https://github.com/imsebarz/manikins",
       "demo": "https://manikins.io",
-      "featured": false
+      "featured": false,
+      "badge": ""
     },
     {
       "id": 6,
@@ -68,7 +74,8 @@
       "img": "",
       "githubRepo": "https://github.com/imsebarz/voting-system",
       "demo": "",
-      "featured": false
+      "featured": false,
+      "badge": ""
     },
     {
       "id": 7,
@@ -78,7 +85,8 @@
       "img": "lala.webp",
       "githubRepo": "https://github.com/imsebarz/lalaphoto",
       "demo": "https://imsebarz.github.io/lalaphoto/",
-      "featured": false
+      "featured": false,
+      "badge": ""
     }
   ]
 }
