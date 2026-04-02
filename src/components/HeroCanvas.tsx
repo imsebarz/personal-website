@@ -80,9 +80,8 @@ export default function HeroCanvas() {
 
       for (let i = 0; i < TECH_LABELS.length; i++) {
         const text = TECH_LABELS[i]
-        const isMint = i % 2 === 0
-        const color = isMint ? '#eefff3' : '#00a89d'
-        const opacity = 0.15 + Math.random() * 0.35
+        const color = '#004747'
+        const opacity = 0.2 + Math.random() * 0.35
 
         const sprite = createTextSprite(text, color, opacity)
         sprite.position.set(
@@ -101,9 +100,8 @@ export default function HeroCanvas() {
       // Duplicate some labels to fill the space
       for (let i = 0; i < 16; i++) {
         const text = TECH_LABELS[i % TECH_LABELS.length]
-        const isMint = i % 2 !== 0
-        const color = isMint ? '#eefff3' : '#00a89d'
-        const opacity = 0.15 + Math.random() * 0.35
+        const color = '#004747'
+        const opacity = 0.2 + Math.random() * 0.35
 
         const sprite = createTextSprite(text, color, opacity)
         sprite.position.set(
