@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useEffect } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
+import React from 'react'
+import { motion } from 'framer-motion'
 import '@/styles/featuredprojects.scss'
 import { ContainerVariants } from '@/lib/animation'
 import { useProjects, useSections } from '@/hooks/useData'
@@ -12,35 +11,27 @@ import FeaturedProject from './FeaturedProject'
 const FeaturedProjects: React.FC = () => {
   const { projects } = useProjects()
   const { sections } = useSections()
-  useLocale() // ensure subscription so re-render on locale change (data hook already handles locales)
-  const [ref, inView] = useInView()
-  const animation = useAnimation()
-
-  useEffect(() => {
-    if (inView) {
-      animation.start('visible')
-    } else {
-      animation.start('hidden')
-    }
-  }, [inView, animation])
+  useLocale()
 
   return (
-    <section className="featuredProjects" id="featuredProjects" ref={ref}>
+    <section className="featuredProjects" id="featuredProjects">
       <motion.h1
         className="title"
         variants={ContainerVariants}
         initial="hidden"
-        animate={animation}
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
       >
-  {sections ? sections.featuredProjects : ''}
+        {sections ? sections.featuredProjects : ''}
       </motion.h1>
       <motion.div
         className="featuredProjects-container"
         variants={ContainerVariants}
         initial="hidden"
-        animate={animation}
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
       >
-  {sections && projects.map((item, index) => {
+        {sections && projects.map((item, index) => {
           if (item.featured) {
             return <FeaturedProject {...item} key={item.id} index={index} />
           }

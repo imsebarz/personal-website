@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useEffect } from 'react'
-import { useInView } from 'react-intersection-observer'
-import { motion, useAnimation } from 'framer-motion'
+import React from 'react'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import '@/styles/aboutme.scss'
 import { ContainerVariants } from '@/lib/animation'
@@ -11,40 +10,26 @@ import stringsEs from '@/data/aboutme.es.json'
 import { useLocale } from '@/contexts/LocaleContext'
 
 const AboutMe: React.FC = () => {
-  const [ref, inView] = useInView()
-  const animation = useAnimation()
-
-  useEffect(() => {
-    if (inView) {
-      animation.start('visible')
-    } else {
-      animation.start('hidden')
-    }
-  }, [inView, animation])
-
   const { locale } = useLocale()
   type AboutStrings = typeof stringsEn & typeof stringsEs
   const strings = (locale === 'es' ? stringsEs : stringsEn) as AboutStrings
+
   return (
-    <motion.section className="aboutme" id="aboutme" ref={ref}>
-      <motion.h1
-        className="title"
-        animate={animation}
-        variants={ContainerVariants}
-        initial="hidden"
-      >
+    <motion.section
+      className="aboutme"
+      id="aboutme"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15 }}
+    >
+      <motion.h1 className="title" variants={ContainerVariants}>
         {strings.aboutMeTitle}
       </motion.h1>
-      <motion.div
-        className="aboutme-container"
-        animate={animation}
-        variants={ContainerVariants}
-        initial="hidden"
-      >
+      <motion.div className="aboutme-container" variants={ContainerVariants}>
         <motion.div className="aboutme-image" variants={ContainerVariants}>
-          <Image 
-            src="/images/sebas.webp" 
-            alt="Sebastian Ruiz" 
+          <Image
+            src="/images/sebas.webp"
+            alt="Sebastian Ruiz"
             width={400}
             height={500}
             style={{ objectFit: 'cover' }}
@@ -56,7 +41,7 @@ const AboutMe: React.FC = () => {
           <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText3 }} />
           <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText4 }} />
           <motion.p variants={ContainerVariants} dangerouslySetInnerHTML={{ __html: strings.aboutMeText5 }} />
-          
+
           <motion.h3 variants={ContainerVariants} className="technologies-title">
             {strings.someTechnologiesTitle}
           </motion.h3>
