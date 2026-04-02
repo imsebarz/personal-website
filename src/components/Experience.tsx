@@ -25,6 +25,22 @@ interface ExperienceData {
   positions: Position[]
 }
 
+const slideInVariant = (direction: 'left' | 'right', delay: number) => ({
+  hidden: {
+    opacity: 0,
+    x: direction === 'left' ? -60 : 60,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.6,
+      type: 'tween' as const,
+      delay,
+    },
+  },
+})
+
 const Experience: React.FC = () => {
   const { locale } = useLocale()
   const data = (locale === 'es' ? expEs : expEn) as ExperienceData
@@ -41,14 +57,14 @@ const Experience: React.FC = () => {
         {data.sectionTitle}
       </motion.h1>
       <div className="experience-timeline">
-        {data.positions.map((pos) => (
+        {data.positions.map((pos, index) => (
           <motion.div
             key={pos.id}
             className="experience-card"
-            variants={ContainerVariants}
+            variants={slideInVariant(index % 2 === 0 ? 'left' : 'right', index * 0.15)}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.15 }}
+            viewport={{ once: true, amount: 0.2 }}
           >
             <div className="experience-card__header">
               <div className="experience-card__titles">

@@ -7,6 +7,7 @@ import StructuredData from '@/components/StructuredData'
 import LanguageSwitch from '@/components/LanguageSwitch'
 import { buildBaseMetadata } from '@/lib/seo'
 import { LocaleProvider } from '@/contexts/LocaleContext'
+import CustomCursor from '@/components/CustomCursor'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <LocaleProvider initialLocale={headerLocale}>
           <StructuredData locale={headerLocale} />
           <LanguageSwitch initialLocale={headerLocale} />
+          <CustomCursor />
           {children}
         </LocaleProvider>
       </body>

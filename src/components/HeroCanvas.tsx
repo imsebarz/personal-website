@@ -2,6 +2,12 @@
 
 import { useEffect, useRef } from 'react'
 
+const TECH_LABELS = [
+  'React', 'TypeScript', 'Next.js', 'GraphQL', 'Node.js', 'Tailwind',
+  'Supabase', 'PostgreSQL', 'Jest', 'WCAG', 'Vercel', 'Docker',
+  'Git', 'Webpack', 'AI/LLMs', 'MCP',
+]
+
 export default function HeroCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -13,7 +19,6 @@ export default function HeroCanvas() {
     let mouseX = 0
     let mouseY = 0
 
-    // Dynamically load Three.js
     const script = document.createElement('script')
     script.src = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js'
     script.onload = () => {
@@ -30,84 +35,105 @@ export default function HeroCanvas() {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
       renderer.setClearColor(0x000000, 0)
 
-      // Particles
-      const particleCount = 80
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const particles: Array<{ mesh: any; speed: { x: number; y: number; rotX: number; rotY: number } }> = []
-      const geometries = [
-        new THREE.SphereGeometry(0.12, 6, 6),
-        new THREE.OctahedronGeometry(0.15),
-        new THREE.TetrahedronGeometry(0.13),
-      ]
+      // Create text sprite from 2D canvas
+      function createTextSprite(text: string, color: string, opacity: number) {
+        const cvs = document.createElement('canvas')
+        const ctx = cvs.getContext('2d')!
+        const fontSize = 24
+        const font = `bold ${fontSize}px sans-serif`
+        ctx.font = font
+        const metrics = ctx.measureText(text)
+        const textWidth = metrics.width
+        const padding = 8
 
-      for (let i = 0; i < particleCount; i++) {
-        const geo = geometries[Math.floor(Math.random() * geometries.length)]
-        const isMint = Math.random() > 0.5
-        const mat = new THREE.MeshBasicMaterial({
-          color: isMint ? 0xeefff3 : 0x00a89d,
+        cvs.width = Math.ceil(textWidth + padding * 2)
+        cvs.height = Math.ceil(fontSize * 1.4 + padding * 2)
+
+        ctx.font = font
+        ctx.fillStyle = color
+        ctx.globalAlpha = 1
+        ctx.textBaseline = 'middle'
+        ctx.textAlign = 'center'
+        ctx.fillText(text, cvs.width / 2, cvs.height / 2)
+
+        const texture = new THREE.CanvasTexture(cvs)
+        texture.needsUpdate = true
+
+        const spriteMat = new THREE.SpriteMaterial({
+          map: texture,
           transparent: true,
-          opacity: 0.15 + Math.random() * 0.35,
-          wireframe: Math.random() > 0.6,
+          opacity,
+          depthWrite: false,
         })
-        const mesh = new THREE.Mesh(geo, mat)
-        mesh.position.set(
-          (Math.random() - 0.5) * 50,
+        const sprite = new THREE.Sprite(spriteMat)
+
+        const aspect = cvs.width / cvs.height
+        const scale = 2.5
+        sprite.scale.set(scale * aspect, scale, 1)
+
+        return sprite
+      }
+
+      // Create floating labels
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const labels: Array<{ sprite: any; speed: number; rotSpeed: number }> = []
+
+      for (let i = 0; i < TECH_LABELS.length; i++) {
+        const text = TECH_LABELS[i]
+        const isMint = i % 2 === 0
+        const color = isMint ? '#eefff3' : '#00a89d'
+        const opacity = 0.15 + Math.random() * 0.35
+
+        const sprite = createTextSprite(text, color, opacity)
+        sprite.position.set(
+          (Math.random() - 0.5) * 45,
           (Math.random() - 0.5) * 30,
-          (Math.random() - 0.5) * 20
+          (Math.random() - 0.5) * 15
         )
-        mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0)
-        const speed = {
-          x: (Math.random() - 0.5) * 0.003,
-          y: 0.002 + Math.random() * 0.006,
-          rotX: (Math.random() - 0.5) * 0.005,
-          rotY: (Math.random() - 0.5) * 0.005,
-        }
-        scene.add(mesh)
-        particles.push({ mesh, speed })
+
+        const speed = 0.005 + Math.random() * 0.015
+        const rotSpeed = (Math.random() - 0.5) * 0.003
+
+        scene.add(sprite)
+        labels.push({ sprite, speed, rotSpeed })
       }
 
-      // Connections (lines between nearby particles)
-      const lineMat = new THREE.LineBasicMaterial({ color: 0x00a89d, transparent: true, opacity: 0.06 })
-      const lineGroup = new THREE.Group()
-      scene.add(lineGroup)
+      // Duplicate some labels to fill the space
+      for (let i = 0; i < 16; i++) {
+        const text = TECH_LABELS[i % TECH_LABELS.length]
+        const isMint = i % 2 !== 0
+        const color = isMint ? '#eefff3' : '#00a89d'
+        const opacity = 0.15 + Math.random() * 0.35
 
-      function updateLines() {
-        lineGroup.clear()
-        for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const d = particles[i].mesh.position.distanceTo(particles[j].mesh.position)
-            if (d < 6) {
-              const geo = new THREE.BufferGeometry().setFromPoints([
-                particles[i].mesh.position,
-                particles[j].mesh.position,
-              ])
-              const line = new THREE.Line(geo, lineMat)
-              lineGroup.add(line)
-            }
-          }
-        }
+        const sprite = createTextSprite(text, color, opacity)
+        sprite.position.set(
+          (Math.random() - 0.5) * 45,
+          (Math.random() - 0.5) * 30,
+          (Math.random() - 0.5) * 15
+        )
+
+        const speed = 0.005 + Math.random() * 0.015
+        const rotSpeed = (Math.random() - 0.5) * 0.003
+
+        scene.add(sprite)
+        labels.push({ sprite, speed, rotSpeed })
       }
 
-      let frame = 0
       function animate() {
         animationId = requestAnimationFrame(animate)
-        frame++
 
-        particles.forEach(({ mesh, speed }) => {
-          mesh.position.y += speed.y
-          mesh.position.x += speed.x
-          mesh.rotation.x += speed.rotX
-          mesh.rotation.y += speed.rotY
+        labels.forEach(({ sprite, speed, rotSpeed }) => {
+          sprite.position.y += speed
 
-          // Reset when out of view
-          if (mesh.position.y > 18) {
-            mesh.position.y = -18
-            mesh.position.x = (Math.random() - 0.5) * 50
+          // Subtle Y-axis rotation via slight x oscillation
+          sprite.position.x += rotSpeed
+
+          // Recycle when out of view
+          if (sprite.position.y > 18) {
+            sprite.position.y = -18
+            sprite.position.x = (Math.random() - 0.5) * 45
           }
         })
-
-        // Update connections every 3 frames for performance
-        if (frame % 3 === 0) updateLines()
 
         // Mouse parallax
         camera.position.x += (mouseX * 2 - camera.position.x) * 0.02

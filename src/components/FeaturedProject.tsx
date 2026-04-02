@@ -7,6 +7,7 @@ import '@/styles/featuredproject.scss'
 import { ContainerVariants } from '@/lib/animation'
 import { buildAccessibleAlt } from '@/lib/seo'
 import type { Project } from '@/types'
+import TiltCard from './TiltCard'
 
 interface FeaturedProjectProps extends Project {
   index: number
@@ -29,6 +30,7 @@ const FeaturedProject: React.FC<FeaturedProjectProps> = ({
     : 'ftProject-badge--personal'
 
   return (
+    <TiltCard>
     <motion.div
       className={`ftProject ${actualDirection}`}
       variants={ContainerVariants}
@@ -84,6 +86,7 @@ const FeaturedProject: React.FC<FeaturedProjectProps> = ({
         </div>
       </div>
     </motion.div>
+    </TiltCard>
   )
 }
 
