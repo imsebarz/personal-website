@@ -157,13 +157,15 @@
     .ftProject-content {
       align-items: flex-start;
       text-align: left;
-      padding: 1.5em;
+      padding: 1.25em;
       color: colors.$pepper;
       background: colors.$mint;
+      gap: 0.75em;
 
       h1 {
         color: colors.$green;
-        font-size: 1.25rem;
+        font-size: 1.2rem;
+        margin: 0;
       }
       .desc {
         background: transparent;
@@ -171,26 +173,50 @@
         padding: 0;
         p {
           color: colors.$pepper;
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           line-height: 1.5;
         }
       }
-      ul {
+      ul.tags {
+        display: flex;
+        flex-wrap: wrap;
         width: 100%;
-        gap: 0.5em;
+        gap: 0.4em;
+        list-style: none;
+        padding: 0;
+        margin: 0;
         li {
           color: colors.$green;
-          font-size: 0.75rem;
+          font-size: 0.7rem;
+          font-weight: 500;
+          padding: 0.25em 0.6em;
+          border: 1px solid rgba(0, 71, 71, 0.2);
+          border-radius: 4px;
+          background: rgba(0, 71, 71, 0.05);
+          list-style: none;
+          &::before {
+            display: none !important;
+            content: none !important;
+          }
         }
       }
       .ftProject-links {
+        display: flex;
         justify-content: flex-start;
-        gap: 1em;
+        gap: 0.75em;
         width: auto;
+        margin-top: 0.25em;
         a {
           color: colors.$green;
+          display: flex;
+          align-items: center;
+          gap: 0.3em;
+          font-size: 0.8rem;
+          text-decoration: none;
         }
         svg {
+          width: 18px;
+          height: 18px;
           path {
             fill: colors.$green !important;
             stroke: colors.$green !important;

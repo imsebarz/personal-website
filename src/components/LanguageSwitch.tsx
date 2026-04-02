@@ -22,7 +22,7 @@ const LanguageSwitch: React.FC<Props> = ({ initialLocale = 'en' }) => {
   }
 
   return (
-    <button aria-label="Switch language" onClick={toggle} style={{ position: 'fixed', top: 12, right: 12, background: 'var(--color-green)', color: '#fff', border: 'none', padding: '0.45em 0.8em', borderRadius: 4, cursor: 'pointer', fontSize: '0.85rem', letterSpacing: '0.5px', zIndex: 1100 }}>
+    <button aria-label="Switch language" onClick={toggle} style={{ position: 'fixed', top: 10, right: 60, background: 'rgba(0, 71, 71, 0.9)', color: '#eefff3', border: '1px solid rgba(238, 255, 243, 0.2)', padding: '0.35em 0.7em', borderRadius: 6, cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.5px', zIndex: 15 }}>
       {locale === 'en' ? 'ES' : 'EN'}
     </button>
   )

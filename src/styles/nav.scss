@@ -90,35 +90,49 @@
   .sidebar {
     position: fixed;
     height: 100vh;
+    height: 100dvh;
     display: flex;
     align-items: center;
-    width: 65vw;
-    min-width: 250px;
+    justify-content: center;
+    width: 75vw;
+    max-width: 320px;
     padding: 2em;
     top: 0;
     right: -100%;
     background: colors.$green;
-    z-index: 10;
-    transition: all 0.2s ease;
+    z-index: 50;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -8px 0 30px rgba(0, 0, 0, 0.3);
     .aside-links {
       place-content: center;
       display: flex;
       flex-direction: column;
       height: 60%;
       width: 100%;
-      justify-content: space-between;
+      justify-content: space-evenly;
       align-items: center;
+      gap: 1.5em;
       li {
         list-style: none;
         a {
           color: colors.$mint;
           text-decoration: none;
+          font-size: 1.25rem;
+          font-weight: 600;
         }
       }
       li::before {
         display: none;
       }
     }
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 49;
   }
 }
 
@@ -131,7 +145,7 @@
     .hamburger {
       display: flex;
       place-items: center;
-      z-index: 20;
+      z-index: 60;
       svg {
         height: 25px;
         width: auto;

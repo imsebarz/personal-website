@@ -80,19 +80,22 @@ const Nav: React.FC = () => {
           </g>
         </svg>
       </div>
+      {sideDisplay === '0%' && (
+        <div className="sidebar-overlay" style={{ display: 'block' }} onClick={toggleSidebar} />
+      )}
       <aside className="sidebar" style={{ right: sideDisplay }}>
         <ul className="aside-links">
           <li>
-            <a href="#aboutme">{navStrings.links.aboutMe}</a>
+            <a href="#aboutme" onClick={toggleSidebar}>{navStrings.links.aboutMe}</a>
           </li>
           <li>
-            <a href="#featuredProjects">{navStrings.links.featuredProjects}</a>
+            <a href="#featuredProjects" onClick={toggleSidebar}>{navStrings.links.featuredProjects}</a>
           </li>
           <li>
-            <a href="#mywork">{navStrings.links.projects}</a>
+            <a href="#mywork" onClick={toggleSidebar}>{navStrings.links.projects}</a>
           </li>
           <li>
-            <a href="#contact">{navStrings.links.contact}</a>
+            <a href="#contact" onClick={toggleSidebar}>{navStrings.links.contact}</a>
           </li>
           <a
             href={navStrings.resumeLink}
